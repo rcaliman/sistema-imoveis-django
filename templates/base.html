@@ -1,0 +1,30 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+    {% include "partials/_head.html" %}
+    <body>
+        <nav class="navbar navbar-expand navbar-dark bg-primary">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="{% url 'index' %}"><span id="titulo">Imóveis & Aluguéis</span></a>
+                <div class="collapse navbar-collapse" id="navbarText">
+                    <ul class="navbar-nav">
+                        {% include "partials/_menu.html" %}
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div class="container">
+            <div class="mb-4"></div>
+            {% block content %}
+            {% endblock content %}
+        </div>
+    </body>
+    <script>
+    function marcaTodos(source) {
+        checkboxes = document.getElementsByClassName('checkImprimir');
+        for (var i = 0, n = checkboxes.length; i < n; i++) {
+            checkboxes[i].checked = source.checked;
+        }
+    }
+    </script>
+</html>

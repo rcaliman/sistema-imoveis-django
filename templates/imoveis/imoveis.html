@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    {% if user.is_authenticated %}
+        <form method="post" action="{% url 'imoveis_recibos' %}">
+            {% csrf_token %}
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            <a class="thlink" href="{% url 'imoveis_ordenados' 'tipo' %}">Tipo</a>
+                        </th>
+                        <th>
+                            <a class="thlink" href="{% url 'imoveis_ordenados' 'numero' %}">Número</a>
+                        </th>
+                        <th>
+                            <a class="thlink" href="{% url 'imoveis_ordenados' 'local' %}">Local</a>
+                        </th>
+                        <th>
+                            <a class="thlink" href="{% url 'imoveis_ordenados' 'cliente' %}">Cliente</a>
+                        </th>
+                        <th>
+                            <a class="thlink" href="{% url 'imoveis_ordenados' 'valor' %}">Valor</a>
+                        </th>
+                        <th>Observação</th>
+                        <th>
+                            <a class="thlink" href="{% url 'imoveis_ordenados' 'dia' %}">Dia</a>
+                        </th>
+                        <th>Imprimir</th>
+                        <th colspan="2">
+                            <a class="btn btn-sm btn-success btn-form"
+                               href="{% url 'imovel_inserir' %}">Adicionar</a>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for registro in registros %}
+                        <tr>
+                            <td>{{ registro.tipo|default_if_none:'' }}</td>
+                            <td class="number">{{ registro.numero|default_if_none:'' }}</td>
+                            <td>{{ registro.local|default_if_none:'' }}</td>
+                            <td>{{ registro.cliente|default_if_none:'' }}</td>
+                            <td class="number">{{ registro.valor|default_if_none:'' }}</td>
+                            <td>{{ registro.observacao|default_if_none:'' }}</td>
+                            <td class="number">{{ registro.dia|default_if_none:'' }}</td>
+                            <td class="center">
+                                <label>
+                                    <input type="checkbox"
+                                           class="checkImprimir"
+                                           name="imprimir"
+                                           value="{{ registro.id }}">
+                                </label>
+                            </td>
+                            <td class="center">
+                                <a class="btn btn-sm btn-secondary btn-form"
+                                   href="{% url 'imovel_alterar' registro.id %}">Alterar</a>
+                            </td>
+                            <td class="center">
+                                <a class="btn btn-sm btn-danger btn-form"
+                                   href="{% url 'imovel_apagar' registro.id %}"
+                                   onclick="return confirm('Tem certeza de que deseja apagar o imóvel?');">Deletar</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    <tr>
+                        <td class="imprimir" colspan="10">
+                            <div class="gerarrecibos">
+                                <div class="marcartodos">
+                                    <label>
+                                        <input type="checkbox" class="checkImprimir" onClick="marcaTodos(this)">
+                                    </label>
+                                    Marcar todos
+                                </div>
+                                &nbsp;
+                                {{ selects.select_mes|safe }} {{ selects.select_ano|safe }}
+                                <button class="botaosalvar">Gerar Recibos</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="10" class="adicionar">&nbsp;</td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
+    {% else %}
+        <div class="pedelogin">favor fazer login</div>
+    {% endif %}
+{% endblock content %}

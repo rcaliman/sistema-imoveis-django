@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+  {% if user.is_authenticated %}
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Data de Nascimento</th>
+          <th>CI</th>
+          <th>CPF</th>
+          <th>Telefone Celular</th>
+          <th>Telefone Fixo</th>
+          <th colspan="2">
+            <a class="btn btn-sm btn-success btn-form"
+               href="{% url 'cliente_inserir' %}">Adicionar</a>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for registro in registros %}
+          <tr>
+            <td>{{ registro.nome }}</td>
+            <td class="number">{{ registro.data_nascimento|date:"d/m/Y"|default_if_none:'' }}</td>
+            <td class="number">{{ registro.ci|default_if_none:'' }}</td>
+            <td class="number">{{ registro.cpf|default_if_none:'' }}</td>
+            <td class="number">{{ registro.telefone_1|default_if_none:'' }}</td>
+            <td class="number">{{ registro.telefone_2|default_if_none:'' }}</td>
+            <td class="center">
+              <a class="btn btn-sm btn-secondary btn-form"
+                 href="{% url 'cliente_alterar' registro.id %}">Alterar</a>
+            </td>
+            <td class="center">
+              <a class="btn btn-sm btn-danger btn-form"
+                 href="{% url 'cliente_apagar' registro.id %}"
+                 onclick="return confirm('Tem certeza de que deseja apagar o cliente?');">Deletar</a>
+            </td>
+          </tr>
+        {% endfor %}
+        <tr>
+          <td class="table-primary adicionar" colspan="8">&nbsp;</td>
+        </tr>
+      </tbody>
+    </table>
+  {% else %}
+    <div class="pedelogin">favor fazer login</div>
+  {% endif %}
+{% endblock content %}
