@@ -72,6 +72,7 @@ def monta_tabela_de_consumo(lista_energia, contador, resultado, registro):
 
 
 def adiciona_registro_de_energia(request):
+    verifica_autenticacao(request)
     form = FormEnergia(request.POST)
     ultimo = Energia.objects.values().last()
     atualizou_1 = float(ultimo.get("relogio_1")) != float(request.POST.get("relogio_1"))
@@ -82,6 +83,7 @@ def adiciona_registro_de_energia(request):
 
 
 def atualiza_registro_de_energia(request):
+    verifica_autenticacao(request)
     id_energia = request.POST.get("id")
     energia = Energia.objects.get(pk=id_energia)
     energia.data = request.POST.get("data")

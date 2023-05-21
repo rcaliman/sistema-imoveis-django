@@ -1,21 +1,27 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
+{% if not user.is_authenticated %}
     {% if form %}
-        <div class="mt-4" style="display: flex; justify-content: center">
+        <div class="mt-4" 
+            style="display: flex;
+                justify-content: center">
             <div class="mt-2"
                  style="display: flex;
                         justify-content: center;
                         border: 1px solid lightgrey;
                         width: 400px">
-                <form method="post" action="{% url 'index' %}">
-                    {% csrf_token %}
-                    {% for field in form %}<div class="form-group mt-2">{{ field }}</div>{% endfor %}
-                    <div class="form-group mt-2 mb-3">
-                        <button class="btn btn-primary" style="width: 100%;" type="submit">logar</button>
-                    </div>
-                </form>
+                    <form method="post" action="{% url 'index' %}">
+                        {% csrf_token %}
+                        {% for field in form %}<div class="form-group mt-2">{{ field }}</div>{% endfor %}
+                        <div class="form-group mt-2 mb-3">
+                            <button class="btn btn-primary"
+                            style="width: 100%"
+                            type="submit">logar</button>
+                        </div>
+                    </form>
+                {% endif %}
             </div>
         </div>
-    {% endif %}
+{% endif %}
 {% endblock content %}

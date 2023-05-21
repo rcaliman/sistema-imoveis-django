@@ -1,12 +1,11 @@
 from django.shortcuts import render, redirect
 from imoveis.models import Imovel, Cliente
 from imoveis.forms import FormImovel
-from helper import ComponentesHtml, Recibos
+from helper import ComponentesHtml, Recibos, verifica_autenticacao
 
 
 def imoveis_lista(request):
-    if not request.user.is_authenticated:
-        return redirect("index")
+    verifica_autenticacao(request)
     if request.method == "POST":
         if request.POST.get("id") is not None:
             atualiza_registro_do_imovel(request)
@@ -23,15 +22,13 @@ def imoveis_lista(request):
 
 
 def imovel_inserir(request):
-    if not request.user.is_authenticated:
-        return redirect("index")
+    verifica_autenticacao(request)
     form = FormImovel()
     return render(request, "imoveis/formulario.html", {"form": form})
 
 
 def imovel_alterar(request, id_do_registro):
-    if not request.user.is_authenticated:
-        return redirect("index")
+    verifica_autenticacao(request)
     registro = Imovel.objects.get(pk=id_do_registro)
     registro.__dict__["cliente"] = registro.__dict__["cliente_id"]
     form_do_registro = FormImovel(registro.__dict__)
@@ -43,22 +40,19 @@ def imovel_alterar(request, id_do_registro):
 
 
 def imovel_apagar(request, id_do_registro):
-    if not request.user.is_authenticated:
-        return redirect("index")
+    verifica_autenticacao(request)
     Imovel.objects.get(pk=id_do_registro).delete()
     return redirect(imoveis_lista)
 
 
 def imoveis_ordenados(request, ordenador):
-    if not request.user.is_authenticated:
-        return redirect("index")
+    verifica_autenticacao(request)
     registros_ordenados = Imovel.objects.order_by(ordenador).all()
     return render(request, "imoveis/imoveis.html", {"registros": registros_ordenados})
 
 
 def imoveis_recibos(request):
-    if not request.user.is_authenticated:
-        return redirect("index")
+    verifica_autenticacao(request)
     if request.method == "POST":
         id_registros = dict(request.POST.lists()).get("imprimir")
         mes, ano = request.POST["recibo_mes"], request.POST["recibo_ano"]
@@ -74,6 +68,7 @@ def imoveis_recibos(request):
 
 
 def atualiza_registro_do_imovel(request):
+    verifica_autenticacao(request)
     id_registro = request.POST.get("id")
     registro = Imovel.objects.get(pk=id_registro)
     registro.tipo = request.POST.get("tipo") or None

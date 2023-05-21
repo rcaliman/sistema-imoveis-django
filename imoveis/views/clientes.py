@@ -39,6 +39,7 @@ def cliente_apagar(request, id_do_registro):
 
 
 def atualiza_registro_de_cliente(request):
+    verifica_autenticacao(request)
     id_registro = request.POST.get("id")
     cliente = Cliente.objects.get(pk=id_registro)
     cliente.nome = request.POST.get("nome") or None
