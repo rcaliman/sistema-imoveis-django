@@ -2,15 +2,24 @@ from django.shortcuts import render, get_object_or_404
 from imoveis.forms import FormEnergia
 from imoveis.models import Energia
 from helper import verifica_autenticacao
+from django.contrib import messages
 
 
 def energia_lista(request):
     verifica_autenticacao(request)
     if request.method == "POST":
         if request.POST.get("id") is not None:
-            atualiza_registro_de_energia(request)
+            try:
+                atualiza_registro_de_energia(request)
+                messages.success(request, "Registro atualizado com sucesso.")
+            except:
+                messages.error(request, "Erro ao tentar atualizar registro.")
         else:
-            adiciona_registro_de_energia(request)
+            try:
+                adiciona_registro_de_energia(request)
+                messages.success(request, "Novo registro adicionado com sucesso.")
+            except:
+                messages.error(request, "Erro ao tentar adicionar novo registro.")
     registros = Energia.objects.all().values()
     ultimo_id = registros.last()["id"]
     if registros:

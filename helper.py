@@ -2,10 +2,13 @@ import calendar
 from datetime import datetime
 from django.shortcuts import redirect
 from num2words import num2words
+from django.contrib import messages
 
 
 def verifica_autenticacao(request):
     if not request.user.is_authenticated:
+        if request.path != "/":
+            messages.error(request, "Você não está autenticado!")
         return redirect("index")
 
 

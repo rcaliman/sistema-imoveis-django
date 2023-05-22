@@ -2,17 +2,26 @@ from django.shortcuts import render, redirect
 from imoveis.models import Imovel, Cliente
 from imoveis.forms import FormImovel
 from helper import ComponentesHtml, Recibos, verifica_autenticacao
+from django.contrib import messages
 
 
 def imoveis_lista(request):
     verifica_autenticacao(request)
     if request.method == "POST":
         if request.POST.get("id") is not None:
-            atualiza_registro_do_imovel(request)
+            try:
+                atualiza_registro_do_imovel(request)
+                messages.success(request, "Imóvel atualizado com sucesso.")
+            except:
+                messages.error(request, "Erro ao atualizar imóvel.")
         else:
             form = FormImovel(request.POST)
             if form.is_valid():
-                form.save()
+                try:
+                    form.save()
+                    messages.success(request, "Imóvel adicionado com sucesso.")
+                except:
+                    messages.error(request, "Erro ao tentar adicionar novo imóvel")
     todos_os_registros = Imovel.objects.all()
     return render(
         request,
@@ -41,7 +50,11 @@ def imovel_alterar(request, id_do_registro):
 
 def imovel_apagar(request, id_do_registro):
     verifica_autenticacao(request)
-    Imovel.objects.get(pk=id_do_registro).delete()
+    try:
+        Imovel.objects.get(pk=id_do_registro).delete()
+        messages.success(request, "Imóvel apagado com sucesso.")
+    except:
+        messages.error(request, "Erro ao tentar apagar imóvel.")
     return redirect(imoveis_lista)
 
 

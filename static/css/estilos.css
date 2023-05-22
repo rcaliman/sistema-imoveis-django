@@ -81,6 +81,9 @@ td.relogio2 {
 td.relogio3 {
     background-color: #a7c7e7;
 }
+td.celulabranca {
+    background-color: white;
+}
 td.center {
     text-align: center;
 }

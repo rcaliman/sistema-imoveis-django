@@ -7,17 +7,17 @@ class Energia(models.Model):
         blank=False,
         null=False,
     )
-    relogio_1 = models.FloatField(
+    relogio_1 = models.IntegerField(
         verbose_name="valor do relógio 1",
         null=False,
         blank=False,
     )
-    relogio_2 = models.FloatField(
+    relogio_2 = models.IntegerField(
         verbose_name="valor do relógio 2",
         null=False,
         blank=False,
     )
-    relogio_3 = models.FloatField(
+    relogio_3 = models.IntegerField(
         verbose_name="valor do relógio 3",
         null=False,
         blank=False,

@@ -2,17 +2,26 @@ from django.shortcuts import render, redirect
 from imoveis.models import Cliente
 from imoveis.forms import FormCliente
 from helper import verifica_autenticacao
+from django.contrib import messages
 
 
 def clientes_lista(request):
     verifica_autenticacao(request)
     if request.POST.get("id") is not None:
-        atualiza_registro_de_cliente(request)
+        try:
+            atualiza_registro_de_cliente(request)
+            messages.success(request, "Cliente atualizado com sucesso.")
+        except:
+            messages.error(request, "Erro ao tentar atualizar cliente.")
     else:
         if request.method == "POST":
             form = FormCliente(request.POST)
             if form.is_valid():
-                form.save()
+                try:
+                    form.save()
+                    messages.success(request, "Novo cliente adicionado com sucesso.")
+                except:
+                    messages.error(request, "Erro ao tentar adicionar novo cliente.")
     todos_os_registros = Cliente.objects.order_by("nome").all()
     return render(request, "clientes/clientes.html", {"registros": todos_os_registros})
 
@@ -34,7 +43,11 @@ def cliente_alterar(request, id_do_registro):
 
 def cliente_apagar(request, id_do_registro):
     verifica_autenticacao(request)
-    Cliente.objects.get(pk=id_do_registro).delete()
+    try:
+        Cliente.objects.get(pk=id_do_registro).delete()
+        messages.success(request, "Cliente apagado com sucesso")
+    except:
+        messages.error(request, "Erro ao tentar apagar cliente")
     return redirect(clientes_lista)
 
 

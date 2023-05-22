@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from imoveis.forms import FormLogin
 from django.contrib.auth import authenticate, login, logout
 from helper import verifica_autenticacao
+from django.contrib import messages
 
 
 def index(request):
@@ -12,12 +13,21 @@ def index(request):
         autenticacao = authenticate(request, username=usuario, password=senha)
         if autenticacao is not None:
             login(request, autenticacao)
+            messages.success(request, "Usuário logado com sucesso.")
             return redirect("index")
+        else:
+            messages.error(
+                request, "Erro ao tentar autenticar usuário, verifique sua senha."
+            )
     form = FormLogin()
     return render(request, "index.html", {"form": form})
 
 
 def imoveis_logout(request):
     verifica_autenticacao(request)
-    logout(request)
+    try:
+        logout(request)
+        messages.success(request, "Logout efetuado com sucesso.")
+    except:
+        messages.error(request, "Erro ao tentar fazer logout.")
     return redirect("index")
