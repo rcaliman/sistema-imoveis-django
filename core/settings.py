@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "imoveis.apps.ImoveisConfig",
+    "apps.imoveis.apps.ImoveisConfig",
 ]
 
 MIDDLEWARE = [

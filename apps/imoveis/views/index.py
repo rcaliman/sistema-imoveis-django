@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from imoveis.forms import FormLogin
+from apps.imoveis.forms import FormLogin
 from django.contrib.auth import authenticate, login, logout
 from helper import verifica_autenticacao
 from django.contrib import messages
@@ -20,7 +20,7 @@ def index(request):
                 request, "Erro ao tentar autenticar usuário, verifique sua senha."
             )
     form = FormLogin()
-    return render(request, "index.html", {"form": form})
+    return render(request, "shared/index.html", {"form": form})
 
 
 def imoveis_logout(request):

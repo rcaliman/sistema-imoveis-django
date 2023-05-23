@@ -16,13 +16,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from imoveis.views.index import index, imoveis_logout
+from apps.imoveis.views.index import index, imoveis_logout
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index, name='index'),
     path('logout/', imoveis_logout, name='imoveis_logout'),
-    path('imoveis/', include('imoveis.urls.imoveis')),
-    path('clientes/', include('imoveis.urls.clientes')),
-    path('energia/', include('imoveis.urls.energia')),
+    path('imoveis/', include('apps.imoveis.urls.imoveis')),
+    path('clientes/', include('apps.imoveis.urls.clientes')),
+    path('energia/', include('apps.imoveis.urls.energia')),
 ]

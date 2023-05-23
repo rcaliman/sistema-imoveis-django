@@ -1,5 +1,5 @@
 from django.urls import path
-from imoveis.views.clientes import clientes_lista, cliente_inserir, cliente_alterar, cliente_apagar
+from apps.imoveis.views.clientes import clientes_lista, cliente_inserir, cliente_alterar, cliente_apagar
 
 urlpatterns = [
     path('lista/', clientes_lista, name='clientes_lista'),

@@ -1,5 +1,5 @@
 from django import forms
-from imoveis.models import Energia
+from apps.imoveis.models import Energia
 
 
 class FormEnergia(forms.ModelForm):

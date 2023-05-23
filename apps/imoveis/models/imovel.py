@@ -1,5 +1,5 @@
 from django.db import models
-from .cliente import Cliente
+from apps.imoveis.models.cliente import Cliente
 
 
 class Imovel(models.Model):
