@@ -10,7 +10,10 @@ def energia_lista(request):
     if request.method == "POST":
         if request.POST.get("id") is not None:
             try:
-                atualiza_registro_de_energia(request)
+                id_energia = request.POST.get("id")
+                energia = Energia.objects.get(pk=id_energia)
+                form = FormEnergia(request.POST, instance=energia)
+                form.save()
                 messages.success(request, "Registro atualizado com sucesso.")
             except:
                 messages.error(request, "Erro ao tentar atualizar registro.")
@@ -21,7 +24,7 @@ def energia_lista(request):
             except:
                 messages.error(request, "Erro ao tentar adicionar novo registro.")
     registros = Energia.objects.all().values()
-    ultimo_id = registros.last()["id"]
+    ultimo_id = registros.last().get("id")
     if registros:
         quantidade_registros = len(registros)
         ultimos_registros = registros[quantidade_registros - 4 : quantidade_registros]
@@ -43,7 +46,7 @@ def energia_inserir(request):
 def energia_editar(request, energia_id):
     verifica_autenticacao(request)
     registro = get_object_or_404(Energia, pk=energia_id)
-    form = FormEnergia(registro.__dict__)
+    form = FormEnergia(instance=registro)
     return render(request, "energia/formulario.html", {"form": form, "id": energia_id})
 
 
@@ -89,16 +92,3 @@ def adiciona_registro_de_energia(request):
     atualizou_3 = float(ultimo.get("relogio_3")) != float(request.POST.get("relogio_3"))
     if atualizou_1 or atualizou_2 or atualizou_3 and form.is_valid:
         form.save()
-
-
-def atualiza_registro_de_energia(request):
-    verifica_autenticacao(request)
-    id_energia = request.POST.get("id")
-    energia = Energia.objects.get(pk=id_energia)
-    energia.data = request.POST.get("data")
-    energia.relogio_1 = request.POST.get("relogio_1")
-    energia.relogio_2 = request.POST.get("relogio_2")
-    energia.relogio_3 = request.POST.get("relogio_3")
-    energia.valor_kwh = request.POST.get("valor_kwh")
-    energia.valor_conta = request.POST.get("valor_conta")
-    energia.save()

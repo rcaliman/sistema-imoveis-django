@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from apps.imoveis.models import Imovel, Cliente
 from apps.imoveis.forms import FormImovel
-from helper import ComponentesHtml, Recibos, verifica_autenticacao
+from helper import GeraHtml, Recibos, verifica_autenticacao
 from django.contrib import messages
 
 
@@ -26,7 +26,7 @@ def imoveis_lista(request):
     return render(
         request,
         "imoveis/imoveis.html",
-        {"registros": todos_os_registros, "selects": ComponentesHtml},
+        {"registros": todos_os_registros, "selects": GeraHtml},
     )
 
 
@@ -39,8 +39,8 @@ def imovel_inserir(request):
 def imovel_alterar(request, id_do_registro):
     verifica_autenticacao(request)
     registro = Imovel.objects.get(pk=id_do_registro)
-    registro.__dict__["cliente"] = registro.__dict__["cliente_id"]
-    form_do_registro = FormImovel(registro.__dict__)
+    registro.__dict__["cliente"] = registro.__dict__.get("cliente_id")
+    form_do_registro = FormImovel(instance=registro)
     return render(
         request,
         "imoveis/formulario.html",
@@ -68,7 +68,7 @@ def imoveis_recibos(request):
     verifica_autenticacao(request)
     if request.method == "POST":
         id_registros = dict(request.POST.lists()).get("imprimir")
-        mes, ano = request.POST["recibo_mes"], request.POST["recibo_ano"]
+        mes, ano = request.POST.get("recibo_mes"), request.POST.get("recibo_ano")
         registros_selecionados = Imovel.objects.filter(id__in=id_registros).order_by(
             "cliente__nome"
         )
@@ -84,11 +84,5 @@ def atualiza_registro_do_imovel(request):
     verifica_autenticacao(request)
     id_registro = request.POST.get("id")
     registro = Imovel.objects.get(pk=id_registro)
-    registro.tipo = request.POST.get("tipo") or None
-    registro.numero = request.POST.get("numero") or None
-    registro.local = request.POST.get("local") or None
-    registro.cliente = Cliente(request.POST.get("cliente")) or None
-    registro.valor = request.POST.get("valor") or None
-    registro.observacao = request.POST.get("observacao") or None
-    registro.dia = request.POST.get("dia") or None
-    registro.save()
+    form = FormImovel(request.POST, instance=registro)
+    form.save()

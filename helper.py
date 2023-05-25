@@ -20,7 +20,7 @@ def calcula_proxima_data(mes, ano):
             return {"mes": calendar.month_name[i + 1], "ano": ano}
 
 
-class ComponentesHtml:
+class GeraHtml:
     @staticmethod
     def select_mes():
         mes_atual = datetime.now().month
