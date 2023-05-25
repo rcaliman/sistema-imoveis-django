@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render
 from apps.imoveis.forms import FormEnergia
 from apps.imoveis.models import Energia
 from helper import verifica_autenticacao
@@ -11,7 +11,7 @@ def energia_lista(request):
         if request.POST.get("id") is not None:
             try:
                 id_energia = request.POST.get("id")
-                energia = Energia.objects.get(pk=id_energia)
+                energia = Energia.objects.get(id=id_energia)
                 form = FormEnergia(request.POST, instance=energia)
                 form.save()
                 messages.success(request, "Registro atualizado com sucesso.")
@@ -45,7 +45,7 @@ def energia_inserir(request):
 
 def energia_editar(request, energia_id):
     verifica_autenticacao(request)
-    registro = get_object_or_404(Energia, pk=energia_id)
+    registro = Energia.objects.get(id=energia_id)
     form = FormEnergia(instance=registro)
     return render(request, "energia/formulario.html", {"form": form, "id": energia_id})
 

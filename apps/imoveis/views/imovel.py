@@ -38,7 +38,7 @@ def imovel_inserir(request):
 
 def imovel_alterar(request, id_do_registro):
     verifica_autenticacao(request)
-    registro = Imovel.objects.get(pk=id_do_registro)
+    registro = Imovel.objects.get(id=id_do_registro)
     registro.__dict__["cliente"] = registro.__dict__.get("cliente_id")
     form_do_registro = FormImovel(instance=registro)
     return render(
@@ -51,7 +51,7 @@ def imovel_alterar(request, id_do_registro):
 def imovel_apagar(request, id_do_registro):
     verifica_autenticacao(request)
     try:
-        Imovel.objects.get(pk=id_do_registro).delete()
+        Imovel.objects.get(id=id_do_registro).delete()
         messages.success(request, "Imóvel apagado com sucesso.")
     except:
         messages.error(request, "Erro ao tentar apagar imóvel.")
@@ -83,6 +83,6 @@ def imoveis_recibos(request):
 def atualiza_registro_do_imovel(request):
     verifica_autenticacao(request)
     id_registro = request.POST.get("id")
-    registro = Imovel.objects.get(pk=id_registro)
+    registro = Imovel.objects.get(id=id_registro)
     form = FormImovel(request.POST, instance=registro)
     form.save()

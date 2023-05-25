@@ -10,7 +10,7 @@ def clientes_lista(request):
     if request.POST.get("id") is not None:
         try:
             id_registro = request.POST.get("id")
-            cliente = Cliente.objects.get(pk=id_registro)
+            cliente = Cliente.objects.get(id=id_registro)
             form = FormCliente(request.POST, instance=cliente)
             form.save()
             messages.success(request, "Cliente atualizado com sucesso.")
@@ -36,7 +36,7 @@ def cliente_inserir(request):
 
 def cliente_alterar(request, id_do_registro):
     verifica_autenticacao(request)
-    cliente = Cliente.objects.get(pk=id_do_registro)
+    cliente = Cliente.objects.get(id=id_do_registro)
     form = FormCliente(instance=cliente)
     return render(
         request, "clientes/formulario.html", {"form": form, "id": id_do_registro}
@@ -46,9 +46,8 @@ def cliente_alterar(request, id_do_registro):
 def cliente_apagar(request, id_do_registro):
     verifica_autenticacao(request)
     try:
-        Cliente.objects.get(pk=id_do_registro).delete()
+        Cliente.objects.get(id=id_do_registro).delete()
         messages.success(request, "Cliente apagado com sucesso")
     except:
         messages.error(request, "Erro ao tentar apagar cliente")
     return redirect(clientes_lista)
-
