@@ -33,7 +33,7 @@ DEBUG = config("DEBUG", cast=bool)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["192.168.1.*"]
+ALLOWED_HOSTS = ["192.168.1."]
 
 # Application definition
 
