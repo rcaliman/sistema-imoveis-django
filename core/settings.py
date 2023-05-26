@@ -34,7 +34,7 @@ DEBUG = config("DEBUG", cast=bool)
 DEBUG = True
 
 ALLOWED_HOSTS = config(
-    "ALLOWED_HOSTS", cast=lambda x: [s.sptrip() for s in x.split(",")]
+    "ALLOWED_HOSTS", cast=lambda x: [s.strip() for s in x.split(",")]
 )
 
 # Application definition
