@@ -35,7 +35,7 @@ DEBUG = config("DEBUG", cast=bool)
 ALLOWED_HOSTS = config(
     "ALLOWED_HOSTS", cast=lambda x: [s.strip() for s in x.split(",")]
 )
-CSRF_TRUSTED_ORIGINS = ["http://rcaliman.zapto.org", "192.168.1.150"]
+CSRF_TRUSTED_ORIGINS = ["http://rcaliman.zapto.org:5000", "192.168.1.150"]
 
 # Application definition
 
