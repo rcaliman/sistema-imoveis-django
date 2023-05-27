@@ -31,7 +31,6 @@ SECRET_KEY = config("SECRET_KEY")
 DEBUG = config("DEBUG", cast=bool)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
 ALLOWED_HOSTS = config(
     "ALLOWED_HOSTS", cast=lambda x: [s.strip() for s in x.split(",")]
