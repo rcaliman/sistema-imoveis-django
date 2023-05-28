@@ -34,34 +34,36 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for registro in registros %}
-                        <tr>
-                            <td>{{ registro.tipo|default_if_none:'' }}</td>
-                            <td class="number">{{ registro.numero|default_if_none:'' }}</td>
-                            <td>{{ registro.local|default_if_none:'' }}</td>
-                            <td>{{ registro.cliente|default_if_none:'' }}</td>
-                            <td class="number">{{ registro.valor|default_if_none:'' }}</td>
-                            <td>{{ registro.observacao|default_if_none:'' }}</td>
-                            <td class="number">{{ registro.dia|default_if_none:'' }}</td>
-                            <td class="center">
-                                <label>
-                                    <input type="checkbox"
-                                           class="checkImprimir"
-                                           name="imprimir"
-                                           value="{{ registro.id }}">
-                                </label>
-                            </td>
-                            <td class="center">
-                                <a class="btn btn-sm btn-secondary btn-form"
-                                   href="{% url 'imovel_alterar' registro.id %}">Alterar</a>
-                            </td>
-                            <td class="center">
-                                <a class="btn btn-sm btn-danger btn-form"
-                                   href="{% url 'imovel_apagar' registro.id %}"
-                                   onclick="return confirm('Tem certeza de que deseja apagar o imóvel?');">Deletar</a>
-                            </td>
-                        </tr>
-                    {% endfor %}
+                    {% if registros %}
+                        {% for registro in registros %}
+                            <tr>
+                                <td>{{ registro.tipo|default_if_none:'' }}</td>
+                                <td class="number">{{ registro.numero|default_if_none:'' }}</td>
+                                <td>{{ registro.local|default_if_none:'' }}</td>
+                                <td>{{ registro.cliente|default_if_none:'' }}</td>
+                                <td class="number">{{ registro.valor|default_if_none:'' }}</td>
+                                <td>{{ registro.observacao|default_if_none:'' }}</td>
+                                <td class="number">{{ registro.dia|default_if_none:'' }}</td>
+                                <td class="center">
+                                    <label>
+                                        <input type="checkbox"
+                                               class="checkImprimir"
+                                               name="imprimir"
+                                               value="{{ registro.id }}">
+                                    </label>
+                                </td>
+                                <td class="center">
+                                    <a class="btn btn-sm btn-secondary btn-form"
+                                       href="{% url 'imovel_alterar' registro.id %}">Alterar</a>
+                                </td>
+                                <td class="center">
+                                    <a class="btn btn-sm btn-danger btn-form"
+                                       href="{% url 'imovel_apagar' registro.id %}"
+                                       onclick="return confirm('Tem certeza de que deseja apagar o imóvel?');">Deletar</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
                     <tr>
                         <td class="imprimir" colspan="10">
                             <div class="gerarrecibos">
