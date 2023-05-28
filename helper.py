@@ -56,7 +56,9 @@ class Recibos:
         for registro in registros:
             if registro.__dict__["cliente_id"]:
                 for i in range(0, 2):
-                    valor = num2words(registro.valor, to="currency", lang="pt_BR")
+                    valor = num2words(
+                        registro.valor, to="currency", lang="pt_BR"
+                    ).replace(", ", " e ")
                     if registro.tipo == "condomínio":
                         texto_recibo = Recibos.gera_recibo_de_condominio(
                             mes, ano, registro, texto_recibo, valor
