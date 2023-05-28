@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from apps.imoveis.models import Cliente
+from apps.imoveis.models import Cliente, Imovel
 from apps.imoveis.forms import FormCliente
 from helper import verifica_autenticacao
 from django.contrib import messages
@@ -25,7 +25,12 @@ def clientes_lista(request):
             else:
                 messages.error(request, "Erro ao tentar adicionar novo cliente.")
     todos_os_registros = Cliente.objects.order_by("nome").all()
-    return render(request, "clientes/clientes.html", {"registros": todos_os_registros})
+    clientes_com_imoveis = Imovel.objects.all().values_list("cliente_id", flat=True)
+    return render(
+        request,
+        "clientes/clientes.html",
+        {"registros": todos_os_registros, "imoveis": clientes_com_imoveis},
+    )
 
 
 def cliente_inserir(request):

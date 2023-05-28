@@ -21,7 +21,11 @@
         {% if registros %}
           {% for registro in registros %}
             <tr>
-              <td>{{ registro.nome }}</td>
+              <td>
+                {% if registro.id not in imoveis %}<i><u>{% endif %}
+                  {{ registro.nome }}
+                  {% if registro.id not in imoveis %}</u></i>{% endif %}
+              </td>
               <td class="number">{{ registro.data_nascimento|date:"d/m/Y"|default_if_none:'' }}</td>
               <td class="number">{{ registro.ci|default_if_none:'' }}</td>
               <td class="number">{{ registro.cpf|default_if_none:'' }}</td>
