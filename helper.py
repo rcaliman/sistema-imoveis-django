@@ -77,9 +77,9 @@ class Recibos:
                             <div class='recibo'>
                                 <h1 class='titulo'>RECIBO DE CONDOMÍNIO</h1>
                                 <div id='linharecibo' class='linharecibo'>Recebi de <b>{registro.cliente}</b>
-                                 a importância de <b><span id='{valor}'></span>
-                                 </b> referente ao condominio do mês de <b>{mes}</b> de <b>{ano}</b>
-                                  de {registro.observacao} no Edifício Caliman.
+                                 a importância de <b>{valor}</b> 
+                                 referente ao condominio do mês de <b>{mes}</b> de <b>{ano}</b>
+                                 de {registro.observacao} no Edifício Caliman.
                             </div>
                             <p class='linhadata'>Colatina-ES, 1 de {data_recibo['mes']} de {data_recibo['ano']}.
                             <p class='linhaassinatura'>___________________________________
