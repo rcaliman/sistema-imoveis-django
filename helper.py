@@ -55,10 +55,11 @@ class Recibos:
         conta_pagina = 1
         for registro in registros:
             if registro.__dict__["cliente_id"]:
-                for i in range(0, 2):
+                for conta_recibo in range(1, 3):
                     valor = num2words(
                         registro.valor, to="currency", lang="pt_BR"
                     ).replace(", ", " e ")
+
                     if registro.tipo == "condomínio":
                         texto_recibo = Recibos.gera_recibo_de_condominio(
                             mes, ano, registro, texto_recibo, valor
@@ -67,8 +68,8 @@ class Recibos:
                         texto_recibo = Recibos.gera_recibo_de_aluguel(
                             mes, ano, registro, texto_recibo, valor
                         )
-                    if i == 1:
-                        texto_recibo += f'<p class="contapagina" style="page-break-after: always">{conta_pagina}</p>'
+                    if conta_recibo == 2:
+                        texto_recibo += f'<p class="cortapagina" style="page-break-after: always">{conta_pagina}</p>'
                         conta_pagina += 1
         return texto_recibo
 
