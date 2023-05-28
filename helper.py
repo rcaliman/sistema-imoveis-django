@@ -95,7 +95,7 @@ class Recibos:
     def gera_recibo_de_aluguel(mes, ano, registro, texto_recibo, valor):
         texto_recibo += f"""
                         <div class ='recibo'>
-                            <h1 class ='titulo' >RECIBO</h1>
+                            <h1 class ='titulo'>RECIBO</h1>
                             <div id='linharecibo' class ='linharecibo'>
                                 Recebi de <b>{registro.cliente}</b> a importância de
                                 <b>{valor}</b> referente ao aluguel do(a) <b>{registro.tipo}</b>

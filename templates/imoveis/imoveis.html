@@ -2,7 +2,7 @@
 {% load static %}
 {% block content %}
     {% if user.is_authenticated %}
-        <form method="post" action="{% url 'imoveis_recibos' %}">
+        <form method="post" action="{% url 'imoveis_recibos' %}" target="_blank">
             {% csrf_token %}
             <table class="table">
                 <thead>
