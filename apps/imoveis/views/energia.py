@@ -24,16 +24,19 @@ def energia_lista(request):
             except:
                 messages.error(request, "Erro ao tentar adicionar novo registro.")
     registros = Energia.objects.all().values()
-    ultimo_id = registros.last().get("id")
-    if registros:
-        quantidade_registros = len(registros)
-        ultimos_registros = registros[quantidade_registros - 4 : quantidade_registros]
-        dados_calculados = calcula_energia(ultimos_registros)
-        return render(
-            request,
-            "energia/energia.html",
-            {"registros": dados_calculados, "ultimo": ultimo_id},
-        )
+    if len(registros) > 0:
+        ultimo_id = registros.last().get("id")
+        if registros:
+            quantidade_registros = len(registros)
+            ultimos_registros = registros[
+                quantidade_registros - 4 : quantidade_registros
+            ]
+            dados_calculados = calcula_energia(ultimos_registros)
+            return render(
+                request,
+                "energia/energia.html",
+                {"registros": dados_calculados, "ultimo": ultimo_id},
+            )
     return render(request, "energia/energia.html")
 
 
