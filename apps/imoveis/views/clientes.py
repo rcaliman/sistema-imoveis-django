@@ -12,8 +12,9 @@ def clientes_lista(request):
             id_registro = request.POST.get("id")
             cliente = Cliente.objects.get(id=id_registro)
             form = FormCliente(request.POST, instance=cliente)
-            form.save()
-            messages.success(request, "Cliente atualizado com sucesso.")
+            if form.is_valid():
+                form.save()
+                messages.success(request, "Cliente atualizado com sucesso.")
         except:
             messages.error(request, "Erro ao tentar atualizar cliente.")
     else:

@@ -1,0 +1,52 @@
+{% extends "shared/base.html" %}
+{% load static %}
+{% block content %}
+  {% if user.is_authenticated %}
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>CPF</th>
+          <th>Residência</th>
+          <th>Estado civil</th>
+          <th>Data de nascimento</th>
+          <th>Telefone</th>
+          <th>Email</th>
+          <th colspan="2">
+            <a class="btn btn-sm btn-success btn-form"
+               href="{% url 'locatario_inserir' %}">Adicionar</a>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        {% if registros %}
+          {% for registro in registros %}
+            <tr>
+              <td>{{ registro.nome }}</td>
+              <td class="number">{{ registro.cpf|default_if_none:'' }}</td>
+              <td>{{ registro.residencia|default_if_none:'' }}</td>
+              <td>{{ registro.estado_civil|default_if_none:'' }}</td>
+              <td class="number">{{ registro.data_nascimento|date:"d/m/Y"|default_if_none:'' }}</td>
+              <td class="number">{{ registro.telefone|default_if_none:'' }}</td>
+              <td>{{ registro.email|default_if_none:'' }}</td>
+              <td class="center">
+                <a class="btn btn-sm btn-secondary btn-form"
+                   href="{% url 'locatario_alterar' registro.id %}">Alterar</a>
+              </td>
+              <td class="center">
+                <a class="btn btn-sm btn-danger btn-form"
+                   href="{% url 'locatario_apagar' registro.id %}"
+                   onclick="return confirm('Tem certeza de que deseja apagar o cliente?');">Deletar</a>
+              </td>
+            </tr>
+          {% endfor %}
+        {% endif %}
+        <tr>
+          <td class="table-primary adicionar" colspan="9">&nbsp;</td>
+        </tr>
+      </tbody>
+    </table>
+  {% else %}
+    <div class="pedelogin">favor fazer login</div>
+  {% endif %}
+{% endblock content %}

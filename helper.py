@@ -3,6 +3,7 @@ from datetime import datetime
 from django.shortcuts import redirect
 from num2words import num2words
 from django.contrib import messages
+from apps.imoveis.models import Locatario
 
 
 def verifica_autenticacao(request):
@@ -21,6 +22,16 @@ def calcula_proxima_data(mes, ano):
 
 
 class GeraHtml:
+    @staticmethod
+    def select_locatarios():
+        locatarios = Locatario.objects.all().values()
+        select_locatarios = '<select name="recibo_locatarios" class="inputgerarrecibo" id="recibo_locatarios">'
+        for locatario in locatarios:
+            nome = locatario.get("nome")
+            select_locatarios += f'<option value="{nome}">{nome}</option>'
+        select_locatarios += "</select>"
+        return select_locatarios
+
     @staticmethod
     def select_mes():
         mes_atual = datetime.now().month

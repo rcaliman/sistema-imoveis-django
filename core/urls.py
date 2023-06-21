@@ -19,10 +19,11 @@ from django.urls import path, include
 from apps.imoveis.views.index import index, imoveis_logout
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', index, name='index'),
-    path('logout/', imoveis_logout, name='imoveis_logout'),
-    path('imoveis/', include('apps.imoveis.urls.imoveis')),
-    path('clientes/', include('apps.imoveis.urls.clientes')),
-    path('energia/', include('apps.imoveis.urls.energia')),
+    path("admin/", admin.site.urls),
+    path("", index, name="index"),
+    path("logout/", imoveis_logout, name="imoveis_logout"),
+    path("imoveis/", include("apps.imoveis.urls.imoveis")),
+    path("clientes/", include("apps.imoveis.urls.clientes")),
+    path("energia/", include("apps.imoveis.urls.energia")),
+    path("locatarios/", include("apps.imoveis.urls.locatarios")),
 ]
