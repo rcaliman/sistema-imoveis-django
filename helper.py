@@ -23,14 +23,14 @@ def calcula_proxima_data(mes, ano):
 
 class GeraHtml:
     @staticmethod
-    def select_locatarios():
+    def select_locatario():
         locatarios = Locatario.objects.all().values()
-        select_locatarios = '<select name="recibo_locatarios" class="inputgerarrecibo" id="recibo_locatarios">'
+        select_locatario = '<select name="recibo_locatario" class="inputgerarrecibo" id="recibo_locatario">'
         for locatario in locatarios:
             nome = locatario.get("nome")
-            select_locatarios += f'<option value="{nome}">{nome}</option>'
-        select_locatarios += "</select>"
-        return select_locatarios
+            select_locatario += f'<option value="{nome}">{nome}</option>'
+        select_locatario += "</select>"
+        return select_locatario
 
     @staticmethod
     def select_mes():
@@ -61,7 +61,7 @@ class GeraHtml:
 
 class Recibos:
     @staticmethod
-    def gerador(registros, mes, ano):
+    def gerador(registros, locatario, mes, ano):
         texto_recibo = '<div class="container-fluid">'
         conta_pagina = 1
         for registro in registros:
@@ -73,11 +73,11 @@ class Recibos:
 
                     if registro.tipo == "condomínio":
                         texto_recibo = Recibos.gera_recibo_de_condominio(
-                            mes, ano, registro, texto_recibo, valor
+                            locatario, mes, ano, registro, texto_recibo, valor
                         )
                     else:
                         texto_recibo = Recibos.gera_recibo_de_aluguel(
-                            mes, ano, registro, texto_recibo, valor
+                            locatario, mes, ano, registro, texto_recibo, valor
                         )
                     if conta_recibo == 2:
                         texto_recibo += f'<p class="cortapagina" style="page-break-after: always">{conta_pagina}</p>'
@@ -85,7 +85,7 @@ class Recibos:
         return texto_recibo
 
     @staticmethod
-    def gera_recibo_de_condominio(mes, ano, registro, texto_recibo, valor):
+    def gera_recibo_de_condominio(locatario, mes, ano, registro, texto_recibo, valor):
         data_recibo = calcula_proxima_data(mes, ano)
         texto_recibo += f"""
                             <div class='recibo'>
@@ -97,7 +97,7 @@ class Recibos:
                             </div>
                             <p class='linhadata'>Colatina-ES, 1 de {data_recibo['mes']} de {data_recibo['ano']}.
                             <p class='linhaassinatura'>___________________________________
-                            <br>Darci Francisco Caliman<br>Proprietário</p>
+                            <br>{locatario}</p>
                             <p class='linhatelefone'>&nbsp; </p>
                             </div>
                             <hr style='border-top: solid 2px;'>
@@ -106,19 +106,19 @@ class Recibos:
         return texto_recibo
 
     @staticmethod
-    def gera_recibo_de_aluguel(mes, ano, registro, texto_recibo, valor):
+    def gera_recibo_de_aluguel(locatario, mes, ano, registro, texto_recibo, valor):
         texto_recibo += f"""
                         <div class ='recibo'>
                             <h1 class ='titulo'>RECIBO</h1>
                             <div id='linharecibo' class ='linharecibo'>
                                 Recebi de <b>{registro.cliente}</b> a importância de
                                 <b>{valor}</b> referente ao aluguel do(a) <b>{registro.tipo}</b>
-                                numero <b>{registro.numero}</b>.* * * * * *
+                                numero <b>{registro.numero}</b>. {registro.observacao}.* * * * * *
                             </div>
                             <p class = 'linhadata'>Colatina-ES, {registro.dia} de {mes} de {ano}.
                             <p class = 'linhaassinatura' >___________________________________ <br>
-                            Darci Francisco Caliman <br>
-                            Proprietário</p>
+                            {locatario} <br>
+                            Locatário</p>
                             <p class ='linhatelefone'>{registro.cliente.telefone_1}&nbsp;{registro.cliente.telefone_2}</p>
                         </div >
                         <hr style='border-top: solid 2px;'>

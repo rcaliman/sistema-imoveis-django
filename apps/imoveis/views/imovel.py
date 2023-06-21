@@ -68,14 +68,18 @@ def imoveis_recibos(request):
     verifica_autenticacao(request)
     if request.method == "POST":
         id_registros = dict(request.POST.lists()).get("imprimir")
-        mes, ano = request.POST.get("recibo_mes"), request.POST.get("recibo_ano")
+        locatario, mes, ano = (
+            request.POST.get("recibo_locatario"),
+            request.POST.get("recibo_mes"),
+            request.POST.get("recibo_ano"),
+        )
         registros_selecionados = Imovel.objects.filter(id__in=id_registros).order_by(
             "cliente__nome"
         )
         return render(
             request,
             "imoveis/recibos.html",
-            {"registros": Recibos.gerador(registros_selecionados, mes, ano)},
+            {"registros": Recibos.gerador(registros_selecionados, locatario, mes, ano)},
         )
     return redirect("imoveis_lista")
 
