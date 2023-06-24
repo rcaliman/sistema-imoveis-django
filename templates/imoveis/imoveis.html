@@ -22,6 +22,7 @@
                         <th>
                             <a class="thlink" href="{% url 'imoveis_ordenados' 'valor' %}">Valor</a>
                         </th>
+                        <th>Complemento</th>
                         <th>Observação</th>
                         <th>
                             <a class="thlink" href="{% url 'imoveis_ordenados' 'dia' %}">Dia</a>
@@ -42,6 +43,7 @@
                                 <td>{{ registro.local|default_if_none:'' }}</td>
                                 <td>{{ registro.cliente|default_if_none:'' }}</td>
                                 <td class="number">{{ registro.valor|default_if_none:'' }}</td>
+                                <td>{{ registro.complemento|default_if_none:'' }}</td>
                                 <td>{{ registro.observacao|default_if_none:'' }}</td>
                                 <td class="number">{{ registro.dia|default_if_none:'' }}</td>
                                 <td class="center">

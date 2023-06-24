@@ -2,7 +2,7 @@
 {% load static %}
 {% block content %}
     {% if user.is_authenticated %}
-        <form method="post" action="{% url 'energia_lista' %}">
+        <form class="formulario" method="post" action="{% url 'energia_lista' %}">
             {% csrf_token %}
             {% if id %}<input type="hidden" name="id" value="{{ id }}">{% endif %}
             {% for field in form %}

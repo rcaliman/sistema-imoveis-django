@@ -93,7 +93,7 @@ class Recibos:
                                 <div id='linharecibo' class='linharecibo'>Recebi de <b>{registro.cliente}</b>
                                  a importância de <b>{valor}</b> 
                                  referente ao condominio do mês de <b>{mes}</b> de <b>{ano}</b>
-                                 de {registro.observacao} no Edifício Caliman.
+                                 de {registro.complemento} no Edifício Caliman.
                             </div>
                             <p class='linhadata'>Colatina-ES, 1 de {data_recibo['mes']} de {data_recibo['ano']}.
                             <p class='linhaassinatura'>___________________________________
@@ -107,13 +107,16 @@ class Recibos:
 
     @staticmethod
     def gera_recibo_de_aluguel(locatario, mes, ano, registro, texto_recibo, valor):
+        complemento = ""
+        if registro.complemento:
+            complemento = registro.complemento + "."
         texto_recibo += f"""
                         <div class ='recibo'>
                             <h1 class ='titulo'>RECIBO</h1>
                             <div id='linharecibo' class ='linharecibo'>
                                 Recebi de <b>{registro.cliente}</b> a importância de
                                 <b>{valor}</b> referente ao aluguel do(a) <b>{registro.tipo}</b>
-                                numero <b>{registro.numero}</b>. {registro.observacao}.* * * * * *
+                                numero <b>{registro.numero}</b>. {complemento}* * * * * *
                             </div>
                             <p class = 'linhadata'>Colatina-ES, {registro.dia} de {mes} de {ano}.
                             <p class = 'linhaassinatura' >___________________________________ <br>
