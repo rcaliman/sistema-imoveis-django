@@ -24,12 +24,12 @@ class Energia(models.Model):
     )
     valor_kwh = models.FloatField(
         verbose_name="valor do kWh",
-        null=False,
+        null=True,
         blank=True,
     )
     valor_conta = models.FloatField(
         verbose_name="valor da conta",
-        null=False,
+        null=True,
         blank=True,
     )
 

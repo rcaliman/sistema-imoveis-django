@@ -90,14 +90,14 @@ class Recibos:
         texto_recibo += f"""
                             <div class='recibo'>
                                 <h1 class='titulo'>RECIBO DE CONDOMÍNIO</h1>
-                                <div id='linharecibo' class='linharecibo'>Recebi de <b>{registro.cliente}</b>
-                                 a importância de <b>{valor}</b> 
-                                 referente ao condominio do mês de <b>{mes}</b> de <b>{ano}</b>
-                                 de {registro.complemento} no Edifício Caliman.
+                                <div id='linharecibo' class='linharecibo'>Recebi de <b>{registro.cliente or ''}</b>
+                                 a importância de <b>{valor or ''}</b> 
+                                 referente ao condominio do mês de <b>{mes or ''}</b> de <b>{ano or ''}</b>
+                                 de {registro.complemento or ''} no Edifício Caliman.
                             </div>
-                            <p class='linhadata'>Colatina-ES, 1 de {data_recibo['mes']} de {data_recibo['ano']}.
+                            <p class='linhadata'>Colatina-ES, 1 de {data_recibo['mes'] or ''} de {data_recibo['ano'] or ''}.
                             <p class='linhaassinatura'>___________________________________
-                            <br>{locatario}</p>
+                            <br>{locatario or ''}</p>
                             <p class='linhatelefone'>&nbsp; </p>
                             </div>
                             <hr style='border-top: solid 2px;'>
@@ -114,15 +114,15 @@ class Recibos:
                         <div class ='recibo'>
                             <h1 class ='titulo'>RECIBO</h1>
                             <div id='linharecibo' class ='linharecibo'>
-                                Recebi de <b>{registro.cliente}</b> a importância de
-                                <b>{valor}</b> referente ao aluguel do(a) <b>{registro.tipo}</b>
-                                numero <b>{registro.numero}</b>. {complemento}* * * * * *
+                                Recebi de <b>{registro.cliente or ''}</b> a importância de
+                                <b>{valor or ''}</b> referente ao aluguel do(a) <b>{registro.tipo or ''}</b>
+                                numero <b>{registro.numero or ''}</b>. {complemento or ''}* * * * * *
                             </div>
-                            <p class = 'linhadata'>Colatina-ES, {registro.dia} de {mes} de {ano}.
+                            <p class = 'linhadata'>Colatina-ES, {registro.dia or ''} de {mes or ''} de {ano or ''}.
                             <p class = 'linhaassinatura' >___________________________________ <br>
-                            {locatario} <br>
+                            {locatario or ''} <br>
                             Locatário</p>
-                            <p class ='linhatelefone'>{registro.cliente.telefone_1}&nbsp;{registro.cliente.telefone_2}</p>
+                            <p class ='linhatelefone'>{registro.cliente.telefone_1 or ''}&nbsp;{registro.cliente.telefone_2 or ''}</p>
                         </div >
                         <hr style='border-top: solid 2px;'>
                         """
