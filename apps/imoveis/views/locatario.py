@@ -9,7 +9,6 @@ def locatarios_lista(request):
     verifica_autenticacao(request)
     if request.POST:
         if request.POST.get("id") is not None:
-            print("entrou")
             locatario_id = request.POST.get("id")
             locatario = Locatario.objects.get(id=locatario_id)
             form = FormLocatario(request.POST, instance=locatario)
@@ -47,7 +46,7 @@ def locatario_apagar(request, id_do_registro):
     verifica_autenticacao(request)
     locatario = Locatario.objects.get(id=id_do_registro)
     if locatario.delete():
-        messages.success(request, 'locatário apagado com sucesso')
+        messages.success(request, "locatário apagado com sucesso")
     else:
-        messages.error(request, 'erro ao apagar locatário')
+        messages.error(request, "erro ao apagar locatário")
     return redirect(locatarios_lista)
