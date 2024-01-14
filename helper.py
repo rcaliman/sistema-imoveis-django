@@ -16,7 +16,7 @@ def verifica_autenticacao(request):
 def calcula_proxima_data(mes, ano):
     proximo_ano = int(ano) + 1
     if mes in "dezembro":
-        return {"mes": "janeiro", "ano": proximo_ano}
+        return {"mes": "janeiro", "ano": str(proximo_ano)}
     for i in range(1, 13):
         if calendar.month_name[i] == mes:
             return {"mes": calendar.month_name[i + 1], "ano": ano}
