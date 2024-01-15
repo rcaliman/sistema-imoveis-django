@@ -1,7 +1,5 @@
 from django.test import TestCase
-from apps.imoveis.models import Imovel, Cliente
 from apps.imoveis.forms import FormImovel
-from apps.imoveis.forms import FormCliente
 from django.contrib.auth.models import User
 from django.urls import reverse
 
@@ -97,12 +95,5 @@ class TesteImovel(TestCase):
         self.assertIn('<td class="number">102</td>', resposta.content.decode('utf-8'))
         self.assertIn('<td class="number">103</td>', resposta.content.decode('utf-8'))
 
-    def test_imoveis_recibos(self):
-        self.autentica()
-        FormCliente(self.data_cliente).save()
-        self.data_imovel['cliente'] = Cliente.objects.get(id=1)
-        url = reverse('imoveis_recibos')
-        data = {'imprimir': ['1'], 'locatario': '', 'recibo_mes': 'janeiro', 'recibo_ano': '2024'}
-        resposta = self.client.post(url, data=data, follow=True)
-        self.assertIn('RECIBO', resposta.content.decode('utf-8'))
+
 

@@ -21,7 +21,9 @@ class FormLocatario(forms.ModelForm):
             "cpf": forms.TextInput(attrs={"class": "form-control"}),
             "residencia": forms.TextInput(attrs={"class": "form-control"}),
             "estado_civil": forms.TextInput(attrs={"class": "form-control"}),
-            "data_nascimento": forms.DateInput(attrs={"class": "form-control"}),
+            "data_nascimento": forms.DateInput(
+                attrs={"class": "form-control", "type": "date"}, format="%Y-%m-%d",
+            ),
             "telefone": forms.TextInput(attrs={"class": "form-control"}),
             "email": forms.EmailInput(attrs={"class": "form-control"}),
         }

@@ -80,6 +80,7 @@ class TesteLocatario(TestCase):
         url = reverse('locatario_apagar', kwargs={'id_do_registro': 1})
         resposta = self.client.get(url, follow=True)
         self.assertIn('locatário apagado com sucesso', resposta.content.decode('utf-8'))
+
         
 
 

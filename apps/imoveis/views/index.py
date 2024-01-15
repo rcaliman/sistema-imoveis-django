@@ -21,11 +21,11 @@ def index(request):
                 request, "Erro ao tentar autenticar usuário, verifique sua senha."
             )
     form = FormLogin()
-    driver = DATABASES.get("default").get("ENGINE").split(".")[-1]
+    banco_usado = DATABASES.get("default").get("ENGINE").split(".")[-1]
     if PROD:
         return render(request, "shared/index.html", {"form": form})
     else:
-        return render(request, "shared/index.html", {"form": form, "driver": driver})
+        return render(request, "shared/index.html", {"form": form, "banco_usado": banco_usado})
 
 
 

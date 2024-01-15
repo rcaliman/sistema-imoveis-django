@@ -6,8 +6,8 @@
         <nav class="navbar navbar-expand navbar-dark bg-primary">
             <div class="container-fluid">
                 <a class="navbar-brand" href="{% url 'index' %}"><span id="titulo">Imóveis & Aluguéis</span></a>
-                {% if driver %}
-                        <a class="nav-link disabled" href="#">{{ driver }}</a>
+                {% if banco_usado %}
+                        <a class="nav-link disabled" href="#">{{ banco_usado }}</a>
                 {% endif %}
                 {% include "partials/_messages.html" %}
                 <div class="collapse navbar-collapse" id="navbarText">

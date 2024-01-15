@@ -1,11 +1,11 @@
-from django.test import TestCase, override_settings
+from django.test import TestCase
 from apps.imoveis.models.locatario import Locatario
 from apps.imoveis.models.cliente import Cliente
 from apps.imoveis.models.imovel import Imovel
 from apps.imoveis.forms.locatario import FormLocatario
 from apps.imoveis.forms.imovel import FormImovel
 from apps.imoveis.forms.cliente import FormCliente
-from helper import calcula_proxima_data, GeraHtml, Recibos
+from helper import calcula_proxima_data, Recibos
 
 class TestHelper(TestCase):
     def setUp(self, *args, **kwargs):
@@ -60,9 +60,6 @@ class TestHelper(TestCase):
         resultado = calcula_proxima_data('dezembro', '2023')
         self.assertEqual({'mes': 'janeiro', 'ano': '2024'}, resultado)
 
-    def test_select_locatario(self):
-        resposta = GeraHtml.select_locatario()
-        self.assertIn('<option value="John Doe">', resposta)
 
     def test_gerador_recibos(self):
         resposta = Recibos.gerador(self.registros_imoveis, self.locatario, 'janeiro', '2024')

@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 from apps.imoveis.models import Imovel
 from apps.imoveis.forms import FormImovel
-from helper import GeraHtml, Recibos, verifica_autenticacao
+from apps.imoveis.forms.recibos import FormRecibos
+from helper import Recibos, verifica_autenticacao
 from django.contrib import messages
 
 
@@ -26,7 +27,7 @@ def imoveis_lista(request):
     return render(
         request,
         "imoveis/imoveis.html",
-        {"registros": todos_os_registros, "selects": GeraHtml},
+        {"registros": todos_os_registros, "selects": FormRecibos},
     )
 
 
@@ -69,9 +70,9 @@ def imoveis_recibos(request):
     if request.method == "POST":
         id_registros = dict(request.POST.lists()).get("imprimir")
         locatario, mes, ano = (
-            request.POST.get("recibo_locatario"),
-            request.POST.get("recibo_mes"),
-            request.POST.get("recibo_ano"),
+            request.POST.get("select_locatario"),
+            request.POST.get("select_mes"),
+            request.POST.get("select_ano"),
         )
         registros_selecionados = Imovel.objects.filter(id__in=id_registros).order_by(
             "cliente__nome"

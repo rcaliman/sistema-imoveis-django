@@ -1,9 +1,7 @@
 import calendar
-from datetime import datetime
 from django.shortcuts import redirect
 from num2words import num2words
 from django.contrib import messages
-from apps.imoveis.models import Locatario
 
 
 def verifica_autenticacao(request):
@@ -20,45 +18,6 @@ def calcula_proxima_data(mes, ano):
     for i in range(1, 13):
         if calendar.month_name[i] == mes:
             return {"mes": calendar.month_name[i + 1], "ano": ano}
-
-
-class GeraHtml:
-    @staticmethod
-    def select_locatario():
-        locatarios = Locatario.objects.all().values()
-        select_locatario = '<select name="recibo_locatario" class="inputgerarrecibo" id="recibo_locatario">'
-        for locatario in locatarios:
-            nome = locatario.get("nome")
-            select_locatario += f'<option value="{nome}">{nome}</option>'
-        select_locatario += "</select>"
-        return select_locatario
-
-    @staticmethod
-    def select_mes():
-        mes_atual = datetime.now().month
-        select_mes = (
-            '<select name="recibo_mes" class="inputgerarrecibo" id="recibo_mes">'
-        )
-        for i in range(1, 13):
-            if mes_atual == i:
-                select_mes += f'<option value="{calendar.month_name[i]}" selected>{calendar.month_name[i]}</option>'
-            else:
-                select_mes += f"<option>{calendar.month_name[i]}</option>"
-        select_mes += "</select>"
-        return select_mes
-
-    @staticmethod
-    def select_ano():
-        ano_atual = datetime.now().year
-        select_ano = (
-            '<select name="recibo_ano" class="inputgerarrecibo" id="recibo_ano">'
-        )
-        select_ano += f'<option value="{ano_atual - 1}">{ano_atual - 1}</option>'
-        select_ano += f'<option value="{ano_atual}" selected>{ano_atual}</option>'
-        select_ano += f'<option value="{ano_atual + 1}">{ano_atual + 1}</option>'
-        select_ano += "</select>"
-        return select_ano
-
 
 class Recibos:
     @staticmethod
