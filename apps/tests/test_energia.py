@@ -77,10 +77,10 @@ class TestaEnergia(TestCase):
     def test_view_energia_lista_vazia(self):
         self.autentica()
         url = reverse('energia_lista')
-        Energia.objects.get(id=1).delete()
-        Energia.objects.get(id=2).delete()
-        Energia.objects.get(id=3).delete()
-        Energia.objects.get(id=4).delete()
+        Energia.objects.get(id=self.energia1_pk).delete()
+        Energia.objects.get(id=self.energia2_pk).delete()
+        Energia.objects.get(id=self.energia3_pk).delete()
+        Energia.objects.get(id=self.energia4_pk).delete()
         resposta = self.client.get(url)
         self.assertNotIn('01/02/2023', resposta.content.decode('utf-8'))
 
