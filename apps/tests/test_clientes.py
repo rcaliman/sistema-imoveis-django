@@ -4,7 +4,6 @@ from django.urls import reverse
 from apps.imoveis.forms import FormCliente
 from apps.imoveis.models import Cliente
 from django.contrib.auth import logout
-from core.settings import PROD
 
 class TestClientes(TestCase):
     def setUp(self, *args, **kwargs):
@@ -17,7 +16,7 @@ class TestClientes(TestCase):
             'telefone_1': '2799999999',
             'telefone_2': '2799998888',
         }
-        FormCliente(self.cliente_data).save()
+        self.cliente_pk = Cliente.objects.create(**self.cliente_data).pk
         return super().setUp(*args, **kwargs)
     
     def autentica(self):
@@ -74,7 +73,7 @@ class TestClientes(TestCase):
 
     def test_cliente_apagar(self):
         self.autentica()
-        url = reverse('cliente_apagar', kwargs={'id_do_registro': 1})
+        url = reverse('cliente_apagar', kwargs={'id_do_registro': self.cliente_pk})
         resultado = self.client.get(url, follow=True)
         self.assertIn('alert-success', resultado.content.decode('utf-8'))
 
