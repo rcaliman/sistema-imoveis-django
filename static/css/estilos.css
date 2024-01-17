@@ -119,6 +119,17 @@ tr:hover {
     background-color: #fff;
 }
 
+.input-gerar-contrato {
+    color: var(--bs-gray-dark);
+    padding: 6px 20px;
+    margin: 2px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 1px;
+    box-sizing: border-box;
+    background-color: yellow;
+}
+
 .botaosalvar {
     color: var(--bs-gray-dark);
     padding: 6px 20px;

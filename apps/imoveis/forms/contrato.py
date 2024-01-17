@@ -18,7 +18,7 @@ class FormContrato(forms.Form):
         label='Selecione o locador',
         widget=forms.Select(
             attrs={
-                'class': 'inputgerarrecibo form-control',
+                'class': 'form-control input-gerar-contrato',
                 'id': 'recibo_locador',
             }
         )
@@ -119,28 +119,28 @@ class FormContrato(forms.Form):
     uso_imovel = forms.ChoiceField(
         required=False, 
         choices=choices_uso_imovel, 
-        widget=forms.Select(attrs={'class': 'form-control'}),
+        widget=forms.Select(attrs={'class': 'form-control input-gerar-contrato'}),
         label='Uso residencial ou comercial',
     )
     mes_inicio = forms.ChoiceField(
         required=False, 
         choices=choices_mes, 
-        widget=forms.Select(attrs={'class': 'form-control'}),
+        widget=forms.Select(attrs={'class': 'form-control input-gerar-contrato'}),
         label='Mês de início do contrato')
     ano_inicio =forms.ChoiceField(
         required=False, 
         choices=choices_ano(), 
-        widget=forms.Select(attrs={'class': 'form-control'}),
+        widget=forms.Select(attrs={'class': 'form-control input-gerar-contrato'}),
         label='Ano de início do contrato')
     mes_final = forms.ChoiceField(
         required=False, 
         choices=choices_mes, 
-        widget=forms.Select(attrs={'class': 'form-control'}),
+        widget=forms.Select(attrs={'class': 'form-control input-gerar-contrato'}),
         label='Mês final do contrato',
     )
     ano_final =forms.ChoiceField(
         required=False, 
         choices=choices_ano(), 
-        widget=forms.Select(attrs={'class': 'form-control'}),
+        widget=forms.Select(attrs={'class': 'form-control input-gerar-contrato'}),
         label='Ano final do contrato',
     )
