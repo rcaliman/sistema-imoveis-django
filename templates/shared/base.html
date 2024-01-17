@@ -31,7 +31,7 @@
         }
         for (var i = 0, n = checkboxes.length; i < n; i++) {
                 id_campo_cliente = document.getElementById("nome-cliente" + checkboxes[i].value)
-                if (id_campo_cliente.textContent == "VAZIO") {
+                if (id_campo_cliente.textContent.trim() == "VAZIO") {
                     checkboxes[i].checked = source.unchecked;
                 }
         }
