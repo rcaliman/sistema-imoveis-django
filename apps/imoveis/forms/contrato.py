@@ -1,5 +1,6 @@
 from django import forms
 from apps.imoveis.models import Locador
+from datetime import datetime
 
 class FormContrato(forms.Form):
     def choices_locadores() -> list[tuple[str, str]]:
@@ -40,15 +41,18 @@ class FormContrato(forms.Form):
         ('11', '11'),
         ('12', '12'),
     ]
-    choices_ano =[
-        ('2024', '2024'),
-        ('2025', '2025'),
-        ('2026', '2026'),
-        ('2027', '2027'),
-        ('2028', '2028'),
-        ('2029', '2029'),
-        ('2030', '2030'),
-    ]
+    
+    def choices_ano() -> list[tuple[str, str]]:
+        ano_atual = datetime.now().year
+        choices = []
+        for ano in range(ano_atual - 1, ano_atual + 5):
+            choices.append((f'{ano}', f'{ano}'))
+        return choices
+    
+    def initial_ano() -> dict[str: str]:
+        ano_atual = datetime.now().year
+        return {f'{ano_atual}': f'{ano_atual}'}
+        
     imovel_tipo = forms.CharField(
         max_length=50,
         widget=forms.TextInput(attrs={'readonly': 'true', 'class': 'form-control'}),
@@ -125,7 +129,7 @@ class FormContrato(forms.Form):
         label='Mês de início do contrato')
     ano_inicio =forms.ChoiceField(
         required=False, 
-        choices=choices_ano, 
+        choices=choices_ano(), 
         widget=forms.Select(attrs={'class': 'form-control'}),
         label='Ano de início do contrato')
     mes_final = forms.ChoiceField(
@@ -136,7 +140,7 @@ class FormContrato(forms.Form):
     )
     ano_final =forms.ChoiceField(
         required=False, 
-        choices=choices_ano, 
+        choices=choices_ano(), 
         widget=forms.Select(attrs={'class': 'form-control'}),
         label='Ano final do contrato',
     )
