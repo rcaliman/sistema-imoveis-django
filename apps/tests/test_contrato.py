@@ -37,7 +37,8 @@ class TesteContrato(TestCase):
             'email': 'teste@teste.com',
             'nacionalidade': 'brasileiro',
         }
-        Locador(**self.data_locador).save()
+        # Locador(**self.data_locador).save()
+        self.pk = Locador.objects.create(**self.data_locador).pk
         self.data_contrato = {
             'select_locador': '1',
             'imovel_tipo':'apartamento',
@@ -68,7 +69,7 @@ class TesteContrato(TestCase):
     def test_contrato_form(self):
         self.autentica()
         Cliente(**self.data_cliente).save()
-        self.data_imovel['cliente'] = Cliente.objects.get(id=1)
+        self.data_imovel['cliente'] = Cliente.objects.get(id=self.pk)
         Imovel(**self.data_imovel).save()
         url = reverse('contrato_form', kwargs={'registro_id': 1})
         resposta = self.client.get(url)
