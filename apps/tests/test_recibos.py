@@ -55,15 +55,15 @@ class TesteRecibos(TestCase):
 
     def test_imoveis_recibos(self):
         self.autentica()
-        Locador(**self.data_locador).save()
-        locador = Locador.objects.get(id=1)
-        Cliente(**self.data_cliente).save()
-        self.data_imovel['cliente'] = Cliente.objects.get(id=1)
-        Imovel(**self.data_imovel).save()
+        self.locador_pk = Locador.objects.create(**self.data_locador).pk
+        locador = Locador.objects.get(id=self.locador_pk)
+        self.cliente_pk = Cliente.objects.create(**self.data_cliente).pk
+        self.data_imovel['cliente'] = Cliente.objects.get(id=self.cliente_pk)
+        self.imovel_pk = Imovel.objects.create(**self.data_imovel).pk
         self.data_imovel['tipo'] = 'condomínio'
-        Imovel(**self.data_imovel).save()
+        self.condominio_pk = Imovel.objects.create(**self.data_imovel).pk
         url = reverse('imoveis_recibos')
-        data = {'imprimir': ['1', '2'], 'select_locador': locador, 'select_mes': 'janeiro', 'select_ano': '2024'}
+        data = {'imprimir': [self.imovel_pk, self.condominio_pk], 'select_locador': locador, 'select_mes': 'janeiro', 'select_ano': '2024'}
         resposta = self.client.post(url, data=data, follow=True)
         self.assertIn('referente ao aluguel do(a) <b>apartamento</b>', resposta.content.decode('utf-8'))
         self.assertIn('referente ao condominio do mês de <b>janeiro</b>', resposta.content.decode('utf-8'))
