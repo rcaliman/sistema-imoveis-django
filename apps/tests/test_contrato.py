@@ -21,13 +21,13 @@ class TesteContrato(TestCase):
             'tipo': 'apartamento',
             'numero': '100',
             'local': 'galeria',
-            'cliente': '',
+            'cliente': Cliente.objects.get(id=self.cliente_pk),
             'valor': 100.0,
             'complemento': 'teste de complemento',
             'observacao': 'teste de observacao',
             'dia': 10,
         }
-
+        self.imovel_pk = Imovel.objects.create(**self.data_imovel).pk
         self.data_locador = {
             'nome': 'John Doe',
             'cpf': '11111111111',
