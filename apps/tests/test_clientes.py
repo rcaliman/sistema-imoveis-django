@@ -47,7 +47,7 @@ class TestClientes(TestCase):
     def test_clientes_atualiza_cliente(self):
         self.autentica()
         url = reverse('clientes_lista')
-        self.cliente_data['id'] = '1'
+        self.cliente_data['id'] = self.cliente_pk
         resultado = self.client.post(url, data=self.cliente_data, follow=True)
         self.assertIn('Cliente atualizado com sucesso.', resultado.content.decode("utf-8"))
 
