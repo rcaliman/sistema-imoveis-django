@@ -16,7 +16,7 @@ class TestaEnergia(TestCase):
             'valor_kwh': 0.5555,
             'valor_conta': 250.0,
         }
-        FormEnergia(self.data_energia1).save()
+        self.energia1_pk = Energia.objects.create(**self.data_energia1).pk
 
         self.data_energia2 = {
             'data': '2023-02-01',
@@ -26,7 +26,7 @@ class TestaEnergia(TestCase):
             'valor_kwh': 0.5555,
             'valor_conta': 260.0,
         }
-        FormEnergia(self.data_energia2).save()
+        self.energia2_pk = Energia.objects.create(**self.data_energia2).pk
 
         self.data_energia3 = {
             'data': '2023-03-01',
@@ -36,7 +36,7 @@ class TestaEnergia(TestCase):
             'valor_kwh': 0.5555,
             'valor_conta': 270.0,
         }
-        FormEnergia(self.data_energia3).save()
+        self.energia3_pk = Energia.objects.create(**self.data_energia3).pk
 
         self.data_energia4 = {
             'data': '2023-04-01',
@@ -46,7 +46,7 @@ class TestaEnergia(TestCase):
             'valor_kwh': 0.5555,
             'valor_conta': 280.0,
         }
-        FormEnergia(self.data_energia4).save()
+        self.energia4_pk = Energia.objects.create(**self.data_energia4).pk
 
         self.data_energia5 = {
             'data': '2023-05-01',
@@ -87,7 +87,7 @@ class TestaEnergia(TestCase):
 
     def test_view_energia_lista_update(self):
         self.autentica()
-        self.data_energia4['id'] = '4'
+        self.data_energia4['id'] = self.energia4_pk
         self.data_energia4['data'] = '2023-04-02'
         url = reverse('energia_lista')
         resposta = self.client.post(url, data=self.data_energia4, follow=True)
@@ -124,7 +124,7 @@ class TestaEnergia(TestCase):
 
     def test_view_energia_editar(self):
         self.autentica()
-        url = reverse('energia_editar', kwargs={'energia_id': 1})
+        url = reverse('energia_editar', kwargs={'energia_id': self.energia1_pk})
         self.data_energia1['id'] = '1'
         resposta = self.client.get(url, data=self.data_energia1)
         self.assertIn('2023-01-01', resposta.content.decode('utf-8'))
