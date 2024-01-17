@@ -16,6 +16,7 @@ class TesteLocador(TestCase):
             'telefone': '1111111111',
             'email': 'teste@teste.com',
         }
+        self.locador_pk = Locador.objects.create(**self.data_locador).pk
         return super().setUp(*args, **kwargs)
     def autentica(self):
         url = reverse('index')
@@ -23,7 +24,7 @@ class TesteLocador(TestCase):
         self.client.post(url, data=usuario, follow=True)
 
     def test_model_locador_retorna_nome_como__str__(self):
-        locador = Locador(**self.data_locador)
+        locador = Locador.objects.get(id=self.locador_pk)
         self.assertEqual(str(locador), 'John Doe')
 
     def test_view_locadores_lista(self):
@@ -50,7 +51,7 @@ class TesteLocador(TestCase):
         self.autentica()
         url = reverse('locadores_lista')
         self.client.post(url, data=self.data_locador, follow=True)
-        self.data_locador['id'] = 1
+        self.data_locador['id'] = self.locador_pk
         self.data_locador['nome'] = 'Joe Doe'
         resposta = self.client.post(url, data=self.data_locador, follow=True)
         self.assertIn('locador atualizado com sucesso', resposta.content.decode('utf-8'))
@@ -66,7 +67,7 @@ class TesteLocador(TestCase):
         self.autentica()
         url = reverse('locadores_lista')
         self.client.post(url, data=self.data_locador, follow=True)
-        url = reverse('locador_alterar', kwargs={'id_do_registro': 1})
+        url = reverse('locador_alterar', kwargs={'id_do_registro': self.locador_pk})
         form = FormLocador()
         resposta = self.client.get(url, data={'form': form})
         self.assertIn(
@@ -77,7 +78,7 @@ class TesteLocador(TestCase):
         self.autentica()
         url = reverse('locadores_lista')
         self.client.post(url, data=self.data_locador, follow=True)
-        url = reverse('locador_apagar', kwargs={'id_do_registro': 1})
+        url = reverse('locador_apagar', kwargs={'id_do_registro': self.locador_pk})
         resposta = self.client.get(url, follow=True)
         self.assertIn('locador apagado com sucesso', resposta.content.decode('utf-8'))
 
