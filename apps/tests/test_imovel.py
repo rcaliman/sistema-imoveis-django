@@ -18,16 +18,18 @@ class TesteImovel(TestCase):
             'estado_civil': 'casado',
             'cidade_residencia_sede': 'colatina-es',
         }
+        self.cliente_pk = Cliente.objects.create(**self.data_cliente).pk
         self.data_imovel = {
             'tipo': 'apartamento',
             'numero': '100',
             'local': 'galeria',
-            'cliente': '',
+            'cliente': Cliente.objects.get(id=self.cliente_pk),
             'valor': 100.0,
             'complemento': 'teste de complemento',
             'observacao': 'teste de observacao',
             'dia': 10,
         }
+        self.imovel_pk = Imovel.objects.create(**self.data_imovel).pk
         self.user = User.objects.create_user('temporario', 'teste@teste.com', 'temporario')
         return super().setUp(*args, **kwargs)
     
@@ -38,6 +40,7 @@ class TesteImovel(TestCase):
 
     def insere_imovel(self, numero=100):
         url = reverse('imoveis_lista')
+        self.data_imovel['cliente'] = ''
         self.data_imovel['numero'] = numero
         return self.client.post(url, data=self.data_imovel, follow=True)
     
@@ -57,7 +60,7 @@ class TesteImovel(TestCase):
         self.autentica()
         self.insere_imovel()
         url = reverse('imoveis_lista')
-        self.data_imovel['id'] = 1
+        self.data_imovel['id'] = self.imovel_pk
         self.data_imovel['valor'] = 125.5
         resposta = self.client.post(url, data=self.data_imovel, follow=True)
         self.assertIn('Imóvel atualizado com sucesso.', resposta.content.decode('utf-8'))
@@ -74,7 +77,7 @@ class TesteImovel(TestCase):
     def test_view_imovel_alterar(self):
         self.autentica()
         self.insere_imovel()        
-        url = reverse('imovel_alterar', kwargs={'id_do_registro': 1})
+        url = reverse('imovel_alterar', kwargs={'id_do_registro': self.imovel_pk})
         form = FormImovel()
         resposta = self.client.get(url, data={'form': form})
         self.assertIn(
@@ -85,7 +88,7 @@ class TesteImovel(TestCase):
     def test_view_imovel_apagar(self):
         self.autentica()
         self.insere_imovel()
-        url = reverse('imovel_apagar', kwargs={'id_do_registro': 1})
+        url = reverse('imovel_apagar', kwargs={'id_do_registro': self.imovel_pk})
         resposta = self.client.get(url, follow=True)
         self.assertIn('Imóvel apagado com sucesso.', resposta.content.decode("utf-8"))
 
