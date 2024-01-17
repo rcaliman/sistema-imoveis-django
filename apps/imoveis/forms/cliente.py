@@ -19,6 +19,7 @@ class FormCliente(forms.ModelForm):
         ]
         labels = {
             'cidade_residencia_sede': 'Residência/Sede',
+            'cpf': 'CPF/CNPJ',
         }
         tipo_choices = [
             ('pessoa física', 'pessoa física'),
