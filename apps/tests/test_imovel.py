@@ -81,7 +81,7 @@ class TesteImovel(TestCase):
         form = FormImovel()
         resposta = self.client.get(url, data={'form': form})
         self.assertIn(
-            ' <input type="hidden" name="id" value="1">',
+            f'<input type="hidden" name="id" value="{self.imovel_pk}">',
             resposta.content.decode('utf-8')
         )
 
