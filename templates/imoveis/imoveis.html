@@ -39,9 +39,13 @@
                         {% for registro in registros %}
                             <tr>
                                 <td>{{ registro.tipo|default_if_none:'' }}</td>
-                                <td class="number"><a class='contrato-link' href={% url 'contrato_form' registro.id %} title="Clique para imprimir o contrato">{{ registro.numero|default_if_none:'' }}</a></td>
+                                <td class="number">{{ registro.numero|default_if_none:'' }}</td>
                                 <td>{{ registro.local|default_if_none:'' }}</td>
-                                <td id='nome-cliente{{ registro.id }}'>{{ registro.cliente|default_if_none:'' }}</td>
+                                <td id='nome-cliente{{ registro.id }}'>
+                                    <a class='contrato-link' href={% url 'contrato_form' registro.id %} title="Clique para imprimir o contrato">
+                                        {{ registro.cliente|default_if_none:'' }}
+                                    </a>
+                                </td>
                                 <td class="number">{{ registro.valor|default_if_none:'' }}</td>
                                 <td>{{ registro.complemento|default_if_none:'' }}</td>
                                 <td>{{ registro.observacao|default_if_none:'' }}</td>
