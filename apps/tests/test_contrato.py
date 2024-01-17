@@ -40,7 +40,7 @@ class TesteContrato(TestCase):
         }
         self.locador_pk = Locador.objects.create(**self.data_locador).pk
         self.data_contrato = {
-            'select_locador': '1',
+            'select_locador': self.locador_pk,
             'imovel_tipo':'apartamento',
             'imovel_local':'Travessa Onde Mora Locador 120',
             'imovel_numero':'205',
