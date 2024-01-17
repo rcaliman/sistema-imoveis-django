@@ -203,3 +203,54 @@ label {
 .container {
     max-width: 1520px;
 }
+
+.container-contrato {
+    font-family: "Times New Roman", Times, serif;
+    font-size: 1rem;
+    text-align: justify;
+    padding: 2rem;
+}
+
+.paragrafo-contrato {
+    padding-top: 1rem;
+}
+.paragrafo-contrato-assinatura {
+    padding: 1.5rem 0 0rem 0;
+    margin: auto;
+    text-align: center;
+}
+.paragrafo-contrato-assinatura-dados {
+    margin: auto;
+    text-align: center;
+}
+.paragrafo-contrato-data {
+    margin: auto;
+    text-align: right;
+    padding: 1.5rem 0 1.5rem 0;
+}
+.subparagrafo-contrato {
+    padding-top:0.5rem;
+}
+.titulo-contrato {
+    margin: auto;
+    text-align: center;
+    font-weight: bold;
+    font-size: large;
+    padding-bottom: 1rem;
+}
+.destacar {
+    font-weight: bold;
+}
+.contrato-link {
+    color: var(--bs-gray-100);
+    background-color: #6c757d;;
+    padding: 3px;
+    text-decoration: none;
+}
+.contrato-link:visited {
+    color: var(--bs-gray-100);
+}
+.contrato-link:hover {
+    color: var(--bs-gray-100);
+    text-decoration: underline;
+}

@@ -1,0 +1,58 @@
+{% load static %}
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Controle de imóveis</title>
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" />
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'css/estilos.css' %}" />
+    <link rel="icon" href="{% static 'img/favicon.ico' %}" />
+</head>
+<div>
+    <div class="container-contrato">
+        <div class="titulo-contrato">CONTRATO DE LOCAÇÃO</div>
+        <div class="paragrafo-contrato">
+            Os signatários que contratam nas qualidades indicadas neste contrato, de um lado, {{ texto_locador }} doravante denominado simplesmente <span class='destacar'>LOCADOR</span>, e do outro {{ texto_cliente}} doravante denominado simplesmente <span class='destacar'>LOCATÁRIO</span>, têm entre si ajustada a presente LOCAÇÃO mediante as cláusulas e condições que seguem:</div>
+        <div class="paragrafo-contrato">
+            <span class='destacar'>CLÁUSULA PRIMEIRA:</span> DO OBJETO E PRAZO DE LOCAÇÃO: O LOCADOR sendo legítimo possuidor do imóvel {{ texto_imovel }}, na cidade de Colatina-ES, e o dá em LOCAÇÃO ao LOCATÁRIO pelo prazo de {{ texto_quantidade_meses }}, contado a partir de {{ texto_data_inicial }} a {{ texto_data_final }}.
+        </div>
+        <div class="paragrafo-contrato">
+            PARÁGRAFO PRIMEIRO: A LOCAÇÃO, o objeto deste contrato destina-se a fins residenciais.</div>
+        <div class="paragrafo-contrato">
+            PARÁGRAFO SEGUNDO: O presente contrato poderá ser prorrogado por períodos previamente acordados entre as partes.</div>
+        <div class="paragrafo-contrato">
+            <span class='destacar'>CLÁUSULA SEGUNDA: DO VALOR MENSAL DO ALUGUEL:</span> A contraprestação pela locação do imóvel será de {{ texto_valor }} pago mensalmente até o dia {{ texto_dia_pagamento }} de cada mês em curso, sendo a primeira parcela paga no momento da assinatura deste contrato, ficando a cargo do LOCATÁRIO, as despesas de energia elétrica.</div>
+        <div class="paragrafo-contrato">
+            PARÁGRAFO ÚNICO: O reajuste anual do aluguel se fará em acordo entre as partes (LEI DO INQUILINATO Nº 8.245, de 18 de outubro de 1991-LEI VIGENTE)</div>
+        <div class="paragrafo-contrato">
+            <span class='destacar'>CLÁUSULA TERCEIRA:</span> DAS OBRIGAÇÕES GERAIS: O LOCATÁRIO declara ter procedido a vistoria no imóvel locado, recebendo-o em perfeito estado e obrigando-se a:</div>
+        <div class="subparagrafo-contrato">
+            a) Manter o objeto da locação no mais perfeito estado de conservação e limpeza, para assim o restituir ao LOCADOR, quando findar ou rescindir a locação, correndo por sua exclusiva conta as despesas necessárias para este fim sem nenhum ressarcimento por parte do LOCADOR;</div>
+        <div class="subparagrafo-contrato">
+            b) Não transferir este contrato, não sublocar, não ceder ou emprestar, sob qualquer pretexto e, de igual forma, não alterar a destinação da locação, bem como, no caso de ser colocado a venda o imóvel, permitir que o interessado o visite.</div>
+        <div class="paragrafo-contrato">
+            <span class='destacar'>CLÁUSULA QUARTA:</span> DA RESCISÃO CONTRATUAL: A infração, por parte do LOCATÁRIO, de qualquer das obrigações consignadas na cláusula anterior é considerada de natureza grave, acarretando a rescisão contratual, com a consequente entrega do imóvel locado;</div>
+        <div class="paragrafo-contrato">
+            PARÁGRAFO ÚNICO: o presente contrato poderá ser rescindido pelas partes quando lhes convier, devendo a parte interessada, notificar à outra, expressamente com antecedência de, no mínimo, 60 (sessenta) dias.</div>
+        <div class="paragrafo-contrato">
+            <span class='destacar'>CLÁUSULA QUINTA:</span> DAS VANTAGENS LEGAIS E SUPERVENIENTES: A locação estará sempre sujeita ao regime do Código brasileiro, ficando assegurado às partes, todo os direitos e vantagens conferidas pela legislação, que eventualmente, vier a ser promulgada durante a vigência do presente contrato.</div>
+        <div class="paragrafo-contrato">
+            <span class='destacar'>CLÁUSULA SEXTA:</span> DA MULTA MORATÓRIA: em caso de atraso no pagamento dos aluguéis e encargos previstos no presente contrato, ficará ao LOCATÁRIO obrigado ao pagamento do principal, acrescido de juros de mora à base de 5% (cinco por cento) ao mês, sem prejuízo dos demais acréscimos e penalidades previstas nas cláusulas anteriores.</div>
+        <div class="paragrafo-contrato">
+            <span class='destacar'>CLÁUSULA SÉTIMA:</span> DA CLÁUSULA PENAL: As partes obrigam-se a respeitar o presente contrato em todas as suas cláusulas e condições, incorrendo a parte que infringir qualquer disposição contratual ou legal em multa igual ao valor correspondente a 02 (dois) aluguéis mensais, que serão sempre pagos integralmente, qualquer que seja o tempo contratual decorrido.
+        </div>
+        <div class="paragrafo-contrato">
+            PARÁGRAFO ÚNICO: o pagamento da multa não afasta a rescisão do contrato pela parte inocente, caso lhe convier.</div>
+        <div class="paragrafo-contrato">
+            <span class='destacar'>CLÁUSULA OITAVA:</span> DO FORO: as partes elegem o foro da cidade de Colatina para dirimir quaisquer dúvidas decorrentes do presente contrato, quaisquer que sejam seus domicílios.</div>
+        <div class="paragrafo-contrato">
+            Assim, convencionadas, firmam o presente em 02 (duas) vias de igual teor e forma, na presença das testemunhas abaixo, obrigando-se ao seu fiel cumprimento, por si seus herdeiros e sucessores a qualquer título.</div>
+        <div class="paragrafo-contrato-data">{{ texto_data_contrato }}</div>
+        <div class="paragrafo-contrato-assinatura">___________________________________________________________________
+        </div>
+        <div class="paragrafo-contrato-assinatura-dados">{{ texto_assinatura_locador }} - LOCADOR</div>
+        <div class="paragrafo-contrato-assinatura">___________________________________________________________________
+        </div>
+        <div class="paragrafo-contrato-assinatura-dados">{{ texto_assinatura_cliente }} - LOCATÁRIO</div>
+    </div>
+</div>

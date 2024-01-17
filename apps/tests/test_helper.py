@@ -1,15 +1,15 @@
 from django.test import TestCase
-from apps.imoveis.models.locatario import Locatario
+from apps.imoveis.models.locador import Locador
 from apps.imoveis.models.cliente import Cliente
 from apps.imoveis.models.imovel import Imovel
-from apps.imoveis.forms.locatario import FormLocatario
+from apps.imoveis.forms.locador import FormLocador
 from apps.imoveis.forms.imovel import FormImovel
 from apps.imoveis.forms.cliente import FormCliente
 from helper import calcula_proxima_data, Recibos
 
 class TestHelper(TestCase):
     def setUp(self, *args, **kwargs):
-        self.data_locatario = {
+        self.data_locador = {
             'nome': 'John Doe',
             'cpf': '11111111111',
             'residencia': 'colatina',
@@ -18,7 +18,7 @@ class TestHelper(TestCase):
             'telefone': '1111111111',
             'email': 'teste@teste.com',
         }
-        FormLocatario(self.data_locatario).save()
+        FormLocador(self.data_locador).save()
         self.data_cliente = {
             'nome': 'John Doe',
             'data_nascimento': '1978-05-17',
@@ -50,7 +50,7 @@ class TestHelper(TestCase):
             'dia': 10,
         }
         FormImovel(self.data_imovel).save()
-        self.locatario = Locatario.objects.get(id=1)
+        self.locador = Locador.objects.get(id=1)
         self.registros_imoveis = Imovel.objects.all()
         return super().setUp(*args, **kwargs)
     
@@ -62,7 +62,7 @@ class TestHelper(TestCase):
 
 
     def test_gerador_recibos(self):
-        resposta = Recibos.gerador(self.registros_imoveis, self.locatario, 'janeiro', '2024')
+        resposta = Recibos.gerador(self.registros_imoveis, self.locador, 'janeiro', '2024')
         self.assertIn('Recebi de <b>John Doe</b>', resposta)
 
 

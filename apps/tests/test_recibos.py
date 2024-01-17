@@ -1,6 +1,6 @@
 from django.test import TestCase
 from apps.imoveis.forms.recibos import FormRecibos
-from apps.imoveis.models import Locatario
+from apps.imoveis.models import Locador
 from apps.imoveis.models import Imovel
 from apps.imoveis.models import Cliente
 from django.contrib.auth.models import User
@@ -9,7 +9,7 @@ from django.urls import reverse
 class TesteRecibos(TestCase):
     def setUp(self, *args, **kwargs):
         self.user = User.objects.create_user('temporario', 'teste@teste.com', 'temporario')
-        self.data_locatario = {
+        self.data_locador = {
             'nome': 'John Doe',
             'cpf': '11111111111',
             'residencia': 'colatina',
@@ -42,10 +42,10 @@ class TesteRecibos(TestCase):
         usuario = {'usuario': 'temporario', 'senha': 'temporario'}
         self.client.post(url, data=usuario, follow=True)
 
-    def test_locatarios_lista(self):
-        Locatario(**self.data_locatario).save()
-        locatarios = FormRecibos.choices_locatarios()
-        self.assertEqual([('John Doe', 'John Doe')], locatarios)
+    def test_locadores_lista(self):
+        Locador(**self.data_locador).save()
+        locadores = FormRecibos.choices_locadores()
+        self.assertEqual([('John Doe', 'John Doe')], locadores)
 
     def test_codigos_imoveis(self):
         Imovel(**self.data_imovel).save()
@@ -55,15 +55,15 @@ class TesteRecibos(TestCase):
 
     def test_imoveis_recibos(self):
         self.autentica()
-        Locatario(**self.data_locatario).save()
-        locatario = Locatario.objects.get(id=1)
+        Locador(**self.data_locador).save()
+        locador = Locador.objects.get(id=1)
         Cliente(**self.data_cliente).save()
         self.data_imovel['cliente'] = Cliente.objects.get(id=1)
         Imovel(**self.data_imovel).save()
         self.data_imovel['tipo'] = 'condomínio'
         Imovel(**self.data_imovel).save()
         url = reverse('imoveis_recibos')
-        data = {'imprimir': ['1', '2'], 'select_locatario': locatario, 'select_mes': 'janeiro', 'select_ano': '2024'}
+        data = {'imprimir': ['1', '2'], 'select_locador': locador, 'select_mes': 'janeiro', 'select_ano': '2024'}
         resposta = self.client.post(url, data=data, follow=True)
         self.assertIn('referente ao aluguel do(a) <b>apartamento</b>', resposta.content.decode('utf-8'))
         self.assertIn('referente ao condominio do mês de <b>janeiro</b>', resposta.content.decode('utf-8'))

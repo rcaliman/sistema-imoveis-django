@@ -14,7 +14,7 @@
           <th>Email</th>
           <th colspan="2">
             <a class="btn btn-sm btn-success btn-form"
-               href="{% url 'locatario_inserir' %}">Adicionar</a>
+               href="{% url 'locador_inserir' %}">Adicionar</a>
           </th>
         </tr>
       </thead>
@@ -31,11 +31,11 @@
               <td>{{ registro.email|default_if_none:'' }}</td>
               <td class="center">
                 <a class="btn btn-sm btn-secondary btn-form"
-                   href="{% url 'locatario_alterar' registro.id %}">Alterar</a>
+                   href="{% url 'locador_alterar' registro.id %}">Alterar</a>
               </td>
               <td class="center">
                 <a class="btn btn-sm btn-danger btn-form"
-                   href="{% url 'locatario_apagar' registro.id %}"
+                   href="{% url 'locador_apagar' registro.id %}"
                    onclick="return confirm('Tem certeza de que deseja apagar o cliente?');">Deletar</a>
               </td>
             </tr>

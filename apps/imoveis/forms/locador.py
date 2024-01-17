@@ -1,10 +1,10 @@
 from django import forms
-from apps.imoveis.models import Locatario
+from apps.imoveis.models import Locador
 
 
-class FormLocatario(forms.ModelForm):
+class FormLocador(forms.ModelForm):
     class Meta:
-        model = Locatario
+        model = Locador
 
         fields = [
             "nome",
@@ -14,6 +14,7 @@ class FormLocatario(forms.ModelForm):
             "data_nascimento",
             "telefone",
             "email",
+            "nacionalidade"
         ]
 
         widgets = {
@@ -26,4 +27,5 @@ class FormLocatario(forms.ModelForm):
             ),
             "telefone": forms.TextInput(attrs={"class": "form-control"}),
             "email": forms.EmailInput(attrs={"class": "form-control"}),
+            "nacionalidade": forms.TextInput(attrs={"class": "form-control"})
         }

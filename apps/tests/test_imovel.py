@@ -2,6 +2,7 @@ from django.test import TestCase
 from apps.imoveis.forms import FormImovel
 from django.contrib.auth.models import User
 from django.urls import reverse
+from apps.imoveis.models import Cliente, Imovel
 
 class TesteImovel(TestCase):
     def setUp(self, *args, **kwargs):
@@ -12,6 +13,10 @@ class TesteImovel(TestCase):
             'cpf': '11111111111',
             'telefone_1': '2799999999',
             'telefone_2': '2799998888',
+            'tipo': 'pessoa física',
+            'nacionalidade': 'brasileira',
+            'estado_civil': 'casado',
+            'cidade_residencia_sede': 'colatina-es',
         }
         self.data_imovel = {
             'tipo': 'apartamento',
@@ -91,9 +96,6 @@ class TesteImovel(TestCase):
         self.insere_imovel(103)
         url = reverse('imoveis_ordenados', kwargs={'ordenador': 'numero'})
         resposta = self.client.get(url)
-        self.assertIn('<td class="number">101</td>', resposta.content.decode('utf-8'))
-        self.assertIn('<td class="number">102</td>', resposta.content.decode('utf-8'))
-        self.assertIn('<td class="number">103</td>', resposta.content.decode('utf-8'))
-
-
-
+        self.assertIn('101</a></td>', resposta.content.decode('utf-8'))
+        self.assertIn('102</a></td>', resposta.content.decode('utf-8'))
+        self.assertIn('103</a></td>', resposta.content.decode('utf-8'))

@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect
 from apps.imoveis.models import Imovel
-from apps.imoveis.forms import FormImovel
-from apps.imoveis.forms.recibos import FormRecibos
+from apps.imoveis.forms import FormImovel, FormContrato, FormRecibos
 from helper import Recibos, verifica_autenticacao
 from django.contrib import messages
 
@@ -69,8 +68,8 @@ def imoveis_recibos(request):
     verifica_autenticacao(request)
     if request.method == "POST":
         id_registros = dict(request.POST.lists()).get("imprimir")
-        locatario, mes, ano = (
-            request.POST.get("select_locatario"),
+        locador, mes, ano = (
+            request.POST.get("select_locador"),
             request.POST.get("select_mes"),
             request.POST.get("select_ano"),
         )
@@ -80,7 +79,7 @@ def imoveis_recibos(request):
         return render(
             request,
             "imoveis/recibos.html",
-            {"registros": Recibos.gerador(registros_selecionados, locatario, mes, ano)},
+            {"registros": Recibos.gerador(registros_selecionados, locador, mes, ano)},
         )
     return redirect("imoveis_lista")
 

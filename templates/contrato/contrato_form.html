@@ -1,0 +1,16 @@
+{% extends "shared/base.html" %}
+{% load static %}
+{% block content %}
+<form target='_blank' method='POST' action='{% url 'contrato' %}'>
+{% csrf_token %}
+{% for field in form %}
+<div class="form-group">
+  <label for="{{ field.id_for_label }}">{{ field.label }}:</label>
+  {{ field }}
+</div>
+{% endfor %}
+<div class="rodapetabela mt-3 mb-5">
+<button class="botaosalvar" type='submit'>Criar contrato</button>
+</div>
+</form>
+{% endblock content %}

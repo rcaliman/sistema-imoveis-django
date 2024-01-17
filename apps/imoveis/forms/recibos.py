@@ -1,18 +1,17 @@
 from django import forms
 from calendar import month_name
 from datetime import datetime
-from apps.imoveis.models import Locatario
-from apps.imoveis.models import Imovel
+from apps.imoveis.models import Locador, Imovel
 
 class FormRecibos(forms.Form):
-    def choices_locatarios() -> list[tuple[str, str]]:
-        obj = Locatario.objects.all().order_by('nome')
-        locatarios = []
+    def choices_locadores() -> list[tuple[str, str]]:
+        obj = Locador.objects.all().order_by('nome')
+        locadores = []
         for l in obj:
-            locatarios.append(
+            locadores.append(
                 (l.nome, l.nome)
             )
-        return locatarios
+        return locadores
     
     def choices_meses() -> list[tuple[str, str]]:
         meses = []
@@ -50,12 +49,12 @@ class FormRecibos(forms.Form):
             codigos.append((i,''))
         return codigos
     
-    select_locatario = forms.ChoiceField(
-        choices=choices_locatarios,
+    select_locador = forms.ChoiceField(
+        choices=choices_locadores,
         widget=forms.Select(
             attrs={
                 'class': 'inputgerarrecibo',
-                'id': 'recibo_locatario',
+                'id': 'recibo_locador',
             }
         )
     )

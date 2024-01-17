@@ -39,7 +39,7 @@
                         {% for registro in registros %}
                             <tr>
                                 <td>{{ registro.tipo|default_if_none:'' }}</td>
-                                <td class="number">{{ registro.numero|default_if_none:'' }}</td>
+                                <td class="number"><a class='contrato-link' href={% url 'contrato_form' registro.id %} title="Clique para imprimir o contrato">{{ registro.numero|default_if_none:'' }}</a></td>
                                 <td>{{ registro.local|default_if_none:'' }}</td>
                                 <td>{{ registro.cliente|default_if_none:'' }}</td>
                                 <td class="number">{{ registro.valor|default_if_none:'' }}</td>
@@ -67,7 +67,7 @@
                         {% endfor %}
                     {% endif %}
                     <tr>
-                        <td class="imprimir" colspan="10">
+                        <td class="imprimir" colspan="11">
                             <div class="gerarrecibos">
                                 <div class="marcartodos">
                                     <label>
@@ -76,13 +76,13 @@
                                     Marcar todos
                                 </div>
                                 &nbsp;
-                                {{ selects.select_locatario }} {{ selects.select_mes }} {{ selects.select_ano }}
+                                {{ selects.select_locador }} {{ selects.select_mes }} {{ selects.select_ano }}
                                 <button class="botaosalvar">Gerar Recibos</button>
                             </div>
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="10" class="adicionar">&nbsp;</td>
+                        <td colspan="11" class="adicionar">&nbsp;</td>
                     </tr>
                 </tbody>
             </table>
