@@ -164,7 +164,7 @@ def verifica_documento(numero_documento) -> dict[str, str]:
     if resultado_cpf in verificador:
         tipo_documento = "cpf"
         numero_limpo = "".join(numero_documento)
-        numero_formatado = "{}.{}.{}.{}".format(
+        numero_formatado = "{}.{}.{}-{}".format(
             "".join(numero_documento[:-8]),
             "".join(numero_documento[-8:-5]),
             "".join(numero_documento[-5:-2]),
@@ -214,4 +214,4 @@ def formata_telefone(telefone):
             )
         return telefone_formatado
     else:
-        return ''.join(telefone)
+        return "".join(telefone)
