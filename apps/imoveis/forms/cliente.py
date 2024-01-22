@@ -48,6 +48,10 @@ class FormCliente(forms.ModelForm):
             "cidade_residencia_sede": forms.TextInput(attrs={"class": "form-control"}),
         }
 
+    def clean_ci(self):
+        ci = self.cleaned_data["ci"]
+        return ci.upper()
+
     def clean_cpf(self):
         cpf = self.cleaned_data["cpf"]
         if cpf != None:
