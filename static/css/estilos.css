@@ -74,12 +74,8 @@ td.number {
 }
 td.relogio1 {
     background-color: #a7c7e7;
-    -webkit-transition: -webkit-transofrm .5s ease;
-    transition: transform .2s ease;
-
 }
 td.relogio1:hover {
-    -webkit-transform: scale(1.1);
     transform: scale(1.1);
 }
 td.relogio2 {
