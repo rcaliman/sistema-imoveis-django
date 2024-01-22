@@ -8,23 +8,28 @@ from django.contrib import messages
 def clientes_lista(request):
     verifica_autenticacao(request)
     if request.POST.get("id") is not None:
-        try:
-            id_registro = request.POST.get("id")
-            cliente = Cliente.objects.get(id=id_registro)
-            form = FormCliente(request.POST, instance=cliente)
-            if form.is_valid():
-                form.save()
-                messages.success(request, "Cliente atualizado com sucesso.")
-        except:
-            messages.error(request, "Erro ao tentar atualizar cliente.")
+        id_registro = request.POST.get("id")
+        cliente = Cliente.objects.get(id=id_registro)
+        form = FormCliente(request.POST, instance=cliente)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Cliente atualizado com sucesso.")
+        else:
+            request.session['dados_formulario_cliente'] = request.POST
+            return redirect('cliente_alterar', id_registro)
+
     else:
         if request.method == "POST":
             form = FormCliente(request.POST)
             if form.is_valid():
                 form.save()
+                dados_formulario_cliente = request.session.get('dados_formulario_cliente', None)
+                if dados_formulario_cliente:
+                    del(request.session['dados_formulario_cliente'])
                 messages.success(request, "Novo cliente adicionado com sucesso.")
             else:
-                messages.error(request, "Erro ao tentar adicionar novo cliente.")
+                request.session['dados_formulario_cliente'] = request.POST
+                return redirect('cliente_inserir')
     todos_os_registros = Cliente.objects.order_by("nome").all()
     clientes_com_imoveis = Imovel.objects.all().values_list("cliente_id", flat=True)
     return render(
@@ -36,14 +41,22 @@ def clientes_lista(request):
 
 def cliente_inserir(request):
     verifica_autenticacao(request)
-    form = FormCliente()
+    dados_formulario_cliente = request.session.get('dados_formulario_cliente', None)
+    form = FormCliente(dados_formulario_cliente)
+    if dados_formulario_cliente:
+        del(request.session['dados_formulario_cliente'])
     return render(request, "clientes/formulario.html", {"form": form})
 
 
 def cliente_alterar(request, id_do_registro):
     verifica_autenticacao(request)
-    cliente = Cliente.objects.get(id=id_do_registro)
-    form = FormCliente(instance=cliente)
+    if request.session.get('dados_formulario_cliente'):
+        form = FormCliente(request.session['dados_formulario_cliente'])
+        del(request.session['dados_formulario_cliente'])
+    else:
+        cliente = Cliente.objects.get(id=id_do_registro)
+        form = FormCliente(instance=cliente)
+
     return render(
         request, "clientes/formulario.html", {"form": form, "id": id_do_registro}
     )

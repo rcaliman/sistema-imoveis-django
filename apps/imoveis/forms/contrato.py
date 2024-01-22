@@ -48,10 +48,6 @@ class FormContrato(forms.Form):
         for ano in range(ano_atual - 1, ano_atual + 5):
             choices.append((f'{ano}', f'{ano}'))
         return choices
-    
-    def initial_ano() -> dict[str: str]:
-        ano_atual = datetime.now().year
-        return {f'{ano_atual}': f'{ano_atual}'}
         
     imovel_tipo = forms.CharField(
         max_length=50,
@@ -99,11 +95,6 @@ class FormContrato(forms.Form):
         required=False, 
         widget=forms.TextInput(attrs={'readonly': 'true', 'class': 'form-control'}),
         label='Estado civil do cliente'
-    )
-    cliente_tipo_pessoa = forms.CharField(
-        max_length=15, 
-        widget=forms.TextInput(attrs={'readonly': 'true', 'class': 'form-control'}),
-        label='Pessoa física ou jurídica',
     )
     cliente_cidade_residencia_sede = forms.CharField(
         max_length=200, 

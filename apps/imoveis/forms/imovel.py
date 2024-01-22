@@ -23,6 +23,10 @@ class FormImovel(forms.ModelForm):
             "observacao",
             "dia",
         ]
+        labels = {
+            "dia": 'Dia de pagamento',
+            "observacao": "Observações",
+        }
         widgets = {
             "tipo": forms.Select(
                 attrs={"class": "form-control"}, choices=sorted(CHOICES_TIPO)

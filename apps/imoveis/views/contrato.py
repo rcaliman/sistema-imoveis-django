@@ -1,14 +1,19 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from helper import verifica_autenticacao
 from apps.imoveis.forms import FormContrato
 from apps.imoveis.models import Imovel, Locador
+from django.contrib import messages
 from datetime import datetime
 from num2words import num2words
 from calendar import month_name
+from helper import verifica_documento
 
 def contrato_form(request, registro_id):
     verifica_autenticacao(request)
     imovel = Imovel.objects.get(id=registro_id)
+    if not(imovel.cliente.cpf):
+        messages.error(request, 'Cliente sem CPF ou CNPJ cadastrado, entre em Clientes e faça o cadastro.')
+        return redirect('imoveis_lista')
     dados_form = {
         'imovel_tipo': imovel.tipo,
         'imovel_local': imovel.local,
@@ -19,9 +24,12 @@ def contrato_form(request, registro_id):
         'cliente_ci': imovel.cliente.ci,
         'cliente_cpf_cnpj': imovel.cliente.cpf,
         'cliente_estado_civil': imovel.cliente.estado_civil,
-        'cliente_tipo_pessoa': imovel.cliente.tipo,
         'cliente_cidade_residencia_sede': imovel.cliente.cidade_residencia_sede,
         'cliente_nacionalidade': imovel.cliente.nacionalidade,
+        'mes_inicio': (datetime.now().month,datetime.now().month),
+        'ano_inicio': (datetime.now().year,datetime.now().year),
+        'mes_final': (datetime.now().month,datetime.now().month),
+        'ano_final': (datetime.now().year,datetime.now().year),
     }
     form = FormContrato(dados_form)
     return render(request, 'contrato/contrato_form.html', {'form': form})
@@ -94,7 +102,7 @@ def calcula_quantidade_meses_contrato(POST):
 
 def gera_texto_cliente(POST):
     texto_cliente = f'{POST["cliente_nome"].upper()}, '
-    if POST['cliente_tipo_pessoa'] == 'pessoa física':
+    if verifica_documento(POST['cliente_cpf_cnpj'])['documento'] == 'cpf':
         if POST['cliente_nacionalidade']:
            texto_cliente += POST['cliente_nacionalidade'].lower() + ", "
         if POST['cliente_estado_civil']:
@@ -127,6 +135,7 @@ def gera_texto_locador(POST):
     if locador.cpf:
         texto_locador += f'CPF {locador.cpf}, '
     return texto_locador
+
 
 def gera_texto_assinatura_locador(POST):
     locador = locador = Locador.objects.get(id=POST['select_locador'])

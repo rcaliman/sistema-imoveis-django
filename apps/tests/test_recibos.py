@@ -68,6 +68,19 @@ class TesteRecibos(TestCase):
         self.assertIn('referente ao aluguel do(a) <b>apartamento</b>', resposta.content.decode('utf-8'))
         self.assertIn('referente ao condominio do mês de <b>janeiro</b>', resposta.content.decode('utf-8'))
 
+    def test_imoveis_recibos_sem_selecionar_imovel(self):
+        self.autentica()
+        self.locador_pk = Locador.objects.create(**self.data_locador).pk
+        locador = Locador.objects.get(id=self.locador_pk)
+        url = reverse('imoveis_recibos')
+        data = {'imprimir': [], 'select_locador': locador, 'select_mes': 'janeiro', 'select_ano': '2024'}
+        resposta = self.client.post(url, data=data, follow=True)
+        self.assertIn(
+            'Você não selecionou nenhum cliente para imprimir recibo.',
+            resposta.content.decode('utf-8')
+        )
+
+
     def test_imoveis_recibos_sem_dados(self):
         self.autentica()
         url = reverse('imoveis_recibos')

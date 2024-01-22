@@ -265,3 +265,7 @@ label {
     color: var(--bs-gray-dark);
     text-decoration: underline;
 }
+.errorlist {
+    color: red;
+    font-weight: bold;
+}

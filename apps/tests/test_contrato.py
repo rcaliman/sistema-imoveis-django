@@ -8,10 +8,9 @@ class TesteContrato(TestCase):
             'nome': 'John Doe',
             'data_nascimento': '1978-05-17',
             'ci' : '111111',
-            'cpf': '11111111111',
+            'cpf': '920.223.820-05',
             'telefone_1': '2799999999',
             'telefone_2': '2799998888',
-            'tipo': 'pessoa física',
             'nacionalidade': 'brasileira',
             'estado_civil': 'casado',
             'cidade_residencia_sede': 'colatina-es',
@@ -30,7 +29,7 @@ class TesteContrato(TestCase):
         self.imovel_pk = Imovel.objects.create(**self.data_imovel).pk
         self.data_locador = {
             'nome': 'John Doe',
-            'cpf': '11111111111',
+            'cpf': '125.936.220-59',
             'residencia': 'colatina',
             'estado_civil': 'casado',
             'data_nascimento': '1978-01-01',
@@ -48,9 +47,8 @@ class TesteContrato(TestCase):
             'imovel_valor_aluguel':'1000.0',
             'cliente_nome':'João Locatário',
             'cliente_ci':'1234567 SSPES',
-            'cliente_cpf_cnpj':'012.345.678-00',
+            'cliente_cpf_cnpj':'920.223.820-05',
             'cliente_estado_civil':'casado',
-            'cliente_tipo_pessoa':'pessoa física',
             'cliente_cidade_residencia_sede':'Colatina-ES',
             'cliente_nacionalidade':'Brasileiro',
             'uso_imovel':'residencial',
@@ -82,19 +80,18 @@ class TesteContrato(TestCase):
             'de um lado, JOHN DOE, brasileiro, casado, residente em colatina',
             resposta.content.decode('utf-8')
         )
-        self.assertIn('JOHN DOE - 11111111111 - LOCADOR', resposta.content.decode('utf-8'))
-        self.assertIn('JOÃO LOCATÁRIO - 012.345.678-00 - LOCATÁRIO', resposta.content.decode('utf-8'))
+        self.assertIn('JOHN DOE - 125.936.220-59 - LOCADOR', resposta.content.decode('utf-8'))
+        self.assertIn('JOÃO LOCATÁRIO - 920.223.820-05 - LOCATÁRIO', resposta.content.decode('utf-8'))
 
     def test_contrato_pessoa_juridica(self):
         self.autentica()
         url = reverse('contrato')
         self.data_contrato['cliente_nome'] = "João Locador LTDA"
-        self.data_contrato['cliente_cpf_cnpj'] = '00.123.123/1234-12'
+        self.data_contrato['cliente_cpf_cnpj'] = '47.911.555/0001-59'
         self.data_contrato['cliente_ci'] = ''
         self.data_contrato['cliente_estado_civil'] = ''
-        self.data_contrato['cliente_tipo_pessoa'] = 'pessoa jurídica'
         resposta = self.client.post(url, data=self.data_contrato, follow=True)
         self.assertIn(
-            'JOÃO LOCADOR LTDA, CNPJ 00.123.123/1234-12, sediado(a) em Colatina-ES',
+            'JOÃO LOCADOR LTDA, CNPJ 47.911.555/0001-59, sediado(a) em Colatina-ES',
             resposta.content.decode('utf-8')
         )

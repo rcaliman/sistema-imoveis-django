@@ -73,9 +73,13 @@ def imoveis_recibos(request):
             request.POST.get("select_mes"),
             request.POST.get("select_ano"),
         )
-        registros_selecionados = Imovel.objects.filter(id__in=id_registros).order_by(
-            "cliente__nome"
-        )
+        try:
+            registros_selecionados = Imovel.objects.filter(id__in=id_registros).order_by(
+                "cliente__nome"
+            )
+        except:
+            messages.error(request, 'Você não selecionou nenhum cliente para imprimir recibo.')
+            return redirect('imoveis_lista')
         return render(
             request,
             "imoveis/recibos.html",

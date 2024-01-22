@@ -3,7 +3,6 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 from apps.imoveis.forms import FormCliente
 from apps.imoveis.models import Cliente
-from django.contrib.auth import logout
 
 class TestClientes(TestCase):
     def setUp(self, *args, **kwargs):
@@ -12,7 +11,7 @@ class TestClientes(TestCase):
             'nome': 'John Doe',
             'data_nascimento': '1978-05-17',
             'ci' : '111111',
-            'cpf': '11111111111',
+            'cpf': '215.584.084-52',
             'telefone_1': '2799999999',
             'telefone_2': '2799998888',
         }
@@ -37,12 +36,22 @@ class TestClientes(TestCase):
         resultado = self.client.post(url, data=self.cliente_data, follow=True)
         self.assertIn('Novo cliente adicionado com sucesso.', resultado.content.decode("utf-8"))
 
+    def test_clientes_adiciona_novo_dados_vazios(self):
+        self.autentica()
+        url = reverse('clientes_lista')
+        self.cliente_data['cpf'] = ''
+        self.cliente_data['telefone_1'] = ''
+        self.cliente_data['telefone_2'] = ''
+        resultado = self.client.post(url, data=self.cliente_data, follow=True)
+        self.assertIn('Novo cliente adicionado com sucesso.', resultado.content.decode("utf-8"))
+
+
     def test_clientes_erro_adiciona_novo(self):
         self.autentica()
         url = reverse('clientes_lista')
         del self.cliente_data['nome']
         resultado = self.client.post(url, data=self.cliente_data, follow=True)
-        self.assertIn('Erro ao tentar adicionar novo cliente.', resultado.content.decode("utf-8"))
+        self.assertIn('errorlist', resultado.content.decode("utf-8"))
 
     def test_clientes_atualiza_cliente(self):
         self.autentica()
@@ -54,9 +63,10 @@ class TestClientes(TestCase):
     def test_clientes_erro_atualiza_cliente(self):
         self.autentica()
         url = reverse('clientes_lista')
-        self.cliente_data['id'] = '5'
+        self.cliente_data['id'] = self.cliente_pk
+        self.cliente_data['cpf'] = '111111111'
         resultado = self.client.post(url, data=self.cliente_data, follow=True)
-        self.assertIn('Erro ao tentar atualizar cliente.', resultado.content.decode("utf-8"))
+        self.assertIn('errorlist', resultado.content.decode("utf-8"))
 
     def test_cliente_inserir(self):
         self.autentica()
