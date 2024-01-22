@@ -50,7 +50,9 @@ class FormCliente(forms.ModelForm):
 
     def clean_ci(self):
         ci = self.cleaned_data["ci"]
-        return ci.upper()
+        if ci != None:
+            return ci.upper()
+        return ci
 
     def clean_cpf(self):
         cpf = self.cleaned_data["cpf"]
