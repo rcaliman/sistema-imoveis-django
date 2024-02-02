@@ -32,7 +32,7 @@ class FormCliente(forms.ModelForm):
             "cpf": "CPF/CNPJ",
             "telefone_1": "Telefone",
             "telefone_2": "Telefone",
-            "cidade_residencia_sede": "Residência/Sede",
+            "cidade_residencia_sede": "Residência/Sede do cliente (Cidade/UF)",
         }
         widgets = {
             "nome": forms.TextInput(attrs={"class": "form-control"}),

@@ -1,7 +1,7 @@
 {% extends "shared/base.html" %}
 {% load static %}
 {% block content %}
-<form target='_blank' method='POST' action='{% url 'contrato' %}'>
+<form method='POST' action='{% url 'contrato' registro_id %}'>
 {% csrf_token %}
 <input type='hidden' name='registro_id' value={{ registro_id}}>
 {% for field in form %}

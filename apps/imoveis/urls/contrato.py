@@ -3,7 +3,7 @@ from apps.imoveis.views.contrato import contrato_form, contrato, contrato_imprim
 
 urlpatterns = [
     path('contrato_form/<int:registro_id>', contrato_form, name='contrato_form'),
-    path('contrato_imprimir/', contrato_imprimir, name='contrato_imprimir'),
-    path('contratos_listar/', contratos_listar, name='contratos_listar'),
-    path('contrato/', contrato, name='contrato'),
+    path('contrato_imprimir/<int:registro_id>', contrato_imprimir, name='contrato_imprimir'),
+    path('contratos_listar/<int:imovel_id>', contratos_listar, name='contratos_listar'),
+    path('contrato/<int:registro_id>', contrato, name='contrato'),
 ]

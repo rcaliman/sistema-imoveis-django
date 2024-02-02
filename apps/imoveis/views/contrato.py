@@ -46,17 +46,15 @@ def contrato_form(request, registro_id):
         {"form": form, "registro_id": registro_id},
     )
 
-def contratos_listar(request):
+def contratos_listar(request, imovel_id):
     verifica_autenticacao(request)
-    imovel_id = request.GET.get('imovel_id')
     contratos = Contrato.objects.filter(imovel__id=imovel_id).order_by('-id')
 
     return render(request, "contrato/contratos_listar.html", {'contratos': contratos})
 
-def contrato_imprimir(request):
+def contrato_imprimir(request, registro_id):
     verifica_autenticacao(request)
     if request.POST:
-        registro_id = request.POST.get("registro_id")
         texto_pagina = request.POST.get("texto_pagina")
         salvar_contrato = request.POST.get("salvar_contrato")
 
@@ -67,19 +65,17 @@ def contrato_imprimir(request):
         if salvar_contrato is not None:
             Contrato.objects.create(**contrato)
         script = 'window.print()'
-    if request.GET:
-        registro_id = request.GET.get("contrato_id")
-        texto_pagina = Contrato.objects.get(id=registro_id).texto
+    else:
+        texto_pagina = Contrato.objects.filter(id=registro_id)[0].texto
         script = ''
 
     return render(request, "contrato/contrato_imprimir.html", {"texto": texto_pagina, 'script': script})
 
 
-def contrato(request):
+def contrato(request, registro_id):
     verifica_autenticacao(request)
     if request.POST:
         POST = request.POST
-        registro_id = POST["registro_id"]
         quantidade_meses = calcula_quantidade_meses_contrato(POST)
         texto_locador = gera_texto_locador(POST)
         texto_cliente = gera_texto_cliente(POST)
@@ -115,7 +111,7 @@ def contrato(request):
             "texto_data_contrato": texto_data_contrato,
             "texto_assinatura_locador": texto_assinatura_locador,
             "texto_assinatura_cliente": texto_assinatura_cliente,
-            "action": reverse("contrato_imprimir"),
+            "action": reverse("contrato_imprimir", kwargs={'registro_id': registro_id}),
         }
     return render(request, "contrato/contrato.html", dados_contrato)
 

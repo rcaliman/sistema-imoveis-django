@@ -89,11 +89,11 @@ class TesteContrato(TestCase):
         Imovel(**self.data_imovel).save()
         url = reverse('contrato_form', kwargs={'registro_id': 1})
         resposta = self.client.get(url)
-        self.assertIn('<form target=', resposta.content.decode("utf-8"))
+        self.assertIn('<form method', resposta.content.decode("utf-8"))
 
     def test_contrato_pessoa_fisica(self):
         self.autentica()
-        url = reverse('contrato')
+        url = reverse('contrato', kwargs={'registro_id': self.cliente_pk})
         resposta = self.client.post(url, data=self.data_cria_contrato, follow=True)
         self.assertIn(
             'de um lado, JOHN DOE, brasileiro, casado, residente em colatina',
@@ -104,7 +104,7 @@ class TesteContrato(TestCase):
 
     def test_contrato_pessoa_juridica(self):
         self.autentica()
-        url = reverse('contrato')
+        url = reverse('contrato', kwargs={'registro_id': self.cliente_pk})
         self.data_cria_contrato['cliente_nome'] = "João Locador LTDA"
         self.data_cria_contrato['cliente_cpf_cnpj'] = '47.911.555/0001-59'
         self.data_cria_contrato['cliente_ci'] = ''
@@ -117,15 +117,14 @@ class TesteContrato(TestCase):
 
     def test_contratos_listar(self):
         self.autentica()
-        url = reverse('contratos_listar')
-        resposta = self.client.get(url, {'imovel_id': self.imovel_pk}, follow=True)
+        url = reverse('contratos_listar', kwargs={'imovel_id': self.imovel_pk})
+        resposta = self.client.get(url, follow=True)
         self.assertIn('JOSE LOCATARIO', resposta.content.decode('utf-8'))
 
     def test_contrato_imprimir_post(self):
         self.autentica()
-        url = reverse('contrato_imprimir')
+        url = reverse('contrato_imprimir', kwargs={'registro_id': self.imovel_pk})
         data = {
-            'registro_id': self.imovel_pk,
             'texto_pagina': '''
                 <div class="paragrafo-contrato-assinatura">___________________________________________________________________
                 </div>
@@ -141,7 +140,7 @@ class TesteContrato(TestCase):
 
     def test_contrato_imprimir_get(self):
         self.autentica()
-        url = reverse('contrato_imprimir')
+        url = reverse('contrato_imprimir', kwargs={'registro_id': self.contrato_pk})
         data = {
             'contrato_id': self.contrato_pk,
             'texto_pagina': '''

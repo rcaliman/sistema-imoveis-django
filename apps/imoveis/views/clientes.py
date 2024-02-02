@@ -8,7 +8,9 @@ from django.contrib import messages
 
 def clientes_lista(request):
     verifica_autenticacao(request)
-    if request.POST.get("id") is not None:
+    tem_cliente_para_atualizar = request.POST.get("id")
+    tem_cliente_para_adicionar = request.method == "POST"
+    if tem_cliente_para_atualizar:
         id_registro = request.POST.get("id")
         cliente = Cliente.objects.get(id=id_registro)
         form = FormCliente(request.POST, instance=cliente)
@@ -20,7 +22,7 @@ def clientes_lista(request):
             return redirect('cliente_alterar', id_registro)
 
     else:
-        if request.method == "POST":
+        if tem_cliente_para_adicionar:
             form = FormCliente(request.POST)
             if form.is_valid():
                 form.save()

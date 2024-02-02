@@ -99,7 +99,7 @@ class FormGerarContrato(forms.Form):
         max_length=200,
         required=False,
         widget=forms.TextInput(attrs={"readonly": "true", "class": "form-control"}),
-        label="Residência/Sede do cliente",
+        label="Cidade/Estado da residência/sede",
     )
     cliente_nacionalidade = forms.CharField(
         max_length=50,

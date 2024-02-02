@@ -41,7 +41,7 @@
                                 <td>{{ registro.tipo|default_if_none:'' }}</td>
                                 <td class="number">
                                     <a class='contrato-link' title='Clique para listar contratos já impressos'
-                                        href="{% url 'contratos_listar' %}?imovel_id={{ registro.id }}">
+                                        href="{% url 'contratos_listar' registro.id %}">
                                             {{ registro.numero|default_if_none:'' }}
                                     </a>
                                 </td>
