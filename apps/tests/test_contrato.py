@@ -1,9 +1,11 @@
 from django.test import TestCase
-from apps.imoveis.models import Locador, Cliente, Imovel
+from apps.imoveis.models import Locador, Cliente, Imovel, Contrato
 from django.urls import reverse
+from django.contrib.auth.models import User
 
 class TesteContrato(TestCase):
     def setUp(self, *args, **kwargs):
+        self.user = User.objects.create_user('temporario', 'temporario@teste.com', 'temporario')
         self.data_cliente = {
             'nome': 'John Doe',
             'data_nascimento': '1978-05-17',
@@ -38,7 +40,7 @@ class TesteContrato(TestCase):
             'nacionalidade': 'brasileiro',
         }
         self.locador_pk = Locador.objects.create(**self.data_locador).pk
-        self.data_contrato = {
+        self.data_cria_contrato = {
             'select_locador': self.locador_pk,
             'imovel_tipo':'apartamento',
             'imovel_local':'Travessa Onde Mora Locador 120',
@@ -56,7 +58,21 @@ class TesteContrato(TestCase):
             'ano_inicio':'2024',
             'mes_final':'12',
             'ano_final':'2024',
+            'registro_id': self.imovel_pk
         }
+        self.data_salva_contrato = {
+            'imovel': Imovel.objects.get(id=self.imovel_pk),
+            'data_impressao': '2024-01-01',
+            'texto': '''
+                <div class="paragrafo-contrato-assinatura">___________________________________________________________________
+                </div>
+                <div class="paragrafo-contrato-assinatura-dados">JOAO LOCADOR - 111.111.111-11 - LOCADOR</div>
+                <div class="paragrafo-contrato-assinatura">___________________________________________________________________
+                </div>
+                <div class="paragrafo-contrato-assinatura-dados">JOSE LOCATARIO - 11.111.111/0001-11 - LOCATÁRIO</div>
+            '''
+        }
+        self.contrato_pk = Contrato.objects.create(**self.data_salva_contrato).pk
         return super().setUp(*args, **kwargs)
     
     def autentica(self):
@@ -75,7 +91,7 @@ class TesteContrato(TestCase):
     def test_contrato_pessoa_fisica(self):
         self.autentica()
         url = reverse('contrato')
-        resposta = self.client.post(url, data=self.data_contrato, follow=True)
+        resposta = self.client.post(url, data=self.data_cria_contrato, follow=True)
         self.assertIn(
             'de um lado, JOHN DOE, brasileiro, casado, residente em colatina',
             resposta.content.decode('utf-8')
@@ -86,12 +102,53 @@ class TesteContrato(TestCase):
     def test_contrato_pessoa_juridica(self):
         self.autentica()
         url = reverse('contrato')
-        self.data_contrato['cliente_nome'] = "João Locador LTDA"
-        self.data_contrato['cliente_cpf_cnpj'] = '47.911.555/0001-59'
-        self.data_contrato['cliente_ci'] = ''
-        self.data_contrato['cliente_estado_civil'] = ''
-        resposta = self.client.post(url, data=self.data_contrato, follow=True)
+        self.data_cria_contrato['cliente_nome'] = "João Locador LTDA"
+        self.data_cria_contrato['cliente_cpf_cnpj'] = '47.911.555/0001-59'
+        self.data_cria_contrato['cliente_ci'] = ''
+        self.data_cria_contrato['cliente_estado_civil'] = ''
+        resposta = self.client.post(url, data=self.data_cria_contrato, follow=True)
         self.assertIn(
             'JOÃO LOCADOR LTDA, CNPJ 47.911.555/0001-59, sediado(a) em Colatina-ES',
             resposta.content.decode('utf-8')
         )
+
+    def test_contratos_listar(self):
+        self.autentica()
+        url = reverse('contratos_listar')
+        resposta = self.client.get(url, {'imovel_id': self.imovel_pk}, follow=True)
+        self.assertIn('JOSE LOCATARIO', resposta.content.decode('utf-8'))
+
+    def test_contrato_imprimir_post(self):
+        self.autentica()
+        url = reverse('contrato_imprimir')
+        data = {
+            'registro_id': self.imovel_pk,
+            'texto_pagina': '''
+                <div class="paragrafo-contrato-assinatura">___________________________________________________________________
+                </div>
+                <div class="paragrafo-contrato-assinatura-dados">JOAO LOCADOR - 111.111.111-11 - LOCADOR</div>
+                <div class="paragrafo-contrato-assinatura">___________________________________________________________________
+                </div>
+                <div class="paragrafo-contrato-assinatura-dados">JOSE LOCATARIO - 11.111.111/0001-11 - LOCATÁRIO</div>
+            ''',
+            'salvar_contrato': 'on'
+        }
+        resposta = self.client.post(url, data=data, follow=True)
+        self.assertIn('paragrafo-contrato-assinatura', resposta.content.decode('utf-8'))
+
+    def test_contrato_imprimir_get(self):
+        self.autentica()
+        url = reverse('contrato_imprimir')
+        data = {
+            'contrato_id': self.contrato_pk,
+            'texto_pagina': '''
+                <div class="paragrafo-contrato-assinatura">___________________________________________________________________
+                </div>
+                <div class="paragrafo-contrato-assinatura-dados">JOAO LOCADOR - 111.111.111-11 - LOCADOR</div>
+                <div class="paragrafo-contrato-assinatura">___________________________________________________________________
+                </div>
+                <div class="paragrafo-contrato-assinatura-dados">JOSE LOCATARIO - 11.111.111/0001-11 - LOCATÁRIO</div>
+            ''',
+        }
+        resposta = self.client.get(url, data=data, follow=True)
+        self.assertIn('paragrafo-contrato-assinatura', resposta.content.decode('utf-8'))

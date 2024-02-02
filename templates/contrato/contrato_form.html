@@ -3,6 +3,7 @@
 {% block content %}
 <form target='_blank' method='POST' action='{% url 'contrato' %}'>
 {% csrf_token %}
+<input type='hidden' name='registro_id' value={{ registro_id}}>
 {% for field in form %}
 <div class="form-group">
   <label for="{{ field.id_for_label }}">{{ field.label }}:</label>

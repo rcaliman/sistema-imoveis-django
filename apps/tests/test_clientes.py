@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 from apps.imoveis.forms import FormCliente
 from apps.imoveis.models import Cliente
+from apps.imoveis.templatetags import extrai_locatario
 
 class TestClientes(TestCase):
     def setUp(self, *args, **kwargs):
@@ -36,9 +37,11 @@ class TestClientes(TestCase):
         resultado = self.client.post(url, data=self.cliente_data, follow=True)
         self.assertIn('Novo cliente adicionado com sucesso.', resultado.content.decode("utf-8"))
 
+
     def test_clientes_adiciona_novo_dados_vazios(self):
         self.autentica()
         url = reverse('clientes_lista')
+        self.cliente_data['ci'] = ''
         self.cliente_data['cpf'] = ''
         self.cliente_data['telefone_1'] = ''
         self.cliente_data['telefone_2'] = ''
@@ -96,5 +99,6 @@ class TestClientes(TestCase):
     def test_model_cliente_returnando_nome_como__str__(self):
         cliente = Cliente(**self.cliente_data)
         self.assertEqual(str(cliente), 'John Doe')
+
 
         

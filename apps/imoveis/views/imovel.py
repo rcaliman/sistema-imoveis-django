@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from apps.imoveis.models import Imovel
-from apps.imoveis.forms import FormImovel, FormContrato, FormRecibos
+from apps.imoveis.forms import FormImovel, FormGerarContrato, FormRecibos
 from helper import Recibos, verifica_autenticacao
 from django.contrib import messages
 
@@ -74,12 +74,14 @@ def imoveis_recibos(request):
             request.POST.get("select_ano"),
         )
         try:
-            registros_selecionados = Imovel.objects.filter(id__in=id_registros).order_by(
-                "cliente__nome"
-            )
+            registros_selecionados = Imovel.objects.filter(
+                id__in=id_registros
+            ).order_by("cliente__nome")
         except:
-            messages.error(request, 'Você não selecionou nenhum cliente para imprimir recibo.')
-            return redirect('imoveis_lista')
+            messages.error(
+                request, "Você não selecionou nenhum cliente para imprimir recibo."
+            )
+            return redirect("imoveis_lista")
         return render(
             request,
             "imoveis/recibos.html",

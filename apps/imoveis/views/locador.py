@@ -35,6 +35,7 @@ def locador_inserir(request):
 
 
 def locador_alterar(request, id_do_registro):
+    verifica_autenticacao(request)
     locador = Locador.objects.get(id=id_do_registro)
     form = FormLocador(instance=locador)
     return render(

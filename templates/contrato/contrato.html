@@ -8,8 +8,35 @@
     <link rel="stylesheet" href="{% static 'css/estilos.css' %}" />
     <link rel="icon" href="{% static 'img/favicon.ico' %}" />
 </head>
+<div class='toolbar'>
+    Edite o texto, se necessário, selecione se vai ou não guardar o contrato e clique em imprimir.
+</div>
+<form method='POST' action={{ action }}>
+    <div class="toolbar">
+    {% csrf_token %}
+        <input type='hidden' name='registro_id' value={{ registro_id }}>
+        <input type='hidden' id='textoPagina' name='texto_pagina'>
+        <div class='toolbar-item'>
+            <button type='submit' class="btn btn-sm btn-success btn-form" onFocus=mudaValor()>imprimir</button>
+        </div>
+        <div class='toolbar-checkbox'>
+            <input type='checkbox' name='salvar_contrato' checked> Guardar este Contrato?
+        </div>
+    </div>
+</form>
+<div class="toolbar">
+    <div class='toolbar-item'>
+        <button id="boldButton" class="btn btn-sm btn-secondary btn-form">negrito</button>
+    </div>
+    <div class='toolbar-item'>
+        <button id="italicButton" class="btn btn-sm btn-secondary btn-form">italico</button>
+    </div>
+    <div class='toolbar-item'>
+        <button id="underlineButton" class="btn btn-sm btn-secondary btn-form">sublinhado</button>
+    </div>
+</div>
 <div>
-    <div class="container-contrato">
+    <div id='textoContrato' class="container-contrato" contentEditable='true'>
         <div class="titulo-contrato">CONTRATO DE LOCAÇÃO</div>
         <div class="paragrafo-contrato">
             Os signatários que contratam nas qualidades indicadas neste contrato, de um lado, {{ texto_locador }} doravante denominado simplesmente <span class='destacar'>LOCADOR</span>, e do outro {{ texto_cliente}} doravante denominado simplesmente <span class='destacar'>LOCATÁRIO</span>, têm entre si ajustada a presente LOCAÇÃO mediante as cláusulas e condições que seguem:</div>
@@ -56,3 +83,36 @@
         <div class="paragrafo-contrato-assinatura-dados">{{ texto_assinatura_cliente }} - LOCATÁRIO</div>
     </div>
 </div>
+<script>
+    const editor = document.getElementById("textoContrato");
+    const boldButton = document.getElementById("boldButton");
+    const italicButton = document.getElementById("italicButton");
+    const underlineButton = document.getElementById("underlineButton");
+    
+    function performAction(command) {
+      document.execCommand(command, false, null);
+      editor.focus();
+    }
+    
+    boldButton.addEventListener("click", function () {
+      performAction("bold");
+    });
+    
+    italicButton.addEventListener("click", function () {
+      performAction("italic");
+    });
+    
+    underlineButton.addEventListener("click", function () {
+      performAction("underline");
+    });
+
+    function mudaValor() {
+        textoPagina.value = textoContrato.innerHTML
+        console.log(textoPagina.value)
+    }
+</script>
+
+
+    
+
+
