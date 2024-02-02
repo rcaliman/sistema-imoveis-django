@@ -13,7 +13,8 @@ import os.path
 import locale
 from pathlib import Path
 from django.contrib.messages import constants as messages
-from decouple import config
+from dotenv import load_dotenv
+load_dotenv()
 
 MESSAGE_TAGS = {
     messages.ERROR: "danger",
@@ -27,18 +28,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config("SECRET_KEY")
-DEBUG = config("DEBUG", cast=bool)
-PROD = config("PROD", cast=bool)
+
+SECRET_KEY = str(os.getenv('SECRET_KEY').strip())
+DEBUG = False if os.getenv('DEBUG').strip() == 'False' else True
+PROD = False if os.getenv('PROD').strip() == 'False' else True
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
-ALLOWED_HOSTS = config(
-    "ALLOWED_HOSTS", cast=lambda x: [s.strip() for s in x.split(",")]
-)
-CSRF_TRUSTED_ORIGINS = config(
-    "CSRF_TRUSTED_ORIGIN", cast=lambda x: [s.strip() for s in x.split(",")]
-)
+ALLOWED_HOSTS = [i.strip() for i in os.getenv('ALLOWED_HOSTS').split(',')]
+
+
+CSRF_TRUSTED_ORIGINS = [i.strip() for i in os.getenv('CSRF_TRUSTED_ORIGINS').split(',')]
 
 # Application definition
 
@@ -89,11 +89,11 @@ if PROD:
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.mysql",
-            "NAME": config("DB_NAME"),
-            "USER": config("DB_USER"),
-            "PASSWORD": config("DB_PASSWORD"),
-            "HOST": config("DB_HOST"),
-            "PORT": config("DB_PORT"),
+            "NAME": os.getenv("DB_NAME").strip(),
+            "USER": os.getenv("DB_USER").strip(),
+            "PASSWORD": os.getenv("DB_PASSWORD").strip(),
+            "HOST": os.getenv("DB_HOST").strip(),
+            "PORT": os.getenv("DB_PORT").strip(),
         }
     }
 else:
