@@ -1,5 +1,8 @@
 from django.test import TestCase
-from apps.imoveis.models import Locador, Cliente, Imovel, Contrato
+from apps.imoveis.models.imovel import Imovel
+from apps.imoveis.models.locador import Locador
+from apps.imoveis.models.contrato import Contrato
+from apps.imoveis.models.cliente import Cliente
 from django.urls import reverse
 from django.contrib.auth.models import User
 

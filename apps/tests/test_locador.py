@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.contrib.auth.models import User
-from apps.imoveis.models import Locador
-from apps.imoveis.forms import FormLocador
+from apps.imoveis.models.locador import Locador
+from apps.imoveis.forms.locador import FormLocador
 from django.urls import reverse
 
 class TesteLocador(TestCase):

@@ -1,7 +1,8 @@
 from django import forms
 from calendar import month_name
 from datetime import datetime
-from apps.imoveis.models import Locador, Imovel
+from apps.imoveis.models.locador import Locador
+from apps.imoveis.models.imovel import Imovel
 
 class FormRecibos(forms.Form):
     def choices_locadores() -> list[tuple[str, str]]:

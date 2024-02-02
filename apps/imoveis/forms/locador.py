@@ -1,5 +1,5 @@
 from django import forms
-from apps.imoveis.models import Locador
+from apps.imoveis.models.locador import Locador
 
 
 class FormLocador(forms.ModelForm):

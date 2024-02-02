@@ -1,5 +1,5 @@
 from django import forms
-from apps.imoveis.models import Locador, Contrato
+from apps.imoveis.models.locador import Locador
 from datetime import datetime
 
 

@@ -1,5 +1,5 @@
 from django import forms
-from apps.imoveis.models import Imovel
+from apps.imoveis.models.imovel import Imovel
 
 
 class FormImovel(forms.ModelForm):

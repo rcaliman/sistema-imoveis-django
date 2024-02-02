@@ -1,5 +1,5 @@
 from django.db import models
-from .imovel import Imovel
+from apps.imoveis.models.imovel import Imovel
 
 class Contrato(models.Model):
     imovel = models.ForeignKey(to=Imovel, on_delete=models.CASCADE)

@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from apps.imoveis.forms import FormEnergia
-from apps.imoveis.models import Energia
+from apps.imoveis.forms.energia import FormEnergia
+from apps.imoveis.models.energia import Energia
 from helper import verifica_autenticacao
 from django.contrib import messages
 

@@ -1,8 +1,8 @@
 from django.test import TestCase
 from apps.imoveis.forms.recibos import FormRecibos
-from apps.imoveis.models import Locador
-from apps.imoveis.models import Imovel
-from apps.imoveis.models import Cliente
+from apps.imoveis.models.imovel import Imovel
+from apps.imoveis.models.locador import Locador
+from apps.imoveis.models.cliente import Cliente
 from django.contrib.auth.models import User
 from django.urls import reverse
 

@@ -1,8 +1,9 @@
 from django.test import TestCase
-from apps.imoveis.forms import FormImovel
+from apps.imoveis.forms.imovel import FormImovel
 from django.contrib.auth.models import User
 from django.urls import reverse
-from apps.imoveis.models import Cliente, Imovel
+from apps.imoveis.models.imovel import Imovel
+from apps.imoveis.models.cliente import Cliente
 
 class TesteImovel(TestCase):
     def setUp(self, *args, **kwargs):

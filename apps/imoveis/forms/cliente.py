@@ -1,5 +1,5 @@
 from django import forms
-from apps.imoveis.models import Cliente
+from apps.imoveis.models.cliente import Cliente
 import helper
 from django.core.exceptions import ValidationError
 

@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.contrib.auth.models import User
-from apps.imoveis.models import Energia
-from apps.imoveis.forms import FormEnergia
+from apps.imoveis.models.energia import Energia
+from apps.imoveis.forms.energia import FormEnergia
 from django.urls import reverse
 
 class TestaEnergia(TestCase):

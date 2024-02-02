@@ -1,8 +1,10 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from helper import verifica_autenticacao
-from apps.imoveis.forms import FormGerarContrato
-from apps.imoveis.models import Imovel, Locador, Contrato
+from apps.imoveis.forms.contrato import FormGerarContrato
+from apps.imoveis.models.imovel import Imovel
+from apps.imoveis.models.locador import Locador
+from apps.imoveis.models.contrato import Contrato
 from django.contrib import messages
 from datetime import datetime
 from num2words import num2words

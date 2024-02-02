@@ -1,8 +1,7 @@
 from django.test import TestCase
-from apps.imoveis.models import Locador, Cliente, Imovel
-from apps.imoveis.forms.locador import FormLocador
-from apps.imoveis.forms.imovel import FormImovel
-from apps.imoveis.forms.cliente import FormCliente
+from apps.imoveis.models.imovel import Imovel
+from apps.imoveis.models.locador import Locador
+from apps.imoveis.models.cliente import Cliente
 from helper import calcula_proxima_data, Recibos
 
 class TestHelper(TestCase):

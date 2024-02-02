@@ -1,10 +1,6 @@
 from django.test import TestCase
 from django.contrib.auth.models import User
 from django.urls import reverse
-from apps.imoveis.forms import FormCliente
-from apps.imoveis.models import Cliente
-from django.contrib.auth import logout
-from core.settings import PROD
 
 class TestAutenticacao(TestCase):
     def setUp(self, *args, **kwargs):

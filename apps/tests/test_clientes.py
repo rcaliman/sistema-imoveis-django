@@ -1,9 +1,8 @@
 from django.test import TestCase
 from django.contrib.auth.models import User
 from django.urls import reverse
-from apps.imoveis.forms import FormCliente
-from apps.imoveis.models import Cliente
-from apps.imoveis.templatetags import extrai_locatario
+from apps.imoveis.forms.cliente import FormCliente
+from apps.imoveis.models.cliente import Cliente
 
 class TestClientes(TestCase):
     def setUp(self, *args, **kwargs):

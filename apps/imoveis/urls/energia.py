@@ -1,5 +1,5 @@
 from django.urls import path
-from apps.imoveis.views import energia_lista, energia_inserir, energia_editar
+from apps.imoveis.views.energia import energia_lista, energia_inserir, energia_editar
 
 urlpatterns = [
     path("lista/", energia_lista, name="energia_lista"),
