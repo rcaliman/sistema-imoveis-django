@@ -1,7 +1,9 @@
-import calendar
 from django.shortcuts import redirect
-from num2words import num2words
 from django.contrib import messages
+from num2words import num2words
+from calendar import month_name
+from datetime import datetime
+from apps.imoveis.models.locador import Locador
 
 
 def verifica_autenticacao(request):
@@ -16,8 +18,127 @@ def calcula_proxima_data(mes, ano):
     if mes in "dezembro":
         return {"mes": "janeiro", "ano": str(proximo_ano)}
     for i in range(1, 13):
-        if calendar.month_name[i] == mes:
-            return {"mes": calendar.month_name[i + 1], "ano": ano}
+        if month_name[i] == mes:
+            return {"mes": month_name[i + 1], "ano": ano}
+
+class GeraContrato:
+    def __init__(self, POST):
+        self.POST = POST
+    
+    @property
+    def texto_tipo_imovel(self):
+        return "residencial" if self.POST["uso_imovel"] == "residencial" else "comercial"
+    
+    @property
+    def texto_dia_pagamento(self):
+        return self.POST["imovel_dia_pagamento"]
+
+    @property
+    def texto_uso_imovel(self):
+        return 'residenciais' if self.POST['uso_imovel'] == 'residencial' else 'comerciais'
+    
+    @property
+    def texto_data_contrato(self):
+        dia = self.POST["imovel_dia_pagamento"]
+        mes = month_name[int(self.POST["mes_inicio"])]
+        ano =  self.POST["ano_inicio"]
+        return 'Colatina, {} de {} de {}.'.format(dia, mes, ano)
+    
+    @property
+    def quantidade_meses_contrato(self):
+        dt1 = datetime(
+            year=int(self.POST["ano_inicio"]),
+            month=int(self.POST["mes_inicio"]),
+            day=int(self.POST["imovel_dia_pagamento"]),
+        )
+        dt2 = datetime(
+            year=int(self.POST["ano_final"]),
+            month=int(self.POST["mes_final"]),
+            day=int(self.POST["imovel_dia_pagamento"]),
+        )
+        delta = dt2 - dt1
+        quantidade_meses = int(delta.days / 30)
+        return quantidade_meses
+
+    @property
+    def texto_quantidade_meses(self):
+        quantidade_meses = self.quantidade_meses_contrato
+        quantidade_meses_extenso = num2words(quantidade_meses, lang="pt_BR")
+        return '{} ({}) meses '.format(quantidade_meses, quantidade_meses_extenso)
+
+    @property
+    def texto_valor(self):
+        valor = self.POST["imovel_valor_aluguel"].replace(".", ",")
+        valor_extenso = num2words(self.POST["imovel_valor_aluguel"], to="currency", lang="pt_BR")
+        return 'R$ {} ({})'.format(valor, valor_extenso)
+        
+    @property
+    def texto_data_inicial(self):
+        dia = self.POST["imovel_dia_pagamento"].zfill(2)
+        mes = self.POST["mes_inicio"]
+        ano = self.POST["ano_inicio"]
+        return '{}/{}/{}'.format(dia, mes, ano)
+    
+    @property
+    def texto_data_final(self):
+        dia = self.POST["imovel_dia_pagamento"].zfill(2)
+        mes = self.POST["mes_final"]
+        ano = self.POST["ano_final"]
+        return '{}/{}/{}'.format(dia, mes, ano)
+
+    @property
+    def texto_cliente(self):
+        texto_cliente = f'{self.POST["cliente_nome"].upper()}, '
+        if verifica_documento(self.POST["cliente_cpf_cnpj"])["documento"] == "cpf":
+            if self.POST["cliente_nacionalidade"]:
+                texto_cliente += self.POST["cliente_nacionalidade"].lower() + ", "
+            if self.POST["cliente_estado_civil"]:
+                texto_cliente += self.POST["cliente_estado_civil"].lower() + ", "
+            if self.POST["cliente_cidade_residencia_sede"]:
+                texto_cliente += f'residente em {self.POST["cliente_cidade_residencia_sede"]}, '
+            if self.POST["cliente_cpf_cnpj"]:
+                texto_cliente += f'CPF {self.POST["cliente_cpf_cnpj"]}, '
+            if self.POST["cliente_ci"]:
+                texto_cliente += f'CI {self.POST["cliente_ci"]}, '
+        else:
+            if self.POST["cliente_cpf_cnpj"]:
+                texto_cliente += f'CNPJ {self.POST["cliente_cpf_cnpj"]}, '
+            if self.POST["cliente_cidade_residencia_sede"]:
+                texto_cliente += f'sediado(a) em {self.POST["cliente_cidade_residencia_sede"]}, '
+        return texto_cliente
+
+    @property
+    def texto_locador(self):
+        locador = Locador.objects.get(id=self.POST["select_locador"])
+        texto_locador = ""
+        if locador.nome:
+            texto_locador += locador.nome.upper() + ", "
+        if locador.nacionalidade:
+            texto_locador += locador.nacionalidade.lower() + ", "
+        if locador.estado_civil:
+            texto_locador += locador.estado_civil.lower() + ", "
+        if locador.residencia:
+            texto_locador += f"residente em {locador.residencia}, "
+        if locador.cpf:
+            texto_locador += f"CPF {locador.cpf}, "
+        return texto_locador
+
+    @property
+    def texto_imovel(self):
+        tipo = self.texto_tipo_imovel
+        numero = int(self.POST["imovel_numero"])
+        local = self.POST["imovel_local"]
+        return '{} de número {} localizado na {} '.format(tipo, numero, local)
+
+    @property
+    def texto_assinatura_locador(self):
+        locador = locador = Locador.objects.get(id=self.POST["select_locador"])
+        return f"{locador.nome.upper()} - {locador.cpf}"
+    
+    @property
+    def texto_assinatura_cliente(self):
+        return f'{self.POST["cliente_nome"].upper()} - {self.POST["cliente_cpf_cnpj"]}'
+
 
 
 class Recibos:
