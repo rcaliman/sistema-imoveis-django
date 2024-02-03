@@ -1,5 +1,5 @@
 from django.urls import path
-from apps.imoveis.views.locador import (
+from ..views.locador import (
     locadores_lista,
     locador_inserir,
     locador_apagar,

@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect
-from apps.imoveis.models.imovel import Imovel
-from apps.imoveis.forms.imovel import FormImovel
-from apps.imoveis.forms.recibos import FormRecibos
+from ..models import Imovel
+from ..forms import FormImovel, FormRecibos
 from helper import Recibos, verifica_autenticacao
 from django.contrib import messages
 

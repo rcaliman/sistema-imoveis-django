@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
-from apps.imoveis.models.locador import Locador
-from apps.imoveis.forms.locador import FormLocador
+from ..models import Locador
+from ..forms import FormLocador
 from django.contrib import messages
 from helper import verifica_autenticacao
 

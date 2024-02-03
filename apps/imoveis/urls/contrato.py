@@ -1,5 +1,5 @@
 from django.urls import path
-from apps.imoveis.views.contrato import contrato_form, contrato, contrato_imprimir, contratos_listar
+from ..views.contrato import contrato_form, contrato, contrato_imprimir, contratos_listar
 
 urlpatterns = [
     path('contrato_form/<int:registro_id>', contrato_form, name='contrato_form'),
