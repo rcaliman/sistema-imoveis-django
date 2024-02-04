@@ -308,6 +308,25 @@ input[name='salvar_contrato'] {
     color: black;
     text-decoration: underline;
 }
-.lista-contratos {
+.lista-historico {
+    display: flex;
     text-align: center;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 1rem 0 2rem 0;
+}
+.lista-historico h2 {
+    padding: 0.5rem;
+}
+
+.table-historico th {
+    border: 0.1rem solid lightgray;
+    padding: 0.5rem;
+}
+.table-historico td {
+    border: 0.1rem solid lightgray;
+    padding: 0.2rem 0.5rem 0.2rem 0.5rem;
+}
+.number {
+    text-align: right;
 }

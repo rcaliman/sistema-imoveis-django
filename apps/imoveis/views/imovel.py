@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from ..models import Imovel
+from ..models import Imovel, Historico, Cliente
 from ..forms import FormImovel, FormRecibos
 from helper import Recibos, verifica_autenticacao
 from django.contrib import messages
@@ -7,21 +7,26 @@ from django.contrib import messages
 
 def imoveis_lista(request):
     verifica_autenticacao(request)
-    if request.method == "POST":
-        if request.POST.get("id") is not None:
-            try:
-                atualiza_registro_do_imovel(request)
+    if request.POST.get("id") is not None:
+        try:
+            id_registro = request.POST.get("id")
+            imovel = Imovel.objects.get(id=id_registro)
+            form = FormImovel(request.POST, instance=imovel)
+            if form.is_valid:
+                form.save()
                 messages.success(request, "Imóvel atualizado com sucesso.")
+                salva_historico(form)
+        except:
+            messages.error(request, "Erro ao atualizar imóvel.")
+    else:
+        form = FormImovel(request.POST)
+        if form.is_valid():
+            try:
+                form.save()
+                messages.success(request, "Imóvel adicionado com sucesso.")
+                salva_historico(form)
             except:
-                messages.error(request, "Erro ao atualizar imóvel.")
-        else:
-            form = FormImovel(request.POST)
-            if form.is_valid():
-                try:
-                    form.save()
-                    messages.success(request, "Imóvel adicionado com sucesso.")
-                except:
-                    messages.error(request, "Erro ao tentar adicionar novo imóvel")
+                messages.error(request, "Erro ao tentar adicionar novo imóvel")
     todos_os_registros = Imovel.objects.all()
     return render(
         request,
@@ -39,7 +44,6 @@ def imovel_inserir(request):
 def imovel_alterar(request, id_do_registro):
     verifica_autenticacao(request)
     registro = Imovel.objects.get(id=id_do_registro)
-    registro.__dict__["cliente"] = registro.__dict__.get("cliente_id")
     form_do_registro = FormImovel(instance=registro)
     return render(
         request,
@@ -90,9 +94,19 @@ def imoveis_recibos(request):
     return redirect("imoveis_lista")
 
 
-def atualiza_registro_do_imovel(request):
-    verifica_autenticacao(request)
-    id_registro = request.POST.get("id")
-    registro = Imovel.objects.get(id=id_registro)
-    form = FormImovel(request.POST, instance=registro)
-    form.save()
+def salva_historico(form):
+    if form['cliente'].value().isnumeric():
+        cliente = Cliente.objects.get(id=form['cliente'].value())
+    data_historico = {
+        'tipo': form['tipo'].value(),
+        'numero': form['numero'].value(),
+        'local': form['local'].value(),
+        'valor': form['valor'].value(),
+        'complemento': form['complemento'].value(),
+        'observacao': form['observacao'].value(),
+        'dia': form['dia'].value(),
+        'cliente_nome': cliente.nome or None,
+        'cliente_cpf_cnpj': cliente.cpf or None,
+        'imovel': form.instance,
+    }
+    Historico.objects.create(**data_historico)

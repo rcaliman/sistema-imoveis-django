@@ -38,9 +38,9 @@ class TesteImovel(TestCase):
         usuario = {'usuario': 'temporario', 'senha': 'temporario'}
         self.client.post(url, data=usuario, follow=True)
 
-    def insere_imovel(self, numero=100):
+    def insere_imovel(self, numero=100, cliente=''):
         url = reverse('imoveis_lista')
-        self.data_imovel['cliente'] = ''
+        self.data_imovel['cliente'] = cliente
         self.data_imovel['numero'] = numero
         return self.client.post(url, data=self.data_imovel, follow=True)
     
@@ -76,7 +76,7 @@ class TesteImovel(TestCase):
         )
     def test_view_imovel_alterar(self):
         self.autentica()
-        self.insere_imovel()        
+        self.insere_imovel(cliente=self.cliente_pk)        
         url = reverse('imovel_alterar', kwargs={'id_do_registro': self.imovel_pk})
         form = FormImovel()
         resposta = self.client.get(url, data={'form': form})

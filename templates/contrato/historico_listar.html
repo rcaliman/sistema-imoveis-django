@@ -1,0 +1,61 @@
+
+{% extends "shared/base.html" %}
+{% load static %}
+{% load extrai_locatario %}
+{% block content %}
+<h2>Histórico de contratos impressos</h2>
+<div class="lista-historico">
+    
+    {% if contratos %}
+        {% for contrato in contratos %}
+        <div class="linha-lista-contratos">
+            <a href="{% url 'contrato_imprimir'  contrato.id %}" target=#>
+                {{ contrato.data_impressao|date:'d/m/Y' }} -
+                {{ contrato.texto|extrai_locatario }}
+            </a>
+        </div>
+        {% endfor %}
+    {% else %}
+        <h3>
+            Sem contratos salvos para listar.
+        </h3>
+    {% endif %}
+</div>
+<h2>Histórico de dados alterados</h2>
+<div class='lista-historico'>
+    {% if historico %}
+        <table class='table-historico'>
+            <tr>
+                <th>data</th>
+                <th>tipo</th>
+                <th>numero</th>
+                <th>local</th>
+                <th>valor</th>
+                <th>complemento</th>
+                <th>observação</th>
+                <th>dia</th>
+                <th>nome do cliente</th>
+                <th>cpf/cnpj</th>
+            </tr>
+            {% for dado in historico %}
+                <tr>
+                    <td>{{ dado.data|date:'d/m/Y' }}</td>
+                    <td>{{ dado.tipo }}</td>
+                    <td class='number'>{{ dado.numero }}</td>
+                    <td>{{ dado.local }}</td>
+                    <td class='number'>{{ dado.valor }}</td>
+                    <td>{{ dado.complemento }}</td>
+                    <td>{{ dado.observacao }}</td>
+                    <td class='number'>{{ dado.dia }}</td>
+                    <td>{{ dado.cliente_nome }}</td>
+                    <td class='number'>{{ dado.cliente_cpf_cnpj }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <h2>
+            Sem histórico para mostrar.
+        </h2>
+    {% endif %}
+</div>
+{% endblock content %}

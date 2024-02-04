@@ -21,6 +21,18 @@ class TesteContrato(TestCase):
             'cidade_residencia_sede': 'colatina-es',
         }
         self.cliente_pk = Cliente.objects.create(**self.data_cliente).pk
+        self.data_cliente_sem_cpf = {
+            'nome': 'John Doe',
+            'data_nascimento': '1978-05-17',
+            'ci' : '111111',
+            'cpf': None,
+            'telefone_1': '2799999999',
+            'telefone_2': '2799998888',
+            'nacionalidade': 'brasileira',
+            'estado_civil': 'casado',
+            'cidade_residencia_sede': 'colatina-es',
+        }
+        self.cliente_sem_cpf_pk = Cliente.objects.create(**self.data_cliente_sem_cpf).pk
         self.data_imovel = {
             'tipo': 'apartamento',
             'numero': '100',
@@ -86,10 +98,21 @@ class TesteContrato(TestCase):
     def test_contrato_form(self):
         self.autentica()
         self.data_imovel['cliente'] = Cliente.objects.get(id=self.cliente_pk)
-        Imovel(**self.data_imovel).save()
-        url = reverse('contrato_form', kwargs={'registro_id': 1})
+        self.imovel_pk = Imovel.objects.create(**self.data_imovel).pk
+        url = reverse('contrato_form', kwargs={'registro_id': self.imovel_pk})
         resposta = self.client.get(url)
         self.assertIn('<form method', resposta.content.decode("utf-8"))
+
+    def test_contrato_form_sem_cpf(self):
+        self.autentica()
+        self.data_imovel['cliente'] = Cliente.objects.get(id=self.cliente_sem_cpf_pk)
+        self.imovel_pk = Imovel.objects.create(**self.data_imovel).pk
+        url = reverse('contrato_form', kwargs={'registro_id': self.imovel_pk})
+        resposta = self.client.get(url, follow=True)
+        self.assertIn(
+            'Cliente sem CPF ou CNPJ cadastrado, entre em Clientes e faça o cadastro.', 
+            resposta.content.decode("utf-8")
+        )    
 
     def test_contrato_pessoa_fisica(self):
         self.autentica()
@@ -121,7 +144,7 @@ class TesteContrato(TestCase):
         resposta = self.client.get(url, follow=True)
         self.assertIn('JOSE LOCATARIO', resposta.content.decode('utf-8'))
 
-    def test_contrato_imprimir_post(self):
+    def test_contrato_imprimir_usando_metodo_post(self):
         self.autentica()
         url = reverse('contrato_imprimir', kwargs={'registro_id': self.imovel_pk})
         data = {
@@ -138,7 +161,7 @@ class TesteContrato(TestCase):
         resposta = self.client.post(url, data=data, follow=True)
         self.assertIn('paragrafo-contrato-assinatura', resposta.content.decode('utf-8'))
 
-    def test_contrato_imprimir_get(self):
+    def test_contrato_imprimir_usando_metodo_get(self):
         self.autentica()
         url = reverse('contrato_imprimir', kwargs={'registro_id': self.contrato_pk})
         data = {

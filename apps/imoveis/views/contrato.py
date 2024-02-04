@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from helper import verifica_autenticacao, GeraContrato
 from ..forms import FormGerarContrato
-from ..models import Imovel, Contrato
+from ..models import Imovel, Contrato, Historico
 from django.contrib import messages
 from datetime import datetime
 
@@ -44,8 +44,9 @@ def contrato_form(request, registro_id):
 def contratos_listar(request, imovel_id):
     verifica_autenticacao(request)
     contratos = Contrato.objects.filter(imovel__id=imovel_id).order_by('-id')
+    historico = Historico.objects.filter(imovel__id=imovel_id).order_by('-id')
 
-    return render(request, "contrato/contratos_listar.html", {'contratos': contratos})
+    return render(request, "contrato/historico_listar.html", {'contratos': contratos, 'historico': historico})
 
 def contrato_imprimir(request, registro_id):
     verifica_autenticacao(request)
