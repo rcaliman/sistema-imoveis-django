@@ -40,14 +40,14 @@
                             <tr>
                                 <td>{{ registro.tipo|default_if_none:'' }}</td>
                                 <td class="number">
-                                    <a class='contrato-link' title='Clique para listar os históricos de contratos e alterações'
-                                        href="{% url 'contratos_listar' registro.id %}">
+                                    <a class='gray-link' title='Clique para listar os históricos de contratos e alterações'
+                                        href="{% url 'historico_listar' registro.id %}">
                                             {{ registro.numero|default_if_none:'' }}
                                     </a>
                                 </td>
                                 <td>{{ registro.local|default_if_none:'' }}</td>
                                 <td id='nome-cliente{{ registro.id }}'>
-                                    <a class='contrato-link' href={% url 'contrato_form' registro.id %} title="Clique para imprimir o contrato">
+                                    <a class='gray-link' href={% url 'contrato_form' registro.id %} title="Clique para imprimir o contrato">
                                         {{ registro.cliente|default_if_none:'' }}
                                     </a>
                                 </td>

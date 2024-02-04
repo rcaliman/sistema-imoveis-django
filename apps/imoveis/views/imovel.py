@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from ..models import Imovel, Historico, Cliente
+from ..models import Imovel, Historico, Cliente, Contrato
 from ..forms import FormImovel, FormRecibos
 from helper import Recibos, verifica_autenticacao
 from django.contrib import messages
@@ -92,6 +92,13 @@ def imoveis_recibos(request):
             {"registros": Recibos.gerador(registros_selecionados, locador, mes, ano)},
         )
     return redirect("imoveis_lista")
+
+def historico_listar(request, imovel_id):
+    verifica_autenticacao(request)
+    contratos = Contrato.objects.filter(imovel__id=imovel_id).order_by('-id')
+    historico = Historico.objects.filter(imovel__id=imovel_id).order_by('-id')
+
+    return render(request, "imoveis/historico_listar.html", {'contratos': contratos, 'historico': historico})
 
 
 def salva_historico(form):

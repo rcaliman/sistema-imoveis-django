@@ -3,6 +3,7 @@ from apps.imoveis.models.imovel import Imovel
 from apps.imoveis.models.locador import Locador
 from apps.imoveis.models.contrato import Contrato
 from apps.imoveis.models.cliente import Cliente
+from apps.imoveis.forms.imovel import FormImovel
 from django.urls import reverse
 from django.contrib.auth.models import User
 
@@ -138,9 +139,10 @@ class TesteContrato(TestCase):
             resposta.content.decode('utf-8')
         )
 
-    def test_contratos_listar(self):
+    def test_historico_listar(self):
         self.autentica()
-        url = reverse('contratos_listar', kwargs={'imovel_id': self.imovel_pk})
+        last_id = Imovel.objects.last().id
+        url = reverse('historico_listar', kwargs={'imovel_id': last_id})
         resposta = self.client.get(url, follow=True)
         self.assertIn('JOSE LOCATARIO', resposta.content.decode('utf-8'))
 

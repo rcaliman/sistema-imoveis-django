@@ -255,16 +255,16 @@ label {
 .destacar {
     font-weight: bold;
 }
-.contrato-link {
+.gray-link {
     color: var(--bs-gray-dark);
     background-color: var(--bs-gray-300);
     padding: 3px 6px 3px 6px;
     text-decoration: none;
 }
-.contrato-link:visited {
+.gray-link:visited {
     color: var(--bs-gray-dark);
 }
-.contrato-link:hover {
+.gray-link:hover {
     color: var(--bs-gray-dark);
     text-decoration: underline;
 }

@@ -65,6 +65,7 @@ class TesteImovel(TestCase):
         resposta = self.client.post(url, data=self.data_imovel, follow=True)
         self.assertIn('Imóvel atualizado com sucesso.', resposta.content.decode('utf-8'))
 
+
     def test_view_imovel_formulario_inserir(self):
         self.autentica()
         url = reverse('imovel_inserir')
