@@ -75,9 +75,6 @@ td.number {
 td.relogio1 {
     background-color: #a7c7e7;
 }
-td.relogio1:hover {
-    transform: scale(1.1);
-}
 td.relogio2 {
     background-color: #ddedea;
 }
@@ -90,16 +87,13 @@ td.celulabranca {
 td.center {
     text-align: center;
 }
-
 td.link {
     text-align: center;
 }
-
 td.imprimir {
     border-top: solid 2px var(--bs-gray-300);
     border-bottom: solid 2px var(--bs-gray-300);
 }
-
 td.adicionar {
     text-align: center;
     background-color: var(--bs-gray-200);
@@ -142,6 +136,24 @@ tr:hover {
     border-radius: 1px;
     box-sizing: border-box;
     background-color: whitesmoke;
+}
+
+.botaoeditar {
+    color: var(--bs-gray-dark);
+    padding: 3px 10px;
+    margin: 2px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 1px;
+    box-sizing: border-box;
+    text-decoration: none;
+    background-color: whitesmoke;
+}
+.botaoeditar:hover {
+    color: green;
+}
+.div-botaoeditar {
+    text-align: end;
 }
 
 .btn-form {
@@ -329,4 +341,9 @@ input[name='salvar_contrato'] {
 }
 .number {
     text-align: right;
+}
+.energia-destaque {
+    font-size: large;
+    text-decoration: underline;
+    font-weight: bold;
 }

@@ -7,11 +7,11 @@
                 <tr>
                     <th>Data</th>
                     <th>Relogio 1</th>
-                    <th>Kitnet 1</th>
+                    <th class='energia-destaque'>{{ labels.relogio_1 }}</th>
                     <th>Relogio 2</th>
-                    <th>Kitnet 2</th>
+                    <th class='energia-destaque'>{{ labels.relogio_2 }}</th>
                     <th>Relogio 3</th>
-                    <th>Kitnet 3</th>
+                    <th class='energia-destaque'>{{ labels.relogio_3 }}</th>
                     <th>Valor por kWh</th>
                     <th>Valor da Conta</th>
                     <th colspan="3">
@@ -26,18 +26,15 @@
                         <tr>
                             <td class="number celulabranca">{{ registro.data|date:"d/m/Y" }}</td>
                             <td class="number relogio1">{{ registro.relogio_1 }}</td>
-                            <td class="number relogio1"
-                                {% if registro.id == ultimo %}style="color: green; font-weight: bold;"{% endif %}>
+                            <td class="number relogio1{% if registro.id == ultimo %} energia-destaque{% endif %}">
                                 {{ registro.energia_1|floatformat:2 }}
                             </td>
                             <td class="number relogio2">{{ registro.relogio_2 }}</td>
-                            <td class="number relogio2"
-                                {% if registro.id == ultimo %}style="color: green; font-weight: bold;"{% endif %}>
+                            <td class="number relogio2{% if registro.id == ultimo %} energia-destaque{% endif %}">
                                 {{ registro.energia_2|floatformat:2 }}
                             </td>
                             <td class="number relogio3">{{ registro.relogio_3 }}</td>
-                            <td class="number relogio3"
-                                {% if registro.id == ultimo %}style="color: green; font-weight: bold;"{% endif %}>
+                            <td class="number relogio3{% if registro.id == ultimo %} energia-destaque{% endif %}">
                                 {{ registro.energia_3|floatformat:2 }}
                             </td>
                             <td class="number celulabranca">{{ registro.valor_kwh }}</td>
@@ -53,7 +50,11 @@
                     {% endfor %}
                 {% endif %}
                 <tr>
-                    <td class="table-primary adicionar celulabranca" colspan="12">&nbsp;</td>
+                    <td class="table-primary adicionar celulabranca" colspan="12">
+                        <div class="div-botaoeditar">
+                            <a class='botaoeditar' href="{% url 'labels_editar' %}">editar labels</a>
+                        </div>
+                    </td>
                 </tr>
             </tbody>
         </table>

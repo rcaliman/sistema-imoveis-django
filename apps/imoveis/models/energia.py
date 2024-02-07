@@ -35,3 +35,9 @@ class Energia(models.Model):
 
     def __str__(self):
         return self.data
+
+
+class EnergiaLabels(models.Model):
+    relogio_1 = models.CharField(max_length=200, null=True, blank=True)
+    relogio_2 = models.CharField(max_length=200, null=True, blank=True)
+    relogio_3 = models.CharField(max_length=200, null=True, blank=True)

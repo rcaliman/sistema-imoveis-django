@@ -1,5 +1,5 @@
 from django import forms
-from apps.imoveis.models.energia import Energia
+from apps.imoveis.models.energia import Energia, EnergiaLabels
 
 
 class FormEnergia(forms.ModelForm):
@@ -16,4 +16,14 @@ class FormEnergia(forms.ModelForm):
             "relogio_3": forms.NumberInput(attrs={"class": "form-control"}),
             "valor_kwh": forms.NumberInput(attrs={"class": "form-control"}),
             "valor_conta": forms.NumberInput(attrs={"class": "form-control"}),
+        }
+
+class FormLabel(forms.ModelForm):
+    class Meta:
+        model = EnergiaLabels
+        fields = '__all__'
+        widgets = {
+            "relogio_1": forms.TextInput(attrs={"class": "form-control"}),
+            "relogio_2": forms.TextInput(attrs={"class": "form-control"}),
+            "relogio_3": forms.TextInput(attrs={"class": "form-control"}),
         }

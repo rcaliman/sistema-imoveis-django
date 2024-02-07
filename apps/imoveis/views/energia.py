@@ -1,6 +1,6 @@
-from django.shortcuts import render
-from ..forms import FormEnergia
-from ..models import Energia
+from django.shortcuts import render, redirect
+from ..forms import FormEnergia, FormLabel
+from ..models import Energia, EnergiaLabels
 from helper import verifica_autenticacao
 from django.contrib import messages
 
@@ -24,6 +24,14 @@ def energia_lista(request):
             except:
                 messages.error(request, "Erro ao tentar adicionar novo registro.")
     registros = Energia.objects.all().values()
+    labels = EnergiaLabels.objects.last()
+    if not labels:
+        labels_dados = {
+            "relogio_1": "Imovel 1",
+            "relogio_2": "Imovel 2",
+            "relogio_3": "Imovel 3",
+        }
+        labels = EnergiaLabels.objects.create(**labels_dados)
     if len(registros) > 0:
         ultimo_id = registros.last().get("id")
         if registros:
@@ -35,7 +43,11 @@ def energia_lista(request):
             return render(
                 request,
                 "energia/energia.html",
-                {"registros": dados_calculados, "ultimo": ultimo_id},
+                {
+                    "registros": dados_calculados,
+                    "ultimo": ultimo_id,
+                    "labels": labels,
+                },
             )
     return render(request, "energia/energia.html")
 
@@ -95,3 +107,18 @@ def adiciona_registro_de_energia(request):
     atualizou_3 = float(ultimo.get("relogio_3")) != float(request.POST.get("relogio_3"))
     if atualizou_1 or atualizou_2 or atualizou_3 and form.is_valid:
         form.save()
+
+
+def labels_editar(request):
+    verifica_autenticacao
+    if request.POST:
+        labels = EnergiaLabels.objects.last()
+        form_labels = FormLabel(instance=labels, data=request.POST)
+        if form_labels.is_valid():
+            form_labels.save()
+            messages.success(request, 'Novos labels salvos com sucesso')
+            return redirect('energia_lista')
+
+    labels = EnergiaLabels.objects.last()
+    form_labels = FormLabel(instance=labels)
+    return render(request, 'energia/labels_editar.html', {'form': form_labels})

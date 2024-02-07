@@ -1,0 +1,21 @@
+{% extends "shared/base.html" %}
+{% load static %}
+{% block content %}
+    {% if user.is_authenticated %}
+        <form class="formulario" method="post">
+            {% csrf_token %}
+            {% if id %}<input type="hidden" name="id" value="{{ id }}">{% endif %}
+            {% for field in form %}
+                <div class="form-group">
+                    <label for="{{ field.id_for_label }}">{{ field.label }}:</label>
+                    {{ field }}
+                </div>
+            {% endfor %}
+            <div class="rodapetabela mt-3">
+                <button type="submit" class="botaosalvar">Salvar Dados</button>
+            </div>
+        </form>
+    {% else %}
+        <div class="pedelogin">favor fazer login</div>
+    {% endif %}
+{% endblock content %}
