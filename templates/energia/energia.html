@@ -15,7 +15,7 @@
                     <th>Valor por kWh</th>
                     <th>Valor da Conta</th>
                     <th colspan="3">
-                        <a class="btn btn-sm btn-success btn-form"
+                        <a class="btn btn-sm btn-success btn-form no-print"
                            href="{% url 'energia_inserir' %}">Inserir</a>
                     </th>
                 </tr>
@@ -42,7 +42,7 @@
                             {% if registro.id == ultimo %}
                                 <td class="celulabranca">
                                     <a href="{% url 'energia_editar' registro.id %}"
-                                       class="btn btn-sm btn-secondary btn-form">alterar</a>
+                                       class="btn btn-sm btn-secondary btn-form no-print">alterar</a>
                                 </td>
                             {% endif %}
                             <td class="center celulabranca"></td>
@@ -50,7 +50,7 @@
                     {% endfor %}
                 {% endif %}
                 <tr>
-                    <td class="table-primary adicionar celulabranca" colspan="12">
+                    <td class="table-primary adicionar celulabranca no-print" colspan="12">
                         <div class="div-botaoeditar">
                             <a class='botaoeditar' href="{% url 'labels_editar' %}">editar labels</a>
                         </div>

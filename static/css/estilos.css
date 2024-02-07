@@ -347,3 +347,10 @@ input[name='salvar_contrato'] {
     text-decoration: underline;
     font-weight: bold;
 }
+@media print
+{    
+    .no-print, .no-print *
+    {
+        display: none !important;
+    }
+}
