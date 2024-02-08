@@ -347,6 +347,15 @@ input[name='salvar_contrato'] {
     text-decoration: underline;
     font-weight: bold;
 }
+dl {
+    padding-top: 2rem;
+}
+dt {
+    padding-bottom: 1rem;
+}
+dd {
+    padding-left: 2rem;
+}
 @media print
 {    
     .no-print, .no-print *
