@@ -88,10 +88,13 @@ def monta_tabela_de_consumo(lista_energia, contador, resultado, registro):
             "data": registro["data"],
             "relogio_1": registro["relogio_1"],
             "energia_1": gasto_relogio_1 / gasto_total_kwh * registro["valor_conta"],
+            "porcentagem_1": gasto_relogio_1 / gasto_total_kwh * 100,
             "relogio_2": registro["relogio_2"],
             "energia_2": gasto_relogio_2 / gasto_total_kwh * registro["valor_conta"],
+            "porcentagem_2": gasto_relogio_2 / gasto_total_kwh * 100,
             "relogio_3": registro["relogio_3"],
             "energia_3": gasto_relogio_3 / gasto_total_kwh * registro["valor_conta"],
+            "porcentagem_3": gasto_relogio_3 / gasto_total_kwh * 100,
             "valor_kwh": registro["valor_kwh"],
             "valor_conta": registro["valor_conta"],
         }

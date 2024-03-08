@@ -344,7 +344,6 @@ input[name='salvar_contrato'] {
 }
 .energia-destaque {
     font-size: large;
-    text-decoration: underline;
     font-weight: bold;
 }
 dl {
@@ -355,6 +354,11 @@ dt {
 }
 dd {
     padding-left: 2rem;
+}
+.no-format {
+    font-weight: normal;
+    text-decoration: none;
+    font-size: small;
 }
 @media print
 {    
