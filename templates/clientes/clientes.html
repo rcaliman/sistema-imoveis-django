@@ -18,7 +18,7 @@
         </tr>
       </thead>
       <tbody>
-        {% if registros %}
+        {% if registros is not None %}
           {% for registro in registros %}
             <tr>
               <td>

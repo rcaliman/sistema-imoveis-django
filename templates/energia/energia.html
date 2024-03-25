@@ -7,11 +7,20 @@
                 <tr>
                     <th>Data</th>
                     <th>Relogio 1</th>
-                    <th class='energia-destaque'>{{ labels.relogio_1 }}</th>
+                    <th class='energia-destaque'>
+                        {% if labels is not None %}
+                            {{ labels.relogio_1 }}
+                        {% endif %}</th>
                     <th>Relogio 2</th>
-                    <th class='energia-destaque'>{{ labels.relogio_2 }}</th>
+                    <th class='energia-destaque'>
+                        {% if labels is not None %}
+                            {{ labels.relogio_2 }}
+                        {% endif %}</th>
                     <th>Relogio 3</th>
-                    <th class='energia-destaque'>{{ labels.relogio_3 }}</th>
+                    <th class='energia-destaque'>
+                        {% if labels is not None %}
+                            {{ labels.relogio_3 }}
+                        {% endif %}</th>
                     <th>Valor por kWh</th>
                     <th>Valor da Conta</th>
                     <th colspan="3">
@@ -21,7 +30,7 @@
                 </tr>
             </thead>
             <tbody>
-                {% if registros %}
+                {% if registros is not None %}
                     {% for registro in registros %}
                         <tr>
                             <td class="number celulabranca">{{ registro.data|date:"d/m/Y" }}</td>

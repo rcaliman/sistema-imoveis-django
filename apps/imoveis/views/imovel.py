@@ -31,14 +31,17 @@ def imoveis_lista(request):
     return render(
         request,
         "imoveis/imoveis.html",
-        {"registros": todos_os_registros, "selects": FormRecibos},
+        {
+            "registros": todos_os_registros,
+            "selects": FormRecibos,
+        },
     )
 
 
 def imovel_inserir(request):
     verifica_autenticacao(request)
     form = FormImovel()
-    return render(request, "imoveis/formulario.html", {"form": form})
+    return render(request, "imoveis/formulario.html", {"form": form, "id": None})
 
 
 def imovel_alterar(request, id_do_registro):
@@ -65,7 +68,13 @@ def imovel_apagar(request, id_do_registro):
 def imoveis_ordenados(request, ordenador):
     verifica_autenticacao(request)
     registros_ordenados = Imovel.objects.order_by(ordenador).all()
-    return render(request, "imoveis/imoveis.html", {"registros": registros_ordenados})
+    return render(request,
+                "imoveis/imoveis.html",
+                {
+                    "registros": registros_ordenados,
+                    "selects": FormRecibos,
+                }
+            )
 
 
 def imoveis_recibos(request):
@@ -93,27 +102,32 @@ def imoveis_recibos(request):
         )
     return redirect("imoveis_lista")
 
+
 def historico_listar(request, imovel_id):
     verifica_autenticacao(request)
-    contratos = Contrato.objects.filter(imovel__id=imovel_id).order_by('-id')
-    historico = Historico.objects.filter(imovel__id=imovel_id).order_by('-id')
+    contratos = Contrato.objects.filter(imovel__id=imovel_id).order_by("-id")
+    historico = Historico.objects.filter(imovel__id=imovel_id).order_by("-id")
 
-    return render(request, "imoveis/historico_listar.html", {'contratos': contratos, 'historico': historico})
+    return render(
+        request,
+        "imoveis/historico_listar.html",
+        {"contratos": contratos, "historico": historico},
+    )
 
 
 def salva_historico(form):
-    if form['cliente'].value().isnumeric():
-        cliente = Cliente.objects.get(id=form['cliente'].value())
+    if form["cliente"].value().isnumeric():
+        cliente = Cliente.objects.get(id=form["cliente"].value())
     data_historico = {
-        'tipo': form['tipo'].value(),
-        'numero': form['numero'].value(),
-        'local': form['local'].value(),
-        'valor': form['valor'].value(),
-        'complemento': form['complemento'].value(),
-        'observacao': form['observacao'].value(),
-        'dia': form['dia'].value(),
-        'cliente_nome': cliente.nome or None,
-        'cliente_cpf_cnpj': cliente.cpf or None,
-        'imovel': form.instance,
+        "tipo": form["tipo"].value(),
+        "numero": form["numero"].value(),
+        "local": form["local"].value(),
+        "valor": form["valor"].value(),
+        "complemento": form["complemento"].value(),
+        "observacao": form["observacao"].value(),
+        "dia": form["dia"].value(),
+        "cliente_nome": cliente.nome or None,
+        "cliente_cpf_cnpj": cliente.cpf or None,
+        "imovel": form.instance,
     }
     Historico.objects.create(**data_historico)

@@ -49,13 +49,13 @@ def energia_lista(request):
                     "labels": labels,
                 },
             )
-    return render(request, "energia/energia.html")
+    return render(request, "energia/energia.html", {"registros": None, "ultimo": None, "labels": None})
 
 
 def energia_inserir(request):
     verifica_autenticacao(request)
     form = FormEnergia()
-    return render(request, "energia/formulario.html", {"form": form})
+    return render(request, "energia/formulario.html", {"form": form, "id": None})
 
 
 def energia_editar(request, energia_id):

@@ -31,7 +31,7 @@ def locadores_lista(request):
 def locador_inserir(request):
     verifica_autenticacao(request)
     form = FormLocador()
-    return render(request, "locadores/formulario.html", {"form": form})
+    return render(request, "locadores/formulario.html", {"form": form, 'id': None})
 
 
 def locador_alterar(request, id_do_registro):

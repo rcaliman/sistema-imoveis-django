@@ -32,7 +32,7 @@ def clientes_lista(request):
             else:
                 request.session['dados_formulario_cliente'] = request.POST
                 return redirect('cliente_inserir')
-    todos_os_registros = Cliente.objects.order_by("nome").all()
+    todos_os_registros = Cliente.objects.order_by("nome").all() or None
     clientes_com_imoveis = Imovel.objects.all().values_list("cliente_id", flat=True)
     return render(
         request,
@@ -47,7 +47,7 @@ def cliente_inserir(request):
     form = FormCliente(dados_formulario_cliente)
     if dados_formulario_cliente:
         del(request.session['dados_formulario_cliente'])
-    return render(request, "clientes/formulario.html", {"form": form})
+    return render(request, "clientes/formulario.html", {"form": form, "id": None})
 
 
 def cliente_alterar(request, id_do_registro):

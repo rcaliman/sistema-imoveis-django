@@ -3,7 +3,7 @@ from ..forms import FormLogin
 from django.contrib.auth import authenticate, login, logout
 from helper import verifica_autenticacao
 from django.contrib import messages
-from core.settings import DATABASES, PROD
+from core.settings import PROD
 
 
 def index(request):
@@ -21,11 +21,10 @@ def index(request):
                 request, "Erro ao tentar autenticar usuário, verifique sua senha."
             )
     form = FormLogin()
-    banco_usado = DATABASES.get("default").get("ENGINE").split(".")[-1]
     if PROD:
-        return render(request, "shared/index.html", {"form": form})
+        return render(request, "shared/index.html", {"form": form, "ambiente": None})
     else:
-        return render(request, "shared/index.html", {"form": form, "banco_usado": banco_usado})
+        return render(request, "shared/index.html", {"form": form, "ambiente": 'ambiente de desenvolvimento'})
 
 
 
