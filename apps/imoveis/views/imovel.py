@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from ..models import Imovel, Historico, Cliente, Contrato
 from ..forms import FormImovel, FormRecibos
-from helper import Recibos, verifica_autenticacao
+from helper import Recibos, verifica_autenticacao, verifica_documento, energia_busca_contas
 from django.contrib import messages
 
 
@@ -107,11 +107,19 @@ def historico_listar(request, imovel_id):
     verifica_autenticacao(request)
     contratos = Contrato.objects.filter(imovel__id=imovel_id).order_by("-id")
     historico = Historico.objects.filter(imovel__id=imovel_id).order_by("-id")
+    imovel = Imovel.objects.get(id=imovel_id)
+    try:
+        cd_un_consumidora = imovel.elfsm_inscricao
+        nr_cgc_cpf = verifica_documento(imovel.elfsm_titular.cpf)['numero_limpo']
+    except:
+        cd_un_consumidora = None
+        nr_cgc_cpf = None
+    contas_energia = energia_busca_contas(cd_un_consumidora, nr_cgc_cpf)
 
     return render(
         request,
         "imoveis/historico_listar.html",
-        {"contratos": contratos, "historico": historico},
+        {"contratos": contratos, "historico": historico, "contas_energia": contas_energia},
     )
 
 

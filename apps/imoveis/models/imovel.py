@@ -1,5 +1,6 @@
 from django.db import models
 from ..models.cliente import Cliente
+from ..models.locador import Locador
 
 
 class Imovel(models.Model):
@@ -13,6 +14,10 @@ class Imovel(models.Model):
     complemento = models.CharField(max_length=250, null=True, blank=True)
     observacao = models.CharField(max_length=250, null=True, blank=True)
     dia = models.IntegerField(null=True, blank=True)
+    iptu_inscricao = models.IntegerField(null=True, blank=True)
+    iptu_titular = models.ForeignKey(Locador, null=True, blank=True, on_delete=models.SET_NULL, related_name='iptu_titular')
+    elfsm_inscricao = models.IntegerField(null=True, blank=True)
+    elfsm_titular = models.ForeignKey(Locador, null=True, blank=True, on_delete=models.SET_NULL, related_name='elfsm_titular')
 
     class Meta:
         ordering = ["cliente"]

@@ -11,7 +11,7 @@ class TesteImovel(TestCase):
             'nome': 'John Doe',
             'data_nascimento': '1978-05-17',
             'ci' : '111111',
-            'cpf': '11111111111',
+            'cpf': '19605692791',
             'telefone_1': '2799999999',
             'telefone_2': '2799998888',
             'nacionalidade': 'brasileira',

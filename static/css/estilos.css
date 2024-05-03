@@ -267,6 +267,15 @@ label {
 .destacar {
     font-weight: bold;
 }
+.link {
+    color: var(--bs-gray-dark);
+    text-decoration: none;
+    font-weight: bold;
+}
+.link:hover {
+    color: var(--bs-gray-dark);
+    text-decoration: underline;
+}
 .gray-link {
     color: var(--bs-gray-dark);
     background-color: var(--bs-gray-300);

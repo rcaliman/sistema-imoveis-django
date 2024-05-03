@@ -9,7 +9,7 @@ class TesteLocador(TestCase):
         self.user = User.objects.create_user('temporario', 'teste@teste.com', 'temporario')
         self.data_locador = {
             'nome': 'John Doe',
-            'cpf': '11111111111',
+            'cpf': '66755631736',
             'residencia': 'colatina',
             'estado_civil': 'casado',
             'data_nascimento': '1978-01-01',
@@ -62,6 +62,20 @@ class TesteLocador(TestCase):
         url = reverse('locador_inserir')
         resposta = self.client.get(url, data={'form': form})
         self.assertIn('<form', resposta.content.decode('utf-8'))
+
+
+    def test_view_formulario_locador_inserir_registro(self):
+        self.autentica()
+        url = reverse('locadores_lista')
+        resposta = self.client.post(url, data=self.data_locador, follow=True)
+        self.assertIn('locador adicionado com sucesso', resposta.content.decode('utf-8'))
+
+    def test_view_formulario_locador_erro_ao_inserir_registro(self):
+        self.autentica()
+        url = reverse('locadores_lista')
+        self.data_locador['cpf'] = '11111111111'
+        resposta = self.client.post(url, data=self.data_locador, follow=True)
+        self.assertIn('erro ao adicionar locador', resposta.content.decode('utf-8'))
 
     def test_view_locador_alterar(self):
         self.autentica()

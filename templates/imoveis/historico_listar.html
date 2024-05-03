@@ -3,6 +3,25 @@
 {% load static %}
 {% load extrai_locatario %}
 {% block content %}
+<h2>Contas de energia em aberto</h2>
+<div class='lista-historico'>
+    {% if contas_energia %}
+        <table class='table-historico'>
+            {% for conta in contas_energia %}
+                <tr>
+                    <td>{{ conta.mes_ano }}</td>
+                    <td>{{ conta.vencimento }}</td>
+                    <td>{{ conta.valor }}</td>
+                    <td><a class="link" target="#" href={{ conta.link }}>baixar conta</a></td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+    <h3>
+        Não há contas em aberto, ou dados da ELFSM incorretos/não cadastrados.
+    </h3>
+    {% endif %}
+</div>
 <h2>Histórico de contratos impressos</h2>
 <div class="lista-historico">
     

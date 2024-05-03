@@ -1,6 +1,9 @@
 from django.shortcuts import redirect
 from django.contrib import messages
 from num2words import num2words
+import requests
+import pandas as pd
+from io import StringIO
 from calendar import month_name
 from datetime import datetime
 from apps.imoveis.models.locador import Locador
@@ -21,29 +24,70 @@ def calcula_proxima_data(mes, ano):
         if month_name[i] == mes:
             return {"mes": month_name[i + 1], "ano": ano}
 
+
+def energia_busca_contas(cd_un_consumidora, nr_cgc_cpf):
+    url = "https://portal.elfsm.com.br/portal2/segunda_via_facil.php?acao=buscar"
+    mensagem_erro = "Unidade consumidora + CPF/CNPJ não encontrados."
+    data = {"cd_un_consumidora": cd_un_consumidora, "nr_cgc_cpf": nr_cgc_cpf}
+    response = requests.post(url, data=data)
+    if mensagem_erro not in response.text:
+        tabela = pd.read_html(StringIO(response.text))[0]
+        tabela.rename(
+            columns={
+                "Mês/Ano": "mes_ano",
+                "Vencimento": "vencimento",
+                "Valor": "valor",
+            },
+            inplace=True,
+        )
+        links = []
+        for i in response.text.split('"'):
+            if "https://report.elfsm.com.br/reports/rwservlet?" in i:
+                links.append(i)
+        lista = []
+        for indice, dados in tabela.iterrows():
+            if "2015" not in dados.mes_ano:
+                lista.append(
+                    {
+                        "mes_ano": dados.mes_ano,
+                        "vencimento": dados.vencimento,
+                        "valor": dados.valor,
+                        "link": links[indice],
+                    }
+                )
+        if len(lista) > 0:
+            return lista
+        return None
+    return None
+
+
 class GeraContrato:
     def __init__(self, POST):
         self.POST = POST
-    
+
     @property
     def texto_tipo_imovel(self):
-        return "residencial" if self.POST["uso_imovel"] == "residencial" else "comercial"
-    
+        return (
+            "residencial" if self.POST["uso_imovel"] == "residencial" else "comercial"
+        )
+
     @property
     def texto_dia_pagamento(self):
         return self.POST["imovel_dia_pagamento"]
 
     @property
     def texto_uso_imovel(self):
-        return 'residenciais' if self.POST['uso_imovel'] == 'residencial' else 'comerciais'
-    
+        return (
+            "residenciais" if self.POST["uso_imovel"] == "residencial" else "comerciais"
+        )
+
     @property
     def texto_data_contrato(self):
         dia = self.POST["imovel_dia_pagamento"]
         mes = month_name[int(self.POST["mes_inicio"])]
-        ano =  self.POST["ano_inicio"]
-        return 'Colatina, {} de {} de {}.'.format(dia, mes, ano)
-    
+        ano = self.POST["ano_inicio"]
+        return "Colatina, {} de {} de {}.".format(dia, mes, ano)
+
     @property
     def quantidade_meses_contrato(self):
         dt1 = datetime(
@@ -64,27 +108,29 @@ class GeraContrato:
     def texto_quantidade_meses(self):
         quantidade_meses = self.quantidade_meses_contrato
         quantidade_meses_extenso = num2words(quantidade_meses, lang="pt_BR")
-        return '{} ({}) meses '.format(quantidade_meses, quantidade_meses_extenso)
+        return "{} ({}) meses ".format(quantidade_meses, quantidade_meses_extenso)
 
     @property
     def texto_valor(self):
         valor = self.POST["imovel_valor_aluguel"].replace(".", ",")
-        valor_extenso = num2words(self.POST["imovel_valor_aluguel"], to="currency", lang="pt_BR")
-        return 'R$ {} ({})'.format(valor, valor_extenso)
-        
+        valor_extenso = num2words(
+            self.POST["imovel_valor_aluguel"], to="currency", lang="pt_BR"
+        )
+        return "R$ {} ({})".format(valor, valor_extenso)
+
     @property
     def texto_data_inicial(self):
         dia = self.POST["imovel_dia_pagamento"].zfill(2)
         mes = self.POST["mes_inicio"]
         ano = self.POST["ano_inicio"]
-        return '{}/{}/{}'.format(dia, mes, ano)
-    
+        return "{}/{}/{}".format(dia, mes, ano)
+
     @property
     def texto_data_final(self):
         dia = self.POST["imovel_dia_pagamento"].zfill(2)
         mes = self.POST["mes_final"]
         ano = self.POST["ano_final"]
-        return '{}/{}/{}'.format(dia, mes, ano)
+        return "{}/{}/{}".format(dia, mes, ano)
 
     @property
     def texto_cliente(self):
@@ -95,7 +141,9 @@ class GeraContrato:
             if self.POST["cliente_estado_civil"]:
                 texto_cliente += self.POST["cliente_estado_civil"].lower() + ", "
             if self.POST["cliente_cidade_residencia_sede"]:
-                texto_cliente += f'residente em {self.POST["cliente_cidade_residencia_sede"]}, '
+                texto_cliente += (
+                    f'residente em {self.POST["cliente_cidade_residencia_sede"]}, '
+                )
             if self.POST["cliente_cpf_cnpj"]:
                 texto_cliente += f'CPF {self.POST["cliente_cpf_cnpj"]}, '
             if self.POST["cliente_ci"]:
@@ -104,7 +152,9 @@ class GeraContrato:
             if self.POST["cliente_cpf_cnpj"]:
                 texto_cliente += f'CNPJ {self.POST["cliente_cpf_cnpj"]}, '
             if self.POST["cliente_cidade_residencia_sede"]:
-                texto_cliente += f'sediado(a) em {self.POST["cliente_cidade_residencia_sede"]}, '
+                texto_cliente += (
+                    f'sediado(a) em {self.POST["cliente_cidade_residencia_sede"]}, '
+                )
         return texto_cliente
 
     @property
@@ -128,17 +178,16 @@ class GeraContrato:
         tipo = self.texto_tipo_imovel
         numero = int(self.POST["imovel_numero"])
         local = self.POST["imovel_local"]
-        return '{} de número {} localizado na {} '.format(tipo, numero, local)
+        return "{} de número {} localizado na {} ".format(tipo, numero, local)
 
     @property
     def texto_assinatura_locador(self):
         locador = locador = Locador.objects.get(id=self.POST["select_locador"])
         return f"{locador.nome.upper()} - {locador.cpf}"
-    
+
     @property
     def texto_assinatura_cliente(self):
         return f'{self.POST["cliente_nome"].upper()} - {self.POST["cliente_cpf_cnpj"]}'
-
 
 
 class Recibos:
@@ -233,9 +282,34 @@ def verifica_documento(numero_documento) -> dict[str, str]:
 
     """
 
+def verifica_documento(numero_documento) -> dict[str, str]:
+    """
+    como usar:
+        verifica_documento("18.781.203/0001-28")
+      ou
+        verifica_documento("18781203000128)
+      ou
+        verifica_documento("667.556.317-36")
+      ou
+        verifica_documento("66755631736")
+
+    retorno em caso de documento válido:
+        {'documento': 'cnpj', 'numero_limpo': '18781203000128', 'numero_formatado': '18.781.203/0001-28'}
+      ou
+        {'documento': 'cpf', 'numero_limpo': '66755631736', 'numero_formatado': '667.556.317.36'}
+
+    retorno em caso de documento inválido:
+        {'documento': None, 'numero_limpo': None, 'numero_formatado': None}
+
+    """
+
     def limpa_numero(numero_documento):
-        numero_limpo = [i for i in list(numero_documento) if i.isnumeric()]
+      primeiro_numero = numero_documento[0]
+      numero_limpo = [i for i in list(numero_documento) if i.isnumeric()]
+      if numero_limpo.count(primeiro_numero) != len(numero_limpo):
         return numero_limpo
+      else:
+        return []
 
     def calcula_digito(
         numero_documento: list, gabarito: list, primeiro_digito: int
