@@ -53,12 +53,6 @@ class TesteImovel(TestCase):
         url = reverse('index')
         usuario = {'usuario': 'temporario', 'senha': 'temporario'}
         self.client.post(url, data=usuario, follow=True)
-
-    def insere_imovel(self, numero=100, cliente=''):
-        url = reverse('imoveis_lista')
-        self.data_imovel['cliente'] = cliente
-        self.data_imovel['numero'] = numero
-        return self.client.post(url, data=self.data_imovel, follow=True)
     
     def test_view_lista_imoveis(self):
         self.autentica()
@@ -67,10 +61,15 @@ class TesteImovel(TestCase):
         self.assertNotIn('Você não está autenticado!', resposta.content.decode('utf-8'))
         self.assertEqual(resposta.status_code, 200)
 
-    def test_view_lista_imoveis_adicionar(self):
+
+    def test_inserir_imovel(self):
         self.autentica()
-        resposta = self.insere_imovel()
-        self.assertIn('Imóvel adicionado com sucesso.', resposta.content.decode('utf-8'))
+        url = reverse('imoveis_lista')
+        self.data_imovel['cliente'] = Cliente.objects.last().pk
+        self.data_imovel['iptu_titular'] = Locador.objects.last().pk
+        self.data_imovel['elfsm_titular'] = Locador.objects.last().pk
+        resposta = self.client.post(url, data=self.data_imovel, follow=True)
+        self.assertIn('Imóvel adicionado com sucesso', resposta.content.decode('utf-8'))
 
     def test_view_lista_imoveis_atualizar(self):
         self.autentica()
@@ -90,8 +89,7 @@ class TesteImovel(TestCase):
             resposta.content.decode('utf-8')
         )
     def test_view_imovel_alterar(self):
-        self.autentica()
-        self.insere_imovel(cliente=self.cliente_pk)        
+        self.autentica() 
         url = reverse('imovel_alterar', kwargs={'id_do_registro': self.imovel_pk})
         form = FormImovel()
         resposta = self.client.get(url, data={'form': form})
@@ -102,16 +100,15 @@ class TesteImovel(TestCase):
 
     def test_view_imovel_apagar(self):
         self.autentica()
-        self.insere_imovel()
         url = reverse('imovel_apagar', kwargs={'id_do_registro': self.imovel_pk})
         resposta = self.client.get(url, follow=True)
         self.assertIn('Imóvel apagado com sucesso.', resposta.content.decode("utf-8"))
 
     def test_view_imovel_ordenador(self):
         self.autentica()
-        self.insere_imovel(102)
-        self.insere_imovel(101)
-        self.insere_imovel(103)
+        for i in range(100, 104):
+            self.data_imovel['numero'] = i
+            Imovel.objects.create(**self.data_imovel)
         url = reverse('imoveis_ordenados', kwargs={'ordenador': 'numero'})
         resposta = self.client.get(url)
         self.assertIn('101', resposta.content.decode('utf-8'))
