@@ -1,7 +1,12 @@
 from django.shortcuts import render, redirect
 from ..models import Imovel, Historico, Cliente, Contrato
 from ..forms import FormImovel, FormRecibos
-from helper import Recibos, verifica_autenticacao, verifica_documento, energia_busca_contas
+from helper import (
+    Recibos,
+    verifica_autenticacao,
+    verifica_documento,
+    energia_busca_contas,
+)
 from django.contrib import messages
 
 
@@ -13,9 +18,9 @@ def imoveis_lista(request):
             imovel = Imovel.objects.get(id=id_registro)
             form = FormImovel(request.POST, instance=imovel)
             if form.is_valid:
+                salva_historico(form)
                 form.save()
                 messages.success(request, "Imóvel atualizado com sucesso.")
-                salva_historico(form)
         except:
             messages.error(request, "Erro ao atualizar imóvel.")
     else:
@@ -68,13 +73,14 @@ def imovel_apagar(request, id_do_registro):
 def imoveis_ordenados(request, ordenador):
     verifica_autenticacao(request)
     registros_ordenados = Imovel.objects.order_by(ordenador).all()
-    return render(request,
-                "imoveis/imoveis.html",
-                {
-                    "registros": registros_ordenados,
-                    "selects": FormRecibos,
-                }
-            )
+    return render(
+        request,
+        "imoveis/imoveis.html",
+        {
+            "registros": registros_ordenados,
+            "selects": FormRecibos,
+        },
+    )
 
 
 def imoveis_recibos(request):
@@ -110,7 +116,7 @@ def historico_listar(request, imovel_id):
     imovel = Imovel.objects.get(id=imovel_id)
     try:
         cd_un_consumidora = imovel.elfsm_inscricao
-        nr_cgc_cpf = verifica_documento(imovel.elfsm_titular.cpf)['numero_limpo']
+        nr_cgc_cpf = verifica_documento(imovel.elfsm_titular.cpf)["numero_limpo"]
     except:
         cd_un_consumidora = None
         nr_cgc_cpf = None
@@ -119,7 +125,11 @@ def historico_listar(request, imovel_id):
     return render(
         request,
         "imoveis/historico_listar.html",
-        {"contratos": contratos, "historico": historico, "contas_energia": contas_energia},
+        {
+            "contratos": contratos,
+            "historico": historico,
+            "contas_energia": contas_energia,
+        },
     )
 
 
@@ -129,13 +139,13 @@ def salva_historico(form):
     data_historico = {
         "tipo": form["tipo"].value(),
         "numero": form["numero"].value(),
-        "local": form["local"].value(),
-        "valor": form["valor"].value(),
-        "complemento": form["complemento"].value(),
-        "observacao": form["observacao"].value(),
-        "dia": form["dia"].value(),
+        "local": form["local"].value() or None,
+        "valor": form["valor"].value() or None,
+        "complemento": form["complemento"].value() or None,
+        "observacao": form["observacao"].value() or None,
+        "dia": form["dia"].value() or None,
         "cliente_nome": cliente.nome or None,
         "cliente_cpf_cnpj": cliente.cpf or None,
-        "imovel": form.instance,
+        "imovel": form.instance or None,
     }
     Historico.objects.create(**data_historico)
