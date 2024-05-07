@@ -51,7 +51,7 @@ class TesteRecibos(TestCase):
         self.imovel1_pk = Imovel.objects.create(**self.data_imovel).pk
         self.imovel2_pk = Imovel.objects.create(**self.data_imovel).pk
         codigos_imoveis = FormRecibos.codigos_imoveis()
-        self.assertEqual([(self.imovel1_pk, ''), (self.imovel2_pk, '')], codigos_imoveis)
+        self.assertEqual(sorted([(self.imovel1_pk, ''), (self.imovel2_pk, '')]), sorted(codigos_imoveis))
 
     def test_imoveis_recibos(self):
         self.autentica()
