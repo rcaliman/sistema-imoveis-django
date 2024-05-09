@@ -8,6 +8,11 @@ class FormLocador(forms.ModelForm):
     class Meta:
         model = Locador
 
+        select_principal = [
+            (True, 'Sim'),
+            (False, 'Não'),
+        ]
+
         fields = [
             "nome",
             "cpf",
@@ -16,7 +21,8 @@ class FormLocador(forms.ModelForm):
             "data_nascimento",
             "telefone",
             "email",
-            "nacionalidade"
+            "nacionalidade",
+            "principal",
         ]
 
         widgets = {
@@ -29,7 +35,8 @@ class FormLocador(forms.ModelForm):
             ),
             "telefone": forms.TextInput(attrs={"class": "form-control"}),
             "email": forms.EmailInput(attrs={"class": "form-control"}),
-            "nacionalidade": forms.TextInput(attrs={"class": "form-control"})
+            "nacionalidade": forms.TextInput(attrs={"class": "form-control"}),
+            "principal": forms.Select(choices=select_principal, attrs={"class": "form-control"}),
         }
     
     def clean_cpf(self):

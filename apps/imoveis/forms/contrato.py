@@ -5,11 +5,27 @@ from datetime import datetime
 
 class FormGerarContrato(forms.Form):
     def choices_locadores() -> list[tuple[str, str]]:
-        obj = Locador.objects.all().order_by("nome")
-        locadores = []
-        for l in obj:
-            locadores.append((l.id, l.nome))
-        return locadores
+        
+        select_locadores = []
+        locador_principal = None
+        locador_principal_id = None
+        locador_principal_nome = None
+
+        locadores = Locador.objects.all().order_by('nome')
+        locador_principal = Locador.objects.filter(principal=True)
+
+        if len(locador_principal) > 0:
+            locador_principal_id = locador_principal.values()[0]['id']
+            locador_principal_nome = locador_principal.values()[0]['nome']
+            select_locadores.append((locador_principal_id, locador_principal_nome))
+
+        for locador in locadores:
+            if locador_principal_nome != locador.nome:
+                select_locadores.append(
+                    (locador.id, locador.nome)
+                )
+
+        return select_locadores
 
     select_locador = forms.ChoiceField(
         choices=choices_locadores,

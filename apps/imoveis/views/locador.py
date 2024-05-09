@@ -10,6 +10,7 @@ def locadores_lista(request):
     if request.POST:
         if request.POST.get("id") is not None:
             locador_id = request.POST.get("id")
+            muda_principal(request)
             locador = Locador.objects.get(id=locador_id)
             form = FormLocador(request.POST, instance=locador)
             if form.is_valid():
@@ -18,6 +19,7 @@ def locadores_lista(request):
         else:
             form = FormLocador(request.POST)
             if form.is_valid():
+                muda_principal(request)
                 form.save()
                 messages.success(request, "locador adicionado com sucesso")
             else:
@@ -26,6 +28,11 @@ def locadores_lista(request):
     return render(
         request, "locadores/locadores.html", {"registros": todos_os_locadores}
     )
+
+def muda_principal(request):
+    if bool(request.POST.get('principal')) == True:
+        atual_principal = Locador.objects.filter(principal=True)
+        atual_principal.update(principal=False)
 
 
 def locador_inserir(request):

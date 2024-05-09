@@ -54,6 +54,7 @@ class TesteContrato(TestCase):
             'telefone': '1111111111',
             'email': 'teste@teste.com',
             'nacionalidade': 'brasileiro',
+            'principal': False,
         }
         self.locador_pk = Locador.objects.create(**self.data_locador).pk
         self.data_cria_contrato = {

@@ -17,6 +17,7 @@ class TesteRecibos(TestCase):
             'data_nascimento': '1978-01-01',
             'telefone': '1111111111',
             'email': 'teste@teste.com',
+            'principal': True,
         }
         self.data_cliente = {
             'nome': 'John Doe',
