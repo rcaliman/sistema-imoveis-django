@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('imoveis', '0010_locador_principal'),
+        ("imoveis", "0010_locador_principal"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='locador',
-            name='principal',
-            field=models.BooleanField(blank=True, default='false', null=True),
+            model_name="locador",
+            name="principal",
+            field=models.BooleanField(blank=True, default=False, null=True),
         ),
     ]
