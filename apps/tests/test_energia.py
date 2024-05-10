@@ -93,14 +93,6 @@ class TestaEnergia(TestCase):
         resposta = self.client.post(url, data=self.data_energia4, follow=True)
         self.assertIn('Registro atualizado com sucesso.', resposta.content.decode('utf-8'))
 
-    def test_view_energia_lista_erro_ao_fazer_update(self):
-        self.autentica()
-        self.data_energia4['id'] = '4'
-        self.data_energia4['data'] = '2023-30-30'
-        url = reverse('energia_lista')
-        resposta = self.client.post(url, data=self.data_energia4, follow=True)
-        self.assertIn('Erro ao tentar atualizar registro.', resposta.content.decode('utf-8'))
-
     def test_view_energia_lista_inserindo_novo_registro(self):
         self.autentica()
         url = reverse('energia_lista')
@@ -113,14 +105,6 @@ class TestaEnergia(TestCase):
         url = reverse('energia_inserir')
         resposta = self.client.get(url, {'form': form})
         self.assertIn('input type', resposta.content.decode('utf-8'))
-    
-    
-    def test_view_energia_erro_ao_inserir(self):
-        self.autentica()
-        self.data_energia5['data'] = '2023-30-30'
-        url = reverse('energia_lista')
-        resposta = self.client.post(url, data=self.data_energia5, follow=True)
-        self.assertIn('Erro ao tentar adicionar novo registro.', resposta.content.decode('utf-8'))
 
     def test_view_energia_editar(self):
         self.autentica()

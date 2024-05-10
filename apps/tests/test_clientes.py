@@ -89,11 +89,6 @@ class TestClientes(TestCase):
         resultado = self.client.get(url, follow=True)
         self.assertIn('alert-success', resultado.content.decode('utf-8'))
 
-    def test_cliente_erro_apagar(self):
-        self.autentica()
-        url = reverse('cliente_apagar', kwargs={'id_do_registro': 10})
-        resultado = self.client.get(url, follow=True)
-        self.assertIn('Erro ao tentar apagar cliente', resultado.content.decode('utf-8'))
 
     def test_model_cliente_returnando_nome_como__str__(self):
         cliente = Cliente(**self.cliente_data)

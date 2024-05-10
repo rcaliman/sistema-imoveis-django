@@ -9,20 +9,14 @@ def energia_lista(request):
     verifica_autenticacao(request)
     if request.method == "POST":
         if request.POST.get("id") is not None:
-            try:
-                id_energia = request.POST.get("id")
-                energia = Energia.objects.get(id=id_energia)
-                form = FormEnergia(request.POST, instance=energia)
-                form.save()
-                messages.success(request, "Registro atualizado com sucesso.")
-            except:
-                messages.error(request, "Erro ao tentar atualizar registro.")
+            id_energia = request.POST.get("id")
+            energia = Energia.objects.get(id=id_energia)
+            form = FormEnergia(request.POST, instance=energia)
+            form.save()
+            messages.success(request, "Registro atualizado com sucesso.")
         else:
-            try:
-                adiciona_registro_de_energia(request)
-                messages.success(request, "Novo registro adicionado com sucesso.")
-            except:
-                messages.error(request, "Erro ao tentar adicionar novo registro.")
+            adiciona_registro_de_energia(request)
+            messages.success(request, "Novo registro adicionado com sucesso.")
     registros = Energia.objects.all().values()
     labels = EnergiaLabels.objects.last()
     if not labels:

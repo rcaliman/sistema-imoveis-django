@@ -13,25 +13,19 @@ from django.contrib import messages
 def imoveis_lista(request):
     verifica_autenticacao(request)
     if request.POST.get("id") is not None:
-        try:
-            id_registro = request.POST.get("id")
-            imovel = Imovel.objects.get(id=id_registro)
-            form = FormImovel(request.POST, instance=imovel)
-            if form.is_valid:
-                salva_historico(form)
-                form.save()
-                messages.success(request, "Imóvel atualizado com sucesso.")
-        except:
-            messages.error(request, "Erro ao atualizar imóvel.")
+        id_registro = request.POST.get("id")
+        imovel = Imovel.objects.get(id=id_registro)
+        form = FormImovel(request.POST, instance=imovel)
+        if form.is_valid:
+            salva_historico(form)
+            form.save()
+            messages.success(request, "Imóvel atualizado com sucesso.")
     else:
         form = FormImovel(request.POST)
         if form.is_valid():
-            try:
-                form.save()
-                messages.success(request, "Imóvel adicionado com sucesso.")
-                salva_historico(form)
-            except:
-                messages.error(request, "Erro ao tentar adicionar novo imóvel")
+            form.save()
+            salva_historico(form)
+            messages.success(request, "Imóvel adicionado com sucesso.")
     todos_os_registros = Imovel.objects.all()
     return render(
         request,
@@ -62,11 +56,8 @@ def imovel_alterar(request, id_do_registro):
 
 def imovel_apagar(request, id_do_registro):
     verifica_autenticacao(request)
-    try:
-        Imovel.objects.get(id=id_do_registro).delete()
-        messages.success(request, "Imóvel apagado com sucesso.")
-    except:
-        messages.error(request, "Erro ao tentar apagar imóvel.")
+    Imovel.objects.get(id=id_do_registro).delete()
+    messages.success(request, "Imóvel apagado com sucesso.")
     return redirect(imoveis_lista)
 
 
@@ -136,6 +127,8 @@ def historico_listar(request, imovel_id):
 def salva_historico(form):
     if form["cliente"].value().isnumeric():
         cliente = Cliente.objects.get(id=form["cliente"].value())
+    else:
+        cliente = None
     data_historico = {
         "tipo": form["tipo"].value(),
         "numero": form["numero"].value(),
@@ -144,8 +137,8 @@ def salva_historico(form):
         "complemento": form["complemento"].value() or None,
         "observacao": form["observacao"].value() or None,
         "dia": form["dia"].value() or None,
-        "cliente_nome": cliente.nome or None,
-        "cliente_cpf_cnpj": cliente.cpf or None,
+        "cliente_nome": cliente.nome if cliente else None,
+        "cliente_cpf_cnpj": cliente.cpf if cliente else None,
         "imovel": form.instance or None,
     }
     Historico.objects.create(**data_historico)

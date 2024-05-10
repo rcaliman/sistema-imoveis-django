@@ -66,9 +66,6 @@ def cliente_alterar(request, id_do_registro):
 
 def cliente_apagar(request, id_do_registro):
     verifica_autenticacao(request)
-    try:
-        Cliente.objects.get(id=id_do_registro).delete()
-        messages.success(request, "Cliente apagado com sucesso")
-    except:
-        messages.error(request, "Erro ao tentar apagar cliente")
+    Cliente.objects.get(id=id_do_registro).delete()
+    messages.success(request, "Cliente apagado com sucesso")
     return redirect(clientes_lista)

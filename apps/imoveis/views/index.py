@@ -30,9 +30,6 @@ def index(request):
 
 def imoveis_logout(request):
     verifica_autenticacao(request)
-    try:
-        logout(request)
-        messages.success(request, "Logout efetuado com sucesso.")
-    except:
-        messages.error(request, "Erro ao tentar fazer logout.")
+    logout(request)
+    messages.success(request, "Logout efetuado com sucesso.")
     return redirect("index")
