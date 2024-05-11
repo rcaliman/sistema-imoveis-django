@@ -9,10 +9,14 @@
         <table class='table-historico'>
             {% for conta in contas_energia %}
                 <tr>
-                    <td>{{ conta.mes_ano }}</td>
-                    <td>{{ conta.vencimento }}</td>
-                    <td>{{ conta.valor }}</td>
-                    <td><a class="link" target="#" href={{ conta.link }}>baixar conta</a></td>
+                    {% if conta.mensagem %}
+                        <td>{{ conta.mensagem }}</td>
+                    {% else %}
+                        <td>{{ conta.mes_ano }}</td>
+                        <td>{{ conta.vencimento }}</td>
+                        <td>{{ conta.valor }}</td>
+                        <td><a class="link" target="#" href={{ conta.link }}>baixar conta</a></td>
+                    {% endif %}
                 </tr>
             {% endfor %}
         </table>
@@ -35,9 +39,11 @@
         </div>
         {% endfor %}
     {% else %}
-        <h3>
-            Sem contratos salvos para listar.
-        </h3>
+        <table class='table-historico'>
+            <tr>
+                <td>Sem contratos salvos para listar.</td>
+            </tr>
+        </table>
     {% endif %}
 </div>
 <h2>Histórico de dados alterados</h2>
@@ -72,9 +78,11 @@
             {% endfor %}
         </table>
     {% else %}
-        <h2>
-            Sem histórico para mostrar.
-        </h2>
+        <table class='table-historico'>
+            <tr>
+                <td>Sem histórico para mostrar.</td>
+            </tr>
+        </table>
     {% endif %}
 </div>
 {% endblock content %}

@@ -105,13 +105,17 @@ def historico_listar(request, imovel_id):
     contratos = Contrato.objects.filter(imovel__id=imovel_id).order_by("-id")
     historico = Historico.objects.filter(imovel__id=imovel_id).order_by("-id")
     imovel = Imovel.objects.get(id=imovel_id)
-    try:
+    
+    if imovel.elfsm_inscricao is not None and imovel.elfsm_titular is not None:
         cd_un_consumidora = imovel.elfsm_inscricao
         nr_cgc_cpf = verifica_documento(imovel.elfsm_titular.cpf)["numero_limpo"]
-    except:
+        contas_energia = energia_busca_contas(cd_un_consumidora, nr_cgc_cpf)
+    else:
         cd_un_consumidora = None
         nr_cgc_cpf = None
-    contas_energia = energia_busca_contas(cd_un_consumidora, nr_cgc_cpf)
+        contas_energia = [
+            {'mensagem': 'Dados para busca de contas não cadastrados.'}
+        ]
 
     return render(
         request,
@@ -132,13 +136,13 @@ def salva_historico(form):
     data_historico = {
         "tipo": form["tipo"].value(),
         "numero": form["numero"].value(),
-        "local": form["local"].value() or None,
-        "valor": form["valor"].value() or None,
-        "complemento": form["complemento"].value() or None,
-        "observacao": form["observacao"].value() or None,
-        "dia": form["dia"].value() or None,
-        "cliente_nome": cliente.nome if cliente else None,
-        "cliente_cpf_cnpj": cliente.cpf if cliente else None,
+        "local": form["local"].value() or '',
+        "valor": form["valor"].value() or '',
+        "complemento": form["complemento"].value() or '',
+        "observacao": form["observacao"].value() or '',
+        "dia": form["dia"].value() or '',
+        "cliente_nome": cliente.nome if cliente else '',
+        "cliente_cpf_cnpj": cliente.cpf if cliente else '',
         "imovel": form.instance or None,
     }
     Historico.objects.create(**data_historico)

@@ -27,12 +27,16 @@ def calcula_proxima_data(mes, ano):
 
 def energia_busca_contas(cd_un_consumidora, nr_cgc_cpf):
     url = "https://portal.elfsm.com.br/portal2/segunda_via_facil.php?acao=buscar"
-    mensagem_erro = "Unidade consumidora + CPF/CNPJ não encontrados."
-    data = {"cd_un_consumidora": cd_un_consumidora, "nr_cgc_cpf": nr_cgc_cpf}
-    response = requests.post(url, data=data)
-    if mensagem_erro not in response.text:
-        tabela = pd.read_html(StringIO(response.text))[0]
-        tabela.rename(
+    mensagem_nao_encontrada = "Unidade consumidora + CPF/CNPJ não encontrados."
+    dados_de_busca = {"cd_un_consumidora": cd_un_consumidora, "nr_cgc_cpf": nr_cgc_cpf}
+    response = requests.post(url, data=dados_de_busca)
+    lista_de_contas = []
+    if mensagem_nao_encontrada not in response.text:
+        try:
+            tabela_extraida = pd.read_html(StringIO(response.text))[0]
+        except ValueError:
+            return [{'mensagem': 'Não foram encontradas contas em aberto.'}]
+        tabela_extraida.rename(
             columns={
                 "Mês/Ano": "mes_ano",
                 "Vencimento": "vencimento",
@@ -44,10 +48,9 @@ def energia_busca_contas(cd_un_consumidora, nr_cgc_cpf):
         for i in response.text.split('"'):
             if "https://report.elfsm.com.br/reports/rwservlet?" in i:
                 links.append(i)
-        lista = []
-        for indice, dados in tabela.iterrows():
+        for indice, dados in tabela_extraida.iterrows():
             if "2015" not in dados.mes_ano:
-                lista.append(
+                lista_de_contas.append(
                     {
                         "mes_ano": dados.mes_ano,
                         "vencimento": dados.vencimento,
@@ -55,10 +58,9 @@ def energia_busca_contas(cd_un_consumidora, nr_cgc_cpf):
                         "link": links[indice],
                     }
                 )
-        if len(lista) > 0:
-            return lista
-        return None
-    return None
+        if len(lista_de_contas) == 0:
+            return [{'mensagem': 'Não foram encontradas contas em aberto.'}]
+    return lista_de_contas
 
 
 class GeraContrato:
