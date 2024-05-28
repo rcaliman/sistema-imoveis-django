@@ -68,12 +68,12 @@
                     <td>{{ dado.tipo }}</td>
                     <td class='number'>{{ dado.numero }}</td>
                     <td>{{ dado.local }}</td>
-                    <td class='number'>{{ dado.valor }}</td>
-                    <td>{{ dado.complemento }}</td>
-                    <td>{{ dado.observacao }}</td>
-                    <td class='number'>{{ dado.dia }}</td>
-                    <td>{{ dado.cliente_nome }}</td>
-                    <td class='number'>{{ dado.cliente_cpf_cnpj }}</td>
+                    <td class='number'>{% if dado.valor != None %} {{ dado.valor }} {% endif %}</td>
+                    <td>{% if dado.complemento != None %} {{ dado.complemento }} {% endif %}</td>
+                    <td>{% if dado.observacao != None %} {{ dado.observacao }} {% endif %}</td>
+                    <td class='number'>{% if dado.dia != None %} {{ dado.dia }} {% endif %}</td>
+                    <td> {% if dado.cliente_nome != None %} {{ dado.cliente_nome }} {% endif %}</td>
+                    <td class='number'>{% if dado.cliente_cpf_cnpj %} {{ dado.cliente_cpf_cnpj }}{% endif %}</td>
                 </tr>
             {% endfor %}
         </table>

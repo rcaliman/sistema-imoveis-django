@@ -6,7 +6,7 @@ from ..models.locador import Locador
 class Imovel(models.Model):
     tipo = models.CharField(max_length=100, null=False)
     numero = models.CharField(max_length=5, null=False)
-    local = models.CharField(max_length=100, null=True, blank=True)
+    local = models.CharField(max_length=100, null=False)
     cliente = models.ForeignKey(
         Cliente, null=True, blank=True, on_delete=models.SET_NULL
     )

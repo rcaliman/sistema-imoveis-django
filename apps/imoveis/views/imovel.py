@@ -136,13 +136,13 @@ def salva_historico(form):
     data_historico = {
         "tipo": form["tipo"].value(),
         "numero": form["numero"].value(),
-        "local": form["local"].value() or '',
-        "valor": form["valor"].value() or '',
-        "complemento": form["complemento"].value() or '',
-        "observacao": form["observacao"].value() or '',
-        "dia": form["dia"].value() or '',
-        "cliente_nome": cliente.nome if cliente else '',
-        "cliente_cpf_cnpj": cliente.cpf if cliente else '',
+        "local": form["local"].value() or None,
+        "valor": form["valor"].value() or None,
+        "complemento": form["complemento"].value() or None,
+        "observacao": form["observacao"].value() or None,
+        "dia": form["dia"].value() or None,
+        "cliente_nome": cliente.nome if cliente else None,
+        "cliente_cpf_cnpj": cliente.cpf if cliente else None,
         "imovel": form.instance or None,
     }
     Historico.objects.create(**data_historico)
